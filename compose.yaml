@@ -1,0 +1,7 @@
+﻿services:
+  documentflowserver.api:
+    image: documentflowserver.api
+    build:
+      context: .
+      dockerfile: DocumentFlowServer.Api/Dockerfile
+

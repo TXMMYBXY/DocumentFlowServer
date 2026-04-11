@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="compose.yaml" />
+  </Folder>
+  <Project Path="DocumentFlowServer.Api/DocumentFlowServer.Api.csproj" />
+  <Project Path="DocumentFlowServer.Application/DocumentFlowServer.Application.csproj" />
+  <Project Path="DocumentFlowServer.Entities/DocumentFlowServer.Entities.csproj" />
+  <Project Path="DocumentFlowServer.Infrastructure/DocumentFlowServer.Infrastructure.csproj" />
+  <Project Path="DocumentFlowServer.Utils/DocumentFlowServer.Utils.csproj" />
+</Solution>
