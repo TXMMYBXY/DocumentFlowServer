@@ -1,0 +1,11 @@
+using DocumentFlowServer.Application.Services.Notification.Dto;
+
+namespace DocumentFlowServer.Application.Services.Notification;
+
+public interface INotificationService
+{
+    Task SendNotificationToAllAsync(NotificationDto notificationDto);
+    Task SendNotificationToUserAsync(string userId, NotificationDto notificationDto);
+    Task SendNotificationToRoleAsync(string[] roleIds, NotificationDto notificationDto);
+
+}
