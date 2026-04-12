@@ -9,8 +9,6 @@ using DocumentFlowServer.Application.Services.User;
 using DocumentFlowServer.Application.Services.User.Dto;
 using DocumentFlowServer.Entities.Enums;
 using DocumentFlowServer.Entities.Models.AboutUserModels;
-using DocumentFlowServer.Utils;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 
@@ -72,8 +70,8 @@ public class UserService : IUserService
         var userModel = _mapper.Map<User>(newUserDto);
         var userExists = await _userRepository.IsUserAlreadyExists(newUserDto.Email);
 
-        GeneralService.Checker.UniversalCheckException(new GeneralService.CheckerParam<bool>(new ArgumentException("Login already in use"),
-            x => x[0], userExists));
+        if (userExists)
+            new ArgumentException("Login already in use");
 
         userModel.PasswordHash = _passwordHasher.Hash(newUserDto.PasswordHash);
 
@@ -182,7 +180,7 @@ public class UserService : IUserService
 
         var userModel = await _userRepository.GetByIdAsync(userId);
 
-        userModel.PasswordHash = new PasswordHasher<User>().HashPassword(userModel, resetPasswordDto.PasswordHash);
+        userModel.PasswordHash = _passwordHasher.Hash(resetPasswordDto.PasswordHash);
 
         _userRepository.UpdateFields(userModel, u => u.PasswordHash);
 
@@ -203,7 +201,7 @@ public class UserService : IUserService
 
         var userModel = await _userRepository.GetByIdAsync(userId);
 
-        GeneralService.NullCheck(userModel, "User does not exist");
+        ArgumentNullException.ThrowIfNull(userModel, "User does not exist");
 
         _mapper.Map(userDto, userModel);
 

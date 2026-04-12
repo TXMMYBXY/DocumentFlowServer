@@ -1,7 +1,7 @@
 using DocumentFlowServer.Application.Repository.Token;
 using DocumentFlowServer.Application.Repository.Token.Dto;
-using DocumentFlowServer.Entities.Data;
 using DocumentFlowServer.Entities.Models.AboutUserModels;
+using DocumentFlowServer.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace DocumentFlowServer.Infrastructure.Repository;
@@ -18,11 +18,11 @@ public class TokenRepository : BaseRepository<RefreshToken>, ITokenRepository
         await _dbContext.AddAsync(refreshToken);
     }
 
-    public async Task<RefreshTokenDto?> GetRefreshTokenByUserIdAsync(int userId)
+    public async Task<RefreshTokenEntity?> GetRefreshTokenByUserIdAsync(int userId)
     {
         return await _dbContext.RefreshTokens
             .Where(t => t.UserId == userId)
-            .Select(t => new RefreshTokenDto
+            .Select(t => new RefreshTokenEntity
             {
                 Token = t.Token,
                 ExpiresAt = t.ExpiresAt,
@@ -31,11 +31,11 @@ public class TokenRepository : BaseRepository<RefreshToken>, ITokenRepository
             .SingleOrDefaultAsync();
     }
 
-    public async Task<RefreshTokenDto?> GetRefreshTokenByValueAsync(string tokenValue)
+    public async Task<RefreshTokenEntity?> GetRefreshTokenByValueAsync(string tokenValue)
     {
         return await _dbContext.RefreshTokens
             .Where(t => t.Token.Equals(tokenValue))
-            .Select(t => new RefreshTokenDto
+            .Select(t => new RefreshTokenEntity
             {
                 Token = t.Token,
                 ExpiresAt = t.ExpiresAt,

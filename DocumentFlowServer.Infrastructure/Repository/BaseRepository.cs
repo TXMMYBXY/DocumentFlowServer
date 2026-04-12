@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using DocumentFlowServer.Application.Repository;
-using DocumentFlowServer.Entities.Data;
+using DocumentFlowServer.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace DocumentFlowServer.Infrastructure.Repository;

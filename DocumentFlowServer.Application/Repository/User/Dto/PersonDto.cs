@@ -8,5 +8,5 @@ public class PersonDto
     public string Email { get; set; }
     public string Department { get; set; }
     public int RoleId { get; set; }
-    public RoleDto Role { get; set; }
+    public RoleEntity Role { get; set; }
 }

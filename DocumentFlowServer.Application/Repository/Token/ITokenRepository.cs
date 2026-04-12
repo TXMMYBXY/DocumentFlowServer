@@ -13,12 +13,12 @@ public interface ITokenRepository : IBaseRepository<RefreshToken>
     /// <summary>
     /// Возвращает токен обновления из таблицы по userId
     /// </summary>
-    Task<RefreshTokenDto?> GetRefreshTokenByUserIdAsync(int userId);
+    Task<RefreshTokenEntity?> GetRefreshTokenByUserIdAsync(int userId);
 
     /// <summary>
     /// Возвращает токен обновления из таблицы по значению
     /// </summary>
     /// <param name="tokenValue"></param>
     /// <returns></returns>
-    Task<RefreshTokenDto?> GetRefreshTokenByValueAsync(string tokenValue);
+    Task<RefreshTokenEntity?> GetRefreshTokenByValueAsync(string tokenValue);
 }

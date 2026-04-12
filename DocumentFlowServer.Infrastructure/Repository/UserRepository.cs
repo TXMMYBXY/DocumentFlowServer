@@ -3,8 +3,8 @@ using DocumentFlowServer.Application.Repository.Role.Dto;
 using DocumentFlowServer.Application.Repository.User;
 using DocumentFlowServer.Application.Repository.User.Dto;
 using DocumentFlowServer.Application.Services.User;
-using DocumentFlowServer.Entities.Data;
 using DocumentFlowServer.Entities.Models.AboutUserModels;
+using DocumentFlowServer.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace DocumentFlowServer.Infrastructure.Repository;
@@ -18,22 +18,22 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         _dbContext = dbContext;
     }
 
-    public async Task<UserDto> GetUserByLoginAsync(string login)
+    public async Task<UserEntity> GetUserByLoginAsync(string login)
     {
         return await _dbContext.Users
             .Where(x => x.Email.Equals(login))
-            .Select(u => new UserDto
+            .Select(u => new UserEntity
             {
                 Id = u.Id,
                 Email = u.Email,
                 FullName = u.FullName,
-                Department = new DepartmentDto
+                Department = new DepartmentEntity
                 {
                     Id = u.Department.Id,
                     Title = u.Department.Title
                 },
                 IsActive = u.IsActive,
-                Role = new RoleDto
+                Role = new RoleEntity
                 {
                     Id = u.Role.Id,
                     Title = u.Role.Title
@@ -52,7 +52,7 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         return await _dbContext.Users.AnyAsync(x => x.Email.Equals(email));
     }
 
-    public async Task<List<UserDto>> GetAllUsersAsync(UserFilter filter)
+    public async Task<List<UserEntity>> GetAllUsersAsync(UserFilter filter)
     {
         var query = _dbContext.Users
             .AsNoTracking()
@@ -71,18 +71,18 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             query = query.Where(u => u.RoleId == filter.RoleId);
 
         var reusltQuery = query
-            .Select(u => new UserDto
+            .Select(u => new UserEntity
             {
                 Id = u.Id,
                 Email = u.Email,
                 FullName = u.FullName,
-                Department = new DepartmentDto
+                Department = new DepartmentEntity
                 {
                     Id = u.Department.Id,
                     Title = u.Department.Title
                 },
                 IsActive = u.IsActive,
-                Role = new RoleDto
+                Role = new RoleEntity
                 {
                     Id = u.Role.Id,
                     Title = u.Role.Title
@@ -123,7 +123,7 @@ public class UserRepository : BaseRepository<User>, IUserRepository
                 FullName = u.FullName,
                 Email = u.Email,
                 Department = u.Department.Title,
-                Role = new RoleDto
+                Role = new RoleEntity
                 {
                     Id = u.Role.Id,
                     Title = u.Role.Title
@@ -145,7 +145,7 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         _dbContext.Users.RemoveRange(users);
     }
 
-    public async Task<UserInfoDto> GetUserInfoByIdAsync(int userId)
+    public async Task<UserInfoDto?> GetUserInfoByIdAsync(int userId)
     {
         return await _dbContext.Users
             .Include(u => u.Role)
@@ -160,5 +160,23 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             })
             .AsNoTracking()
             .SingleOrDefaultAsync();
+    }
+
+    public async Task<UserEntity?> GetUserByIdAsync(int userId)
+    {
+        return await _dbContext.Users
+            .Where(u => u.Id == userId)
+            .Select(u => new UserEntity
+            {
+                Id = u.Id,
+                Email = u.Email,
+                FullName = u.FullName,
+                Department = new DepartmentEntity
+                {
+                    Id = u.Department.Id,
+                    Title = u.Department.Title
+                },
+                IsActive = u.IsActive,
+            }).SingleOrDefaultAsync();
     }
 }

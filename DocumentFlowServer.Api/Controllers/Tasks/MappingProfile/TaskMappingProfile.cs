@@ -1,0 +1,28 @@
+using AutoMapper;
+using DocumentFlowServer.Api.Controllers.Tasks.ViewModels;
+using DocumentFlowServer.Application.Services.Tasks.Dto;
+using DocumentFlowServer.Entities.Models;
+using TaskStatus = DocumentFlowServer.Entities.Enums.TaskStatus;
+
+namespace DocumentFlowServer.Api.Controllers.Tasks.MappingProfile;
+
+public class TaskMappingProfile : Profile
+{
+    public TaskMappingProfile()
+    {
+        CreateMap<CreateTaskRequestViewModel, CreateTaskRequestDto>().ReverseMap();
+
+        CreateMap<TaskCancelViewModel, TaskCancelDto>()
+            .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.Reason))
+            .ForMember(dest => dest.UserId, opt => opt.Ignore())
+            .ReverseMap();
+
+        CreateMap<CreateTaskRequestDto, TaskModel>()
+            .ForMember(dest => dest.TaskId, opt => opt.MapFrom(_ => Guid.NewGuid()))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => TaskStatus.Pending))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow));
+            
+        CreateMap<TaskResultViewModel, TaskResultDto>().ReverseMap();
+    }
+}

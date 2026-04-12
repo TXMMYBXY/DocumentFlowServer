@@ -24,7 +24,7 @@ public class AuthorizationMappingProfile : Profile
             .ForMember(dest => dest.TokenType, opt => opt.MapFrom(src => src.TokenType))
             .ReverseMap();
 
-        CreateMap<User, UserInfoForLoginDto>()
+        CreateMap<Entities.Models.AboutUserModels.User, UserInfoForLoginDto>()
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.RoleId))

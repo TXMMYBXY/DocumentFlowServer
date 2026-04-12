@@ -1,0 +1,16 @@
+using System.ComponentModel.DataAnnotations;
+using DocumentFlowServer.Entities.Enums;
+
+namespace DocumentFlowServer.Api.Controllers.Tasks.ViewModels;
+
+public class CreateTaskRequestViewModel
+{
+    public int TemplateId { get; set; }
+
+    [EnumDataType(typeof(TemplateType))]
+    public TemplateType TemplateType { get; set; }
+    public Dictionary<string, object> Data { get; set; } = new();
+
+    [EnumDataType(typeof(TaskPriority))]
+    public TaskPriority Priority { get; set; } = TaskPriority.Normal;
+}

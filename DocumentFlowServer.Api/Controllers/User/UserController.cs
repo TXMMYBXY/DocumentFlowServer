@@ -1,0 +1,131 @@
+using AutoMapper;
+using DocumentFlowServer.Api.Controllers.Authorization;
+using DocumentFlowServer.Api.Controllers.User.ViewModels;
+using DocumentFlowServer.Application.Services.User;
+using DocumentFlowServer.Application.Services.User.Dto;
+using DocumentFlowServer.Entities.Enums;
+using Microsoft.AspNetCore.Mvc;
+
+namespace DocumentFlowServer.Api.Controllers.User;
+
+[ApiController]
+[Route("api/user")]
+// [AuthorizeByRoleId((int)Permissions.Admin)]
+///Этим контроллером будет пользоваться администратор, поэтому информация которую он получает - полная
+public class UserController : ControllerBase
+{
+    private readonly IMapper _mapper;
+    private readonly IUserService _userService;
+
+    public UserController(IMapper mapper, IUserService userService)
+    {
+        _mapper = mapper;
+        _userService = userService;
+    }
+
+    /// <summary>
+    /// Получение списка всех пользователей
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    public async Task<ActionResult<PagedUserViewModel>> GetAllUser([FromQuery] UserFilter userFilter)
+    {
+        var listUserDto = await _userService.GetAllUsersAsync(userFilter);
+        var pagedUserViewModel = _mapper.Map<PagedUserViewModel>(listUserDto);
+
+        return Ok(pagedUserViewModel);
+    }
+
+    /// <summary>
+    /// Получение информации о пользователе по его Id
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    [HttpGet("{userId}/get-user-info")]
+    public async Task<ActionResult<GetUserViewModel>> GetUserByIdAsync([FromRoute] int userId)
+    {
+        var userDto = await _userService.GetUserByIdAsync(userId);
+        var userViewModel = _mapper.Map<GetUserViewModel>(userDto);
+
+        return Ok(userViewModel);
+    }
+
+    /// <summary>
+    /// Создание нового пользователя
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<ActionResult<CreateUserViewModel>> CreateNewUser([FromBody] CreateUserViewModel user)
+    {
+        var userDto = _mapper.Map<CreateUserDto>(user);
+
+        await _userService.CreateNewUserAsync(userDto);
+
+        return Created();
+    }
+
+    /// <summary>
+    /// Обновление информации о пользователе
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="userViewModel"></param>
+    /// <returns></returns>
+    [HttpPatch("{userId}/user-info")]
+    public async Task<ActionResult> UpdateUserPartialAsync([FromRoute] int userId, [FromBody] UpdateUserViewModel userViewModel)
+    {
+        var userDto = _mapper.Map<UpdateUserDto>(userViewModel);
+
+        await _userService.UpdateUserPartialAsync(userId, userDto);
+
+        return Ok();
+    }
+
+    [HttpPatch("{userId}/reset-password")]
+    public async Task<ActionResult> ResetPasswordAsync([FromRoute] int userId, ResetPasswordViewModel resetPasswordViewModel)
+    {
+        var resetPasswordDto = _mapper.Map<ResetPasswordDto>(resetPasswordViewModel);
+        await _userService.ResetPasswordAsync(userId, resetPasswordDto);
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// Удаление пользователя
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    [HttpDelete("{userId:int}")]
+    public async Task<ActionResult> DeleteUserAsync([FromRoute] int userId)
+    {
+        await _userService.DeleteUserAsync(userId);
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// Удаление нескольких пользователей
+    /// </summary>
+    /// <param name="deleteManyUserViewModel">Объект со списком Id</param>
+    /// <returns></returns>
+    [HttpDelete]
+    public async Task<ActionResult> DeleteManyUserAsync([FromBody] DeleteManyUsersViewModel deleteManyUserViewModel)
+    {
+        await _userService.DeleteManyUserAsync(deleteManyUserViewModel.UserIds);
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// Смена статуса пользователя
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    [HttpPatch("{userId}/change-status")]
+    public async Task<ActionResult<bool>> ChangeUserStatusByidAsync([FromRoute] int userId)
+    {
+        var status = await _userService.ChangeUserStatusByIdAsync(userId);
+
+        return Ok(status);
+    }
+}

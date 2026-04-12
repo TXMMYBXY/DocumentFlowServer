@@ -1,8 +1,8 @@
 using DocumentFlowServer.Application.Repository.Template;
 using DocumentFlowServer.Application.Services.Template;
 using DocumentFlowServer.Application.Services.Template.Dto;
-using DocumentFlowServer.Entities.Data;
 using DocumentFlowServer.Entities.Models.DocumentTemplatesModels;
+using DocumentFlowServer.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace DocumentFlowServer.Infrastructure.Repository;

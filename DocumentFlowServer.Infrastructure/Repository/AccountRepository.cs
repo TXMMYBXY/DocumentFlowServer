@@ -1,7 +1,7 @@
 using DocumentFlowServer.Application.Repository.Account;
 using DocumentFlowServer.Application.Repository.Account.Dto;
-using DocumentFlowServer.Entities.Data;
 using DocumentFlowServer.Entities.Models;
+using DocumentFlowServer.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace DocumentFlowServer.Infrastructure.Repository;

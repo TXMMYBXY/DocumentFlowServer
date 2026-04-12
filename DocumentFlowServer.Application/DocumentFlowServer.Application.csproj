@@ -7,11 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Services\Personal\" />
-      <Folder Include="Services\WorkerTask\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\DocumentFlowServer.Entities\DocumentFlowServer.Entities.csproj" />
     </ItemGroup>
 

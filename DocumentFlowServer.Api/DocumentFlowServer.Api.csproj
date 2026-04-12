@@ -30,6 +30,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DocumentFlowServer.Application\DocumentFlowServer.Application.csproj" />
+      <ProjectReference Include="..\DocumentFlowServer.Infrastructure\DocumentFlowServer.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

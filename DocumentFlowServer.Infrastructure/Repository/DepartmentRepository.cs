@@ -2,8 +2,8 @@ using DocumentFlowServer.Application.Repository.Department;
 using DocumentFlowServer.Application.Repository.Department.Dto;
 using DocumentFlowServer.Application.Repository.User.Dto;
 using DocumentFlowServer.Application.Services.Department;
-using DocumentFlowServer.Entities.Data;
 using DocumentFlowServer.Entities.Models;
+using DocumentFlowServer.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace DocumentFlowServer.Infrastructure.Repository;
@@ -17,7 +17,7 @@ public class DepartmentRepository : BaseRepository<Department>, IDepartmentRepos
         _dbContext = dbContext;
     }
 
-    public async Task<List<DepartmentDto>> GetAllDepartmentsAsync(DepartmentFilter filter)
+    public async Task<List<DepartmentEntity>> GetAllDepartmentsAsync(DepartmentFilter filter)
     {
         var query = _dbContext.Departments
             .AsQueryable();
@@ -27,7 +27,7 @@ public class DepartmentRepository : BaseRepository<Department>, IDepartmentRepos
             query = query.Where(d => d.Title.Contains(filter.Title));
         }
 
-        var resultQuery = query.Select(d => new DepartmentDto
+        var resultQuery = query.Select(d => new DepartmentEntity
         {
             Id = d.Id,
             Title = d.Title,

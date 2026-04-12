@@ -1,6 +1,7 @@
 using DocumentFlowServer.Application.Repository.Task;
-using DocumentFlowServer.Entities.Data;
+using DocumentFlowServer.Application.Repository.Task.Dto;
 using DocumentFlowServer.Entities.Models;
+using DocumentFlowServer.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace DocumentFlowServer.Infrastructure.Repository;
@@ -22,5 +23,11 @@ public class TaskRepository : BaseRepository<TaskModel>, ITaskRepository
     public async Task<TaskModel?> GetTaskByStatusPendingAsync()
     {
         return await _dbContext.Tasks.FirstOrDefaultAsync(t => t.Status == DocumentFlowServer.Entities.Enums.TaskStatus.Pending);
+    }
+
+    public async Task<List<TaskEntity>> GetAllTasksAsync()
+    {
+        return await _dbContext.Tasks
+            .Select(t => new TaskEntity(t)).ToListAsync();
     }
 }

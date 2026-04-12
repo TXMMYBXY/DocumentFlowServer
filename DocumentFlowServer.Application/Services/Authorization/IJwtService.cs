@@ -1,3 +1,4 @@
+using DocumentFlowServer.Application.Repository.User.Dto;
 using DocumentFlowServer.Entities.Models.AboutUserModels;
 
 namespace DocumentFlowServer.Application.Services.Authorization;
@@ -9,7 +10,7 @@ public interface IJwtService
     /// </summary>
     /// <param name="user">Пользовательские данные которые идут в коллекцию клеймов</param>
     /// <returns>токен</returns>
-    string GenerateAccessToken(Entities.Models.AboutUserModels.User user);
+    string GenerateAccessToken(UserEntity user);
 
     /// <summary>
     /// Метод генерирует токен обновления

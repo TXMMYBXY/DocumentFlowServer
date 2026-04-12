@@ -13,18 +13,20 @@ public interface IUserRepository : IBaseRepository<Entities.Models.AboutUserMode
     /// <summary>
     /// Возвращает пользователя из таблицы по почте
     /// </summary>
-    Task<UserDto> GetUserByLoginAsync(string login);
+    Task<UserEntity> GetUserByLoginAsync(string login);
 
     /// <summary>
     /// Проверяет наличие пользователя в таблице по почте
     /// </summary>
     Task<bool> IsUserAlreadyExists(string email);
 
-    Task<List<UserDto>> GetAllUsersAsync(UserFilter filter);
+    Task<List<UserEntity>> GetAllUsersAsync(UserFilter filter);
 
     Task<PersonDto> GetPersonalInfo(int personId);
 
     Task<int> GetTotalCountAsync();
     
-    Task<UserInfoDto> GetUserInfoByIdAsync(int userId);
+    Task<UserInfoDto?> GetUserInfoByIdAsync(int userId);
+
+    Task<UserEntity?> GetUserByIdAsync(int userId);
 }
