@@ -1,3 +1,4 @@
+using System.Text;
 using DocumentFlowServer.Application.Repository;
 using DocumentFlowServer.Application.Repository.Account;
 using DocumentFlowServer.Application.Repository.Department;
@@ -23,9 +24,11 @@ using DocumentFlowServer.Infrastructure.Configuration;
 using DocumentFlowServer.Infrastructure.Data;
 using DocumentFlowServer.Infrastructure.Repository;
 using DocumentFlowServer.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DocumentFlowServer.Infrastructure;
 
@@ -59,6 +62,51 @@ public static class DependencyInjection
         
         services.Configure<RefreshTokenSettings>(configuration.GetSection(nameof(RefreshTokenSettings)));
         services.Configure<WorkerSettings>(configuration.GetSection(nameof(WorkerSettings)));
+        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+        
+        var authSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
+
+        services
+        .AddAuthorization()
+        .AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.RequireHttpsMetadata = false;  // Для разработки (в продакшене должно быть true)
+            options.SaveToken = true;              // Сохраняем токен в контексте
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,                        // Проверяем подпись
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.ASCII.GetBytes(authSettings.SecretKey)),   // Ключ для проверки
+                ValidateIssuer = true,                                  // Проверяем издателя
+                ValidIssuer = authSettings.Issuer,                      // Владидный издатель
+                ValidateAudience = true,                                // Проверяем аудиторию
+                ValidAudience = authSettings.Audience,                  // Валидная аудитория
+                ValidateLifetime = true,                                // Проверяем время жизни
+                ClockSkew = TimeSpan.Zero                               // Не даем дополнительного времени
+            };
+
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var accessToken = context.Request.Query["access_token"];
+
+                    var path = context.HttpContext.Request.Path;
+
+                    if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/notifications"))
+                    {
+                        context.Token = accessToken;
+                    }
+
+                    return Task.CompletedTask;
+                }
+            };
+        });
         
         services.AddDbContext<ApplicationDbContext>(options =>
         {

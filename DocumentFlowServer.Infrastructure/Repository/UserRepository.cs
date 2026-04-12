@@ -18,7 +18,7 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         _dbContext = dbContext;
     }
 
-    public async Task<UserEntity> GetUserByLoginAsync(string login)
+    public async Task<UserEntity?> GetUserByLoginAsync(string login)
     {
         return await _dbContext.Users
             .Where(x => x.Email.Equals(login))
@@ -26,6 +26,7 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             {
                 Id = u.Id,
                 Email = u.Email,
+                PasswordHash = u.PasswordHash,
                 FullName = u.FullName,
                 Department = new DepartmentEntity
                 {
@@ -113,7 +114,7 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             .FirstAsync();
     }
 
-    public async Task<PersonDto> GetPersonalInfo(int personId)
+    public async Task<PersonDto?> GetPersonalInfo(int personId)
     {
         return await _dbContext.Users
             .Include(u => u.Role)
@@ -131,11 +132,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             })
             .AsNoTracking()
             .SingleOrDefaultAsync();
-    }
-
-    public async Task<int> GetTotalCountAsync()
-    {
-        return await _dbContext.Users.CountAsync();
     }
 
     public async Task DeleteManyAsync(List<int> ids)

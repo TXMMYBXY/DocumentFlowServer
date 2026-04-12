@@ -23,7 +23,7 @@ public class AccountService : IAccountService
     private readonly IRefreshTokenHasher _refreshTokenHasher;
     private readonly IPersonalAccountService _personalAccountService;
     private readonly ILogger<AccountService> _logger;
-    private readonly IPasswordHasherService _passwordHasher;
+    private readonly IPasswordHasherService _hasher;
 
     public AccountService(
         IMapper mapper,
@@ -34,7 +34,7 @@ public class AccountService : IAccountService
         IRefreshTokenHasher refreshTokenHasher,
         IPersonalAccountService personalAccountService,
         ILogger<AccountService> logger,
-        IPasswordHasherService passwordHasher)
+        IPasswordHasherService hasher)
     {
         _mapper = mapper;
         _userRepository = userRepository;
@@ -44,7 +44,7 @@ public class AccountService : IAccountService
         _refreshTokenHasher = refreshTokenHasher;
         _personalAccountService = personalAccountService;
         _logger = logger;
-        _passwordHasher = passwordHasher;
+        _hasher = hasher;
     }
 
     public async Task<LoginResponseDto> LoginAsync(LoginUserDto loginUserDto)
@@ -58,7 +58,7 @@ public class AccountService : IAccountService
         if (!user.IsActive)
             throw new ArgumentException("User was blocked");
 
-        var result = _passwordHasher.Verify(user.PasswordHash, loginUserDto.PasswordHash);
+        var result = _hasher.Verify(user.PasswordHash, _hasher.Hash(loginUserDto.PasswordHash));
 
         if(result)
             throw new ArgumentException("Incorrect password");

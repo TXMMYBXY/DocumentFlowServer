@@ -1,4 +1,5 @@
 using DocumentFlowServer.Api;
+using DocumentFlowServer.Api.Middleware;
 using DocumentFlowServer.Infrastructure;
 using DocumentFlowServer.Infrastructure.Data;
 using DocumentFlowServer.Infrastructure.Hubs;
@@ -19,6 +20,11 @@ using (var scope = app.Services.CreateScope())
     
     await seeder.SeedAsync();
 }
+
+app.UseErrorHandling();
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapSwagger("/openapi/{documentName}.json");
 app.MapScalarApiReference();

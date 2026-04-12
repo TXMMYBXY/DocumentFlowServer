@@ -13,7 +13,7 @@ public interface IUserRepository : IBaseRepository<Entities.Models.AboutUserMode
     /// <summary>
     /// Возвращает пользователя из таблицы по почте
     /// </summary>
-    Task<UserEntity> GetUserByLoginAsync(string login);
+    Task<UserEntity?> GetUserByLoginAsync(string login);
 
     /// <summary>
     /// Проверяет наличие пользователя в таблице по почте
@@ -22,10 +22,8 @@ public interface IUserRepository : IBaseRepository<Entities.Models.AboutUserMode
 
     Task<List<UserEntity>> GetAllUsersAsync(UserFilter filter);
 
-    Task<PersonDto> GetPersonalInfo(int personId);
+    Task<PersonDto?> GetPersonalInfo(int personId);
 
-    Task<int> GetTotalCountAsync();
-    
     Task<UserInfoDto?> GetUserInfoByIdAsync(int userId);
 
     Task<UserEntity?> GetUserByIdAsync(int userId);
