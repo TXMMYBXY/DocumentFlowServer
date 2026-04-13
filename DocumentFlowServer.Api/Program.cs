@@ -1,4 +1,5 @@
 using DocumentFlowServer.Api;
+using DocumentFlowServer.Api.Middleware;
 using DocumentFlowServer.Infrastructure;
 using DocumentFlowServer.Infrastructure.Data;
 using Scalar.AspNetCore;
@@ -21,6 +22,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseHttpsRedirection();
+app.UseErrorHandling();
 
 app.MapSwagger("/openapi/{documentName}.json");
 app.MapScalarApiReference();
