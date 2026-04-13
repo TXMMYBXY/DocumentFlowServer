@@ -1,7 +1,7 @@
 using DocumentFlowServer.Application.Common.Services;
 using Microsoft.AspNetCore.Identity;
 
-namespace DocumentFlowServer.Infrastructure.Common.Repository;
+namespace DocumentFlowServer.Infrastructure.Common.Services;
 
 public class PasswordHasher : IPasswordHasher
 {
