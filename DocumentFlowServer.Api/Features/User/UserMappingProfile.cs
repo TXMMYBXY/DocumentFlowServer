@@ -12,7 +12,7 @@ public class UserMappingProfile : Profile
     {
         //Get Users
         CreateMap<GetUsersRequest, UserFilter>();
-        CreateMap<PagedUserResponse, PagedUserDto>();
+        CreateMap<PagedUserDto, PagedUserResponse>();
         
         //Create Users
         CreateMap<CreateUserRequest, CreateUserDto>();
