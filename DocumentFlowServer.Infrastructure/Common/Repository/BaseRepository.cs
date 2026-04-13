@@ -1,8 +1,8 @@
-using DocumentFlowServer.Application.Reposiroty;
+using DocumentFlowServer.Application.Common.Reposiroty;
 using DocumentFlowServer.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace DocumentFlowServer.Infrastructure.Repository;
+namespace DocumentFlowServer.Infrastructure.Common.Repository;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : class
 {
@@ -52,6 +52,11 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     public async Task<bool> ExistsAsync()
     {
         return await _dbSet.AnyAsync();
+    }
+
+    public async Task<bool> ExistsAsync(int id)
+    {
+        return await _dbSet.FirstOrDefaultAsync() != null;
     }
 
     public async Task SaveChangesAsync()

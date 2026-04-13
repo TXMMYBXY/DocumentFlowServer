@@ -1,6 +1,6 @@
-namespace DocumentFlowServer.Application.Services.Department.Dtos;
+namespace DocumentFlowServer.Application.Role.Dtos;
 
-public class DepartmentDto
+public class RoleDto
 {
     public int Id { get; set; }
     public string Title { get; set; }

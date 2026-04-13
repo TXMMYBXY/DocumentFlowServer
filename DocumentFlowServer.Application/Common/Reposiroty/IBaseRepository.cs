@@ -1,4 +1,7 @@
-namespace DocumentFlowServer.Application.Reposiroty;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace DocumentFlowServer.Application.Common.Reposiroty;
 
 public interface IBaseRepository<T> where T : class
 {
@@ -12,6 +15,7 @@ public interface IBaseRepository<T> where T : class
     Task DeleteManyAsync(ICollection<int> ids);
     
     Task<bool> ExistsAsync();
+    Task<bool> ExistsAsync(int id);
     
     Task SaveChangesAsync();
 }   
