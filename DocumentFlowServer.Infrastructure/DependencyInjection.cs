@@ -35,6 +35,12 @@ public static class DependencyInjection
                     options => options.EnableRetryOnFailure());
         });
         
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetSection("Redis:Configuration").Value;
+            options.InstanceName = configuration.GetSection("Redis:InstanceName").Value;
+        });
+        
         return services;
     }
 }
