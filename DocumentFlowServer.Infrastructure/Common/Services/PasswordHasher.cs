@@ -12,9 +12,9 @@ public class PasswordHasher : IPasswordHasher
         return _hasher.HashPassword(null, password);
     }
 
-    public bool Verify(string hash, string password)
+    public bool Verify(string passwordHash, string password)
     {
-        var result = _hasher.VerifyHashedPassword(null, hash, password);
+        var result = _hasher.VerifyHashedPassword(null, passwordHash, password);
         return result == PasswordVerificationResult.Success;
     }
 }

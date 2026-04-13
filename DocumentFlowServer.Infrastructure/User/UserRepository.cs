@@ -86,4 +86,20 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
                 setter => setter.SetProperty(x => x.PasswordHash, x => hash)
             );
     }
+
+    public async Task<UserLoginDto?> GetUserForLoginAsync(string email)
+    {
+        return await _dbContext.Users
+            .Where(u => u.Email.Equals(email))
+            .Select(u => new UserLoginDto
+            {
+                Id = u.Id,
+                Email = u.Email,
+                Role = u.Role.Title,
+                RoleId = u.RoleId,
+                IsActive = u.IsActive,
+                PasswordHash = u.PasswordHash
+            })
+            .SingleOrDefaultAsync();
+    }
 }
