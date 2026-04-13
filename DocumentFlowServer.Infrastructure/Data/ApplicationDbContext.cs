@@ -19,7 +19,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<TaskModel> Tasks { get; set; }
     public DbSet<LoginHistory> LoginHistories { get; set; }
-    public DbSet<Department> Departments { get; set; }
+    public DbSet<Entities.Models.Department> Departments { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
