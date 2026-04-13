@@ -7,7 +7,12 @@ public class UserMappingProfile : Profile
 {
     public UserMappingProfile()
     {
+        //SetNewUserPassword
         CreateMap<CreateUserDto, Entities.Models.AboutUserModels.User>()
             .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Password));
+        
+        //PartialUpdateUserInfo
+        CreateMap<UpdateUserInfoDto, Entities.Models.AboutUserModels.User>()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
     }
 }

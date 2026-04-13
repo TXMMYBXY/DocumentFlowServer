@@ -48,6 +48,17 @@ public class UserService : IUserService
         await _userRepository.SaveChangesAsync();
     }
 
+    public async Task UpdateUserInfoAsync(int userId, UpdateUserInfoDto updateUserInfoDto)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        
+        ArgumentNullException.ThrowIfNull(user, "User not exists");
+        
+        _mapper.Map(updateUserInfoDto, user);
+        
+        await _userRepository.SaveChangesAsync();
+    }
+
     public async Task SetUserPasswordAsync(int userId, SetUserPassword setUserPasswordDto)
     {
         _logger.LogInformation("Setting new password for user with id {UserId}", userId);
