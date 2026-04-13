@@ -1,4 +1,4 @@
-namespace DocumentFlowServer.Application.Services.Department.Dtos;
+namespace DocumentFlowServer.Application.Department.Dtos;
 
 public class CreateDepartmentDto
 {

@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using DocumentFlowServer.Application.Common;
 
-namespace DocumentFlowServer.Application.Services.User.Dtos;
+namespace DocumentFlowServer.Application.User.Dtos;
 
 public class PagedUserDto : PagedData
 {

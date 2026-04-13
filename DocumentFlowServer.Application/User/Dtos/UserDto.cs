@@ -1,7 +1,7 @@
-using DocumentFlowServer.Application.Services.Department.Dtos;
-using DocumentFlowServer.Application.Services.Role.Dtos;
+using DocumentFlowServer.Application.Department.Dtos;
+using DocumentFlowServer.Application.Role.Dtos;
 
-namespace DocumentFlowServer.Application.Services.User.Dtos;
+namespace DocumentFlowServer.Application.User.Dtos;
 
 public class UserDto
 {
