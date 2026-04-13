@@ -42,14 +42,20 @@ public class UserService : IUserService
 
     public async Task CreateUserAsync(CreateUserDto createUserDto)
     {
+        _logger.LogInformation("Creating new user");
+        
         var user = _mapper.Map<Entities.Models.AboutUserModels.User>(createUserDto);
         
         await _userRepository.AddAsync(user);
         await _userRepository.SaveChangesAsync();
+        
+        _logger.LogInformation("User successfully created");
     }
 
     public async Task UpdateUserInfoAsync(int userId, UpdateUserInfoDto updateUserInfoDto)
     {
+        _logger.LogInformation("Updating user with id {UserId}", userId);
+        
         var user = await _userRepository.GetByIdAsync(userId);
         
         ArgumentNullException.ThrowIfNull(user, "User not exists");
@@ -57,9 +63,11 @@ public class UserService : IUserService
         _mapper.Map(updateUserInfoDto, user);
         
         await _userRepository.SaveChangesAsync();
+        
+        _logger.LogInformation("user with id {UserId} successfully updated", userId);
     }
 
-    public async Task SetUserPasswordAsync(int userId, SetUserPassword setUserPasswordDto)
+    public async Task SetUserPasswordAsync(int userId, SetUserPasswordDto setUserPasswordDtoDto)
     {
         _logger.LogInformation("Setting new password for user with id {UserId}", userId);
         
@@ -70,11 +78,15 @@ public class UserService : IUserService
             throw new NullReferenceException("User not found");
         }
         
-        await _userRepository.SetNewPasswordAsync(userId, _passwordHasher.Hash(setUserPasswordDto.Password));
+        await _userRepository.SetNewPasswordAsync(userId, _passwordHasher.Hash(setUserPasswordDtoDto.Password));
+        
+        _logger.LogInformation("Password changed successfully for user with id {UserId}", userId);
     }
 
-    public async Task ChangeUserStatusAsync(int userId)
+    public async Task<bool> ChangeUserStatusAsync(int userId)
     {
+        _logger.LogInformation("Updating status for user with id {UserId}", userId);
+        
         var userExists = await _userRepository.ExistsAsync(userId);
         
         if (!userExists)
@@ -82,11 +94,17 @@ public class UserService : IUserService
             throw new NullReferenceException("User not found");
         }
         
-        await _userRepository.ChangeUserStatusAsync(userId);
+        var userStatus = await _userRepository.ChangeUserStatusAsync(userId);
+        
+        _logger.LogInformation("Status changed successfully for user with id {UserId}", userId);
+        
+        return userStatus;
     }
 
     public async Task DeleteUserAsync(int userId)
     {
+        _logger.LogInformation("Deleting user with id {UserId}", userId);
+        
         var userExists = await _userRepository.ExistsAsync(userId);
 
         if (!userExists)
@@ -95,5 +113,7 @@ public class UserService : IUserService
         }
         
         await _userRepository.DeleteAsync(userId);
+        
+        _logger.LogInformation("User with id {UserId} was deleted", userId);
     }
 }
