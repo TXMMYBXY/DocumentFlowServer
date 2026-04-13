@@ -1,12 +1,8 @@
-using System.Collections.Generic;
-using DocumentFlowServer.Application.User.Dtos;
-
 namespace DocumentFlowServer.Application.Department.Dtos;
 
-public class DepartmentDto
+public class DepartmentCleanDto
 {
     public int Id { get; set; }
     public string Title { get; set; }
     public string? Description { get; set; }
-    public ICollection<UserCleanDto> Employees { get; set; }
 }

@@ -34,7 +34,7 @@ public class DataSeeder
 
         if (!await _dbContext.Departments.AnyAsync())
         {
-            var itDep = new Department
+            var itDep = new Entities.Models.Department
             {
                 Title = "Информационный отдел"
             };

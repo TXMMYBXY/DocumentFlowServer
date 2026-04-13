@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DocumentFlowServer.Application.Common;
 
 namespace DocumentFlowServer.Application.Department.Dtos;
