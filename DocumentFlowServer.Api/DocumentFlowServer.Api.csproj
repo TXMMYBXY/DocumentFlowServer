@@ -9,6 +9,8 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9"/>
+        <PackageReference Include="Scalar.AspNetCore" Version="2.12.12" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
     </ItemGroup>
 
     <ItemGroup>
@@ -19,6 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DocumentFlowServer.Application\DocumentFlowServer.Application.csproj" />
+      <ProjectReference Include="..\DocumentFlowServer.Infrastructure\DocumentFlowServer.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
