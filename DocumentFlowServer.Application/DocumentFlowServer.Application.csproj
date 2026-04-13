@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\DocumentFlowServer.Entities\DocumentFlowServer.Entities.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -1,0 +1,25 @@
+using System.Text.Json.Serialization;
+using DocumentFlowServer.Api.Controllers.User.ViewModels;
+
+namespace DocumentFlowServer.Api.Controllers.Template.ViewModels;
+
+public class GetTemplateViewModel
+{
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
+
+    [JsonPropertyName("title")]
+    public string Title { get; set; }
+
+    [JsonPropertyName("createdBy")]
+    public int CreatedBy { get; set; }
+
+    [JsonPropertyName("user")]
+    public virtual GetUserViewModel User { get; set; }
+    
+    [JsonPropertyName("createdAt")]
+    public DateTime CreatedAt { get; set; }
+
+    [JsonPropertyName("isActive")]
+    public bool IsActive { get; set; }
+}
