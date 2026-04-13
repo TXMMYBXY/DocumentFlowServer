@@ -66,7 +66,7 @@ public class DepartmentRepository : BaseRepository<Entities.Models.Department>, 
     {
         return await _dbContext.Departments
             .Where(d => d.Id == departmentId)
-            .Select(d => d.Employees.Count == 0)
+            .Select(d => d.Employees.Count != 0)
             .SingleAsync();
     }
 }

@@ -28,6 +28,8 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<PagedUserResponse>> GetAllUser([FromQuery] GetUsersRequest request)
     {
+        _logger.LogInformation("Request returns users");
+        
         var filter = _mapper.Map<GetUsersRequest, UserFilter>(request);
         
         var result = await _userService.GetUsersAsync(filter);
@@ -40,6 +42,8 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> CreateNewUser([FromBody] CreateUserRequest request)
     {
+        _logger.LogInformation("Request creates user");
+        
         var userDto = _mapper.Map<CreateUserDto>(request);
 
         await _userService.CreateUserAsync(userDto);
@@ -50,6 +54,8 @@ public class UserController : ControllerBase
     [HttpPatch("{userId}/user-info")]
     public async Task<ActionResult> UpdateUserPartialAsync([FromRoute] int userId, [FromBody] UpdateUserRequest request)
     {
+        _logger.LogInformation("Request updates user");
+        
         var userDto = _mapper.Map<UpdateUserInfoDto>(request);
 
         await _userService.UpdateUserInfoAsync(userId, userDto);
@@ -60,6 +66,8 @@ public class UserController : ControllerBase
     [HttpPatch("{userId}/reset-password")]
     public async Task<ActionResult> ResetPasswordAsync([FromRoute] int userId, SetUserPasswordRequest request)
     {
+        _logger.LogInformation("Request sets new password");
+        
         var resetPasswordDto = _mapper.Map<SetUserPasswordDto>(request);
         
         await _userService.SetUserPasswordAsync(userId, resetPasswordDto);
@@ -70,6 +78,8 @@ public class UserController : ControllerBase
     [HttpPatch("{userId}/change-status")]
     public async Task<ActionResult<bool>> ChangeUserStatusByidAsync([FromRoute] int userId)
     {
+        _logger.LogInformation("Request changes user`s status");
+        
         var status = await _userService.ChangeUserStatusAsync(userId);
 
         return Ok(status);

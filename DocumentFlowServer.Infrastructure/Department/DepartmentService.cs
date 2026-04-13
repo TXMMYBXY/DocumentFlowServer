@@ -78,6 +78,7 @@ public class DepartmentService : IDepartmentService
         var department = _mapper.Map<Entities.Models.Department>(dto);
         
         await _departmentRepository.AddAsync(department);
+        await _departmentRepository.SaveChangesAsync();
         
         _logger.LogInformation("Department created successfully");
         
@@ -99,7 +100,7 @@ public class DepartmentService : IDepartmentService
         await _InvalidateDepartmentsCacheAsync();
     }
 
-    public async Task DeleteDepartment(int id)
+    public async Task DeleteDepartmentAsync(int id)
     {
         var departmentExists = await _departmentRepository.ExistsAsync(id);
         

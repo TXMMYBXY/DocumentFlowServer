@@ -110,6 +110,7 @@ public class UserService : IUserService
         }
         
         await _userRepository.SetNewPasswordAsync(userId, _passwordHasher.Hash(setUserPasswordDtoDto.Password));
+        await _userRepository.SaveChangesAsync();
         
         _logger.LogInformation("Password changed successfully for user with id {UserId}", userId);
     }
@@ -146,6 +147,7 @@ public class UserService : IUserService
         }
         
         await _userRepository.DeleteAsync(userId);
+        await _userRepository.SaveChangesAsync();        
         
         _logger.LogInformation("User with id {UserId} was deleted", userId);
         

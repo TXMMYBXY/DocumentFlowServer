@@ -8,5 +8,5 @@ public interface IDepartmentService
     Task<PagedDepartmentDto> GetDepartmentAsync(DepartmentFilter filter);
     Task CreateDepartment(CreateDepartmentDto dto);
     Task UpdateDepartment(int departmentId, UpdateDepartmentDto dto);
-    Task DeleteDepartment(int departmentId);
+    Task DeleteDepartmentAsync(int departmentId);
 }

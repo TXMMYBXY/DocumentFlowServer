@@ -1,10 +1,12 @@
 using DocumentFlowServer.Application.Common.MappingProfiles;
 using DocumentFlowServer.Application.Common.Reposiroty;
 using DocumentFlowServer.Application.Common.Services;
+using DocumentFlowServer.Application.Department;
 using DocumentFlowServer.Application.User;
 using DocumentFlowServer.Infrastructure.Common.Repository;
 using DocumentFlowServer.Infrastructure.Common.Services;
 using DocumentFlowServer.Infrastructure.Data;
+using DocumentFlowServer.Infrastructure.Department;
 using DocumentFlowServer.Infrastructure.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,8 +22,10 @@ public static class DependencyInjection
         
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IDepartmentService, DepartmentService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
 
         services.AddScoped<DataSeeder>();
