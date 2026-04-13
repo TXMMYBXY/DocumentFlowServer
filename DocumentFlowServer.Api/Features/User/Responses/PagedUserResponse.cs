@@ -1,10 +1,13 @@
-using System;
 using System.Text.Json.Serialization;
+using DocumentFlowServer.Application.User.Dtos;
 
-namespace DocumentFlowServer.Application.Common;
+namespace DocumentFlowServer.Api.Features.User.Responses;
 
-public class PagedData
+public class PagedUserResponse
 {
+    [JsonPropertyName("users")]
+    public ICollection<UserDto>? Users { get; set; }
+    
     [JsonPropertyName("totalCount")]
     public int TotalCount { get; set; }
 

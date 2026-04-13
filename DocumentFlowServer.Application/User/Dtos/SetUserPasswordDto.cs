@@ -1,6 +1,6 @@
 namespace DocumentFlowServer.Application.User.Dtos;
 
-public class SetUserPassword
+public class SetUserPasswordDto
 {
     public string Password { get; set; }
 }

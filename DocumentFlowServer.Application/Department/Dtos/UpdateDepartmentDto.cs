@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace DocumentFlowServer.Application.Department.Dtos;
 
 public class UpdateDepartmentDto
