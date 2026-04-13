@@ -23,6 +23,8 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 app.UseErrorHandling();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapSwagger("/openapi/{documentName}.json");
 app.MapScalarApiReference();

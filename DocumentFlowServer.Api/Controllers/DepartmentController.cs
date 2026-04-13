@@ -3,19 +3,22 @@ using DocumentFlowServer.Api.Features.Departments.Requests;
 using DocumentFlowServer.Api.Features.Departments.Responses;
 using DocumentFlowServer.Application.Department;
 using DocumentFlowServer.Application.Department.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentFlowServer.Api.Controllers;
 
 [ApiController]
 [Route("api/department")]
+[Authorize]
 public class DepartmentController : ControllerBase
 {
     private readonly ILogger<DepartmentController> _logger;
     private readonly IMapper _mapper;
     private readonly IDepartmentService _departmentService;
 
-    public DepartmentController(ILogger<DepartmentController> logger, 
+    public DepartmentController(
+        ILogger<DepartmentController> logger, 
         IMapper mapper,
         IDepartmentService departmentService)
     {
