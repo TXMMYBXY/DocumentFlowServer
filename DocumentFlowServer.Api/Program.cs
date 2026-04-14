@@ -2,6 +2,7 @@ using DocumentFlowServer.Api;
 using DocumentFlowServer.Api.Middleware;
 using DocumentFlowServer.Infrastructure;
 using DocumentFlowServer.Infrastructure.Data;
+using DocumentFlowServer.Infrastructure.Notification;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,5 +30,6 @@ app.UseAuthorization();
 app.MapSwagger("/openapi/{documentName}.json");
 app.MapScalarApiReference();
 app.MapControllers();
+app.MapHub<NotificationHub>("/notifications");
 
 app.Run();
