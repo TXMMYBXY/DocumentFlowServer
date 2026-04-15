@@ -16,7 +16,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<ContractTemplate> ContractTemplates { get; set; }
     public DbSet<StatementTemplate> StatementTemplates { get; set; }
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<Entities.Models.AboutUserModels.RefreshToken> RefreshTokens { get; set; }
     public DbSet<TaskModel> Tasks { get; set; }
     public DbSet<LoginHistory> LoginHistories { get; set; }
     public DbSet<Entities.Models.Department> Departments { get; set; }

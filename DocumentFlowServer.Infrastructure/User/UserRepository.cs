@@ -41,7 +41,7 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
                 Id = u.Id,
                 Email = u.Email,
                 FullName = u.FullName,
-                DepartmentClean = new DepartmentCleanDto
+                Department = new DepartmentCleanDto
                 {
                     Id = u.DepartmentId,
                     Description = u.Department.Description

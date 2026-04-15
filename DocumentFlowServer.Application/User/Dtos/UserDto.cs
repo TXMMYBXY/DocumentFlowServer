@@ -9,6 +9,6 @@ public class UserDto
     public string FullName { get; set; }
     public string Email { get; set; }
     public bool IsActive { get; set; }
-    public DepartmentCleanDto DepartmentClean { get; set; }
+    public DepartmentCleanDto Department { get; set; }
     public RoleDto Role { get; set; }
 }

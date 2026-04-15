@@ -19,8 +19,8 @@ public class UserMappingProfile : Profile
         CreateMap<CreateUserDto, Entities.Models.AboutUserModels.User>()
             .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Password));
         
-        //GetUsers
-        // CreateMap<PagedUserDto, 
+        //RefreshTokenDtos
+        CreateMap<UserDto, Entities.Models.AboutUserModels.User>();
         
     }
 }
