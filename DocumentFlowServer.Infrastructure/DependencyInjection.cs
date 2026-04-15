@@ -6,6 +6,7 @@ using DocumentFlowServer.Application.Common.Reposiroty;
 using DocumentFlowServer.Application.Common.Services;
 using DocumentFlowServer.Application.Department;
 using DocumentFlowServer.Application.Jwt;
+using DocumentFlowServer.Application.RefreshToken;
 using DocumentFlowServer.Application.User;
 using DocumentFlowServer.Infrastructure.Account;
 using DocumentFlowServer.Infrastructure.Common.Repository;
@@ -13,6 +14,7 @@ using DocumentFlowServer.Infrastructure.Common.Services;
 using DocumentFlowServer.Infrastructure.Data;
 using DocumentFlowServer.Infrastructure.Department;
 using DocumentFlowServer.Infrastructure.Jwt;
+using DocumentFlowServer.Infrastructure.RefreshToken;
 using DocumentFlowServer.Infrastructure.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -30,16 +32,22 @@ public static class DependencyInjection
         
         services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
         services.AddAutoMapper(typeof(AccountMappingProfile).Assembly);
+        services.AddAutoMapper(typeof(DepartmentMappingProfile).Assembly);
+        services.AddAutoMapper(typeof(RefreshTokenMappingProfile).Assembly);
+        services.AddAutoMapper(typeof(RoleMappingProfile).Assembly);
 
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+        services.AddScoped<ITokenRepository, TokenRepository>();
         
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IDepartmentService, DepartmentService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IRefreshTokenHasher, RefreshTokenHasher>();
+        services.AddScoped<ITokenService, TokenService>();
 
         services.AddScoped<DataSeeder>();
         

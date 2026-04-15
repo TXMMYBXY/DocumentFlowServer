@@ -16,5 +16,8 @@ public class DepartmentMappingProfile : Profile
         //UpdateDepartment
         CreateMap<UpdateDepartmentDto, Entities.Models.Department>()
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+        
+        //RefreshTokenDto
+        CreateMap<DepartmentCleanDto, Entities.Models.Department>();
     }
 }
