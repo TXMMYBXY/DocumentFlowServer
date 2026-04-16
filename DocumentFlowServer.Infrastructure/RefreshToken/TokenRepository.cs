@@ -15,7 +15,7 @@ public class TokenRepository : BaseRepository<Entities.Models.AboutUserModels.Re
         _dbContext = dbContext;
     }
 
-    public async Task<RefreshTokenDto>? GetRefreshTokenByUserIdAsync(int userId)
+    public async Task<RefreshTokenDto?> GetRefreshTokenByUserIdAsync(int userId)
     {
         return await _dbContext.RefreshTokens
             .Where(t => t.UserId == userId)
@@ -27,7 +27,7 @@ public class TokenRepository : BaseRepository<Entities.Models.AboutUserModels.Re
             .SingleOrDefaultAsync();
     }
 
-    public async Task<RefreshTokenDto>? GetRefreshTokenByValueAsync(string token)
+    public async Task<RefreshTokenDto?> GetRefreshTokenByValueAsync(string token)
     {
         return await _dbContext.RefreshTokens
             .Where(t => t.Token.Equals(token))

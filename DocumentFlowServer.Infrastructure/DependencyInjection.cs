@@ -5,8 +5,10 @@ using DocumentFlowServer.Application.Common.MappingProfiles;
 using DocumentFlowServer.Application.Common.Reposiroty;
 using DocumentFlowServer.Application.Common.Services;
 using DocumentFlowServer.Application.Department;
+using DocumentFlowServer.Application.FieldExtractor;
 using DocumentFlowServer.Application.Jwt;
 using DocumentFlowServer.Application.RefreshToken;
+using DocumentFlowServer.Application.Template;
 using DocumentFlowServer.Application.User;
 using DocumentFlowServer.Infrastructure.Account;
 using DocumentFlowServer.Infrastructure.Common.Repository;
@@ -15,6 +17,7 @@ using DocumentFlowServer.Infrastructure.Data;
 using DocumentFlowServer.Infrastructure.Department;
 using DocumentFlowServer.Infrastructure.Jwt;
 using DocumentFlowServer.Infrastructure.RefreshToken;
+using DocumentFlowServer.Infrastructure.Template;
 using DocumentFlowServer.Infrastructure.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +54,9 @@ public static class DependencyInjection
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IRefreshTokenHasher, RefreshTokenHasher>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IFileStorageService, FileStorageService>();
+        services.AddScoped<IFieldExtractorService, FieldExtractorService>();
+        services.AddScoped(typeof(ITemplateService<>), typeof(TemplateService<>));
 
         services.AddScoped<DataSeeder>();
         
