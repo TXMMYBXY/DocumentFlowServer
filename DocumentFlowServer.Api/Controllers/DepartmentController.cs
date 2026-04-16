@@ -10,7 +10,7 @@ namespace DocumentFlowServer.Api.Controllers;
 
 [ApiController]
 [Route("api/department")]
-[Authorize]
+[Authorize(Policy = "AdminAndBoss")]
 public class DepartmentController : ControllerBase
 {
     private readonly ILogger<DepartmentController> _logger;

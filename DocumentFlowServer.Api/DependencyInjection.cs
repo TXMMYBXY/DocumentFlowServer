@@ -1,3 +1,4 @@
+using DocumentFlowServer.Api.Authorization;
 using Microsoft.OpenApi.Models;
 
 namespace DocumentFlowServer.Api;
@@ -52,6 +53,8 @@ public static class DependencyInjection
                 }
             });
         });
+
+        services.AddAuthorizationPolicy();
         
         return services;
     }

@@ -44,12 +44,14 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
                 Department = new DepartmentCleanDto
                 {
                     Id = u.DepartmentId,
+                    Title = u.Department.Title,
                     Description = u.Department.Description
                 },
                 IsActive = u.IsActive,
                 Role = new RoleDto
                 {
                     Id = u.RoleId,
+                    Title = u.Role.Title,
                     Description = u.Role.Description
                 }
             });

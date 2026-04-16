@@ -3,12 +3,14 @@ using DocumentFlowServer.Api.Features.User.Requests;
 using DocumentFlowServer.Api.Features.User.Responses;
 using DocumentFlowServer.Application.User;
 using DocumentFlowServer.Application.User.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentFlowServer.Api.Controllers;
 
 [ApiController]
 [Route("api/user")]
+[Authorize(Policy = "AdminOnly")]
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
