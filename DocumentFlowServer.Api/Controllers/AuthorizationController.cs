@@ -28,6 +28,8 @@ public class AuthorizationController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<LoginResponse>> Login(LoginRequest request)
     {
+        _logger.LogInformation("request for login");
+        
         var loginRequest = _mapper.Map<LoginRequestDto>(request);
 
         var loginResponse = await _accountService.LoginAsync(loginRequest);
@@ -41,10 +43,36 @@ public class AuthorizationController : ControllerBase
     public async Task<ActionResult<LoginRefreshResponse>> LoginByRefreshToken(
         [FromBody] RefreshTokenLoginRequest request)
     {
+        _logger.LogInformation("request for login by refresh token");
+        
         var responseDto = await _accountService.LoginByRefreshTokenAsync(request.RefreshToken);
         
         var response = _mapper.Map<LoginRefreshResponse>(responseDto);
         
+        return Ok(response);
+    }
+
+    [HttpPost("access")]
+    public async Task<ActionResult<AccessTokenResponse>> AccessToken([FromBody] AccessTokenRequest request)
+    {
+        _logger.LogInformation("request for new access token");
+        
+        var responseDto = await _accountService.GetNewAccessTokenAsync(request.RefreshToken);
+
+        var response = _mapper.Map<AccessTokenResponse>(responseDto);
+
+        return Ok(response);
+    }
+    
+    [HttpPost("refresh")]
+    public async Task<ActionResult<RefreshTokenResponse>> RefreshToken([FromBody] RefreshTokenRequest request)
+    {
+        _logger.LogInformation("request for new refresh token");
+
+        var responseDto = await _accountService.GetNewRefreshTokenAsync(request.RefreshToken);
+
+        var response = _mapper.Map<RefreshTokenResponse>(responseDto);
+
         return Ok(response);
     }
 }

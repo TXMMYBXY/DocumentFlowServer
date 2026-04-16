@@ -113,4 +113,31 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
             })
             .SingleOrDefaultAsync();
     }
+
+    public async Task<UserLoginDto?> GetUserForAccessAsync(int userId)
+    {
+        return await _dbContext.Users
+            .Where(u => u.Id == userId)
+            .Select(u => new UserLoginDto
+            {
+                Id = u.Id,
+                Email = u.Email,
+                FullName = u.FullName,
+                PasswordHash = u.PasswordHash,
+                IsActive = u.IsActive,
+                Department = new DepartmentCleanDto
+                {
+                    Id = u.DepartmentId,
+                    Title = u.Department.Title,
+                    Description = u.Department.Description
+                },
+                Role = new RoleDto
+                {
+                    Id = u.RoleId,
+                    Title = u.Role.Title,
+                    Description = u.Role.Description
+                }
+            })
+            .SingleOrDefaultAsync();
+    }
 }

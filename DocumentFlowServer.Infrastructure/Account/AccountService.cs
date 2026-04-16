@@ -6,6 +6,7 @@ using DocumentFlowServer.Application.Common.Services;
 using DocumentFlowServer.Application.Jwt;
 using DocumentFlowServer.Application.Jwt.Dtos;
 using DocumentFlowServer.Application.RefreshToken;
+using DocumentFlowServer.Application.RefreshToken.Dtos;
 using DocumentFlowServer.Application.User;
 using DocumentFlowServer.Application.User.Dtos;
 using Microsoft.Extensions.Logging;
@@ -41,7 +42,7 @@ public class AccountService : IAccountService
     {
         _logger.LogInformation("login");
         
-        var userLogin = await _userService.GetUserInfoForLogin(requestDto.Email);
+        var userLogin = await _userService.GetUserInfoForLoginAsync(requestDto.Email);
         
         ArgumentNullException.ThrowIfNull(userLogin);
 
@@ -84,5 +85,26 @@ public class AccountService : IAccountService
             IsAllowed = true,
             RefreshToken = refreshTokenDto
         };
+    }
+
+    public async Task<AccessTokenDto> GetNewAccessTokenAsync(string refreshToken)
+    {
+        var userId = await _tokenService.GetRefreshTokenOwnerIdAsync(refreshToken);
+        var userInfo = await _userService.GetUserInfoForAccessAsync(userId);
+
+        var userClaims = _mapper.Map<UserClaimsDto>(userInfo);
+        
+        var accessTokenDto = _jwtService.GenerateAccessToken(userClaims);
+
+        return accessTokenDto;
+    }
+
+    public async Task<RefreshTokenDto> GetNewRefreshTokenAsync(string refreshToken)
+    {
+        var userId = await _tokenService.GetRefreshTokenOwnerIdAsync(refreshToken);
+
+        var refreshTokenDto = await _tokenService.GenerateRefreshTokenAsync(userId);
+
+        return refreshTokenDto;
     }
 }
