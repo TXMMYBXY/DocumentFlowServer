@@ -1,5 +1,8 @@
 namespace DocumentFlowServer.Application.Department.Dtos;
 
+/// <summary>
+/// Dto без сотрудников
+/// </summary>
 public class DepartmentCleanDto
 {
     public int Id { get; set; }

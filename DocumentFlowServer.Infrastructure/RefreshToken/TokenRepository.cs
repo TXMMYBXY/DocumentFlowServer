@@ -1,8 +1,5 @@
-using DocumentFlowServer.Application.Department.Dtos;
 using DocumentFlowServer.Application.RefreshToken;
 using DocumentFlowServer.Application.RefreshToken.Dtos;
-using DocumentFlowServer.Application.Role.Dtos;
-using DocumentFlowServer.Application.User.Dtos;
 using DocumentFlowServer.Infrastructure.Common.Repository;
 using DocumentFlowServer.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -26,27 +23,11 @@ public class TokenRepository : BaseRepository<Entities.Models.AboutUserModels.Re
             {
                 Token = t.Token,
                 ExpiresAt = t.ExpiresAt,
-                User = new UserDto
-                {
-                    Id = t.User.Id,
-                    Email = t.User.Email,
-                    Department = new DepartmentCleanDto
-                    {
-                        Id = t.User.Department.Id,
-                        Title = t.User.Department.Title
-                    },
-                    Role = new RoleDto
-                    {
-                        Id = t.User.Role.Id,
-                        Title = t.User.Role.Title
-                    },
-                    IsActive = t.User.IsActive
-                }
             })
             .SingleOrDefaultAsync();
     }
 
-    public async Task<RefreshTokenDto> GetRefreshTokenByValueAsync(string token)
+    public async Task<RefreshTokenDto>? GetRefreshTokenByValueAsync(string token)
     {
         return await _dbContext.RefreshTokens
             .Where(t => t.Token.Equals(token))
@@ -54,22 +35,6 @@ public class TokenRepository : BaseRepository<Entities.Models.AboutUserModels.Re
             {
                 Token = t.Token,
                 ExpiresAt = t.ExpiresAt,
-                User = new UserDto
-                {
-                    Id = t.User.Id,
-                    Email = t.User.Email,
-                    Department = new DepartmentCleanDto
-                    {
-                        Id = t.User.Department.Id,
-                        Title = t.User.Department.Title
-                    },
-                    Role = new RoleDto
-                    {
-                        Id = t.User.Role.Id,
-                        Title = t.User.Role.Title
-                    },
-                    IsActive = t.User.IsActive
-                }
             })
             .SingleOrDefaultAsync();
     }

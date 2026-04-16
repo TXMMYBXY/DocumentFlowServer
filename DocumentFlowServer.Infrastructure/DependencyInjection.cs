@@ -28,7 +28,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddSignalR();
+        
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+        services.Configure<RefreshTokenSettings>(configuration.GetSection(nameof(RefreshTokenSettings)));
         
         services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
         services.AddAutoMapper(typeof(AccountMappingProfile).Assembly);

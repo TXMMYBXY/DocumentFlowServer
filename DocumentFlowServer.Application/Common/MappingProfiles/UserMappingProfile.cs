@@ -22,5 +22,9 @@ public class UserMappingProfile : Profile
         //RefreshTokenDtos
         CreateMap<UserDto, Entities.Models.AboutUserModels.User>();
         
+        //UserInfo for login
+        CreateMap<UserLoginDto, UserInfoForLoginDto>()
+            .ForMember(dest => dest.Department, opt => opt.MapFrom(src => src.Department.Title));
+
     }
 }

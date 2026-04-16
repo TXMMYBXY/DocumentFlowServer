@@ -36,4 +36,15 @@ public class AuthorizationController : ControllerBase
         
         return Ok(response);
     }
+
+    [HttpPost("request-for-access")]
+    public async Task<ActionResult<LoginRefreshResponse>> LoginByRefreshToken(
+        [FromBody] RefreshTokenLoginRequest request)
+    {
+        var responseDto = await _accountService.LoginByRefreshTokenAsync(request.RefreshToken);
+        
+        var response = _mapper.Map<LoginRefreshResponse>(responseDto);
+        
+        return Ok(response);
+    }
 }

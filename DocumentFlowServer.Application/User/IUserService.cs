@@ -14,4 +14,6 @@ public interface IUserService
     Task<bool> ChangeUserStatusAsync(int userId);
     
     Task DeleteUserAsync(int userId);
+
+    Task<UserLoginDto> GetUserInfoForLogin(string email);
 }

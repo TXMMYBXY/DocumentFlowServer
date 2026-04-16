@@ -153,7 +153,16 @@ public class UserService : IUserService
         
         await _InvalidateUsersCacheAsync();
     }
-    
+
+    public async Task<UserLoginDto> GetUserInfoForLogin(string email)
+    {
+        var userInfoDto = await _userRepository.GetUserForLoginAsync(email);
+        
+        ArgumentNullException.ThrowIfNull(userInfoDto, "User not exists");
+
+        return userInfoDto;
+    }
+
     private async Task<string> _GetUsersVersionAsync()
     {
         var version = await _cache.GetStringAsync(UsersVersionKey);

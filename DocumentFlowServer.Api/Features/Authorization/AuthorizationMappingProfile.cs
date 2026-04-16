@@ -13,5 +13,7 @@ public class AuthorizationMappingProfile : Profile
         CreateMap<LoginRequest, LoginRequestDto>();
         
         CreateMap<LoginResponseDto, LoginResponse>();
+
+        CreateMap<LoginRefreshResponseDto, LoginRefreshResponse>();
     }
 }
