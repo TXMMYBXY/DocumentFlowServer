@@ -21,7 +21,6 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
     private const string FieldsVersionKey = "fields_version";
     
     private readonly ILogger<TemplateService<T>> _logger;
-    private readonly IMapper _mapper;
     private readonly IDistributedCache _cache;
     private readonly IFileStorageService _fileStorageService;
     private readonly IFieldExtractorService _fieldExtractor;
@@ -30,14 +29,12 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
 
     public TemplateService(
         ILogger<TemplateService<T>> logger,
-        IMapper mapper,
         IDistributedCache cache,
         IFileStorageService fileStorageService,
         IFieldExtractorService fieldExtractor,
         ITemplateRepository<T> templateRepository)
     {
         _logger = logger;
-        _mapper = mapper;
         _cache = cache;
         _fileStorageService = fileStorageService;
         _fieldExtractor = fieldExtractor;
