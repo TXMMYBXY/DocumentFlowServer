@@ -1,5 +1,8 @@
-namespace DocumentFlowAPI.Enums;
+namespace DocumentFlowServer.Entities.Enums;
 
+/// <summary>
+/// Enum for notification type
+/// </summary>
 public enum NotificationKind
 {
     TemplateAdded,

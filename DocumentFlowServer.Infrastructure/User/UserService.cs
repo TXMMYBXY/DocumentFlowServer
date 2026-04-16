@@ -163,7 +163,7 @@ public class UserService : IUserService
         return userInfoDto;
     }
 
-    public async Task<UserLoginDto> GetUserInfoForAccessAsync(int userId)
+    public async Task<UserLoginDto> GetUserInfoByUserIdAsync(int userId)
     {
         var userInfoDto = await _userRepository.GetUserForAccessAsync(userId);
         

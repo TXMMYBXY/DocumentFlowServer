@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DocumentFlowServer.Entities.Models.AboutUserModels;
 
+/// <summary>
+/// RefreshToken model
+/// </summary>
 public class RefreshToken : EntityBase
 {
     [MaxLength(127)]

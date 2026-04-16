@@ -3,6 +3,9 @@ using DocumentFlowServer.Entities.Models.AboutUserModels;
 
 namespace DocumentFlowServer.Entities.Models.DocumentTemplatesModels;
 
+/// <summary>
+/// Базовая модель шаблона для документа
+/// </summary>
 public abstract class Template : EntityBase
 {
     public string Title { get; set; }

@@ -3,6 +3,9 @@ using DocumentFlowServer.Entities.Models.AboutUserModels;
 
 namespace DocumentFlowServer.Entities.Models;
 
+/// <summary>
+/// Model for departments
+/// </summary>
 public class Department : EntityBase
 {
     [Required]

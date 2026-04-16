@@ -3,6 +3,9 @@ using DocumentFlowServer.Application.User.Dtos;
 
 namespace DocumentFlowServer.Application.User;
 
+/// <summary>
+/// Repository for working with users in database
+/// </summary>
 public interface IUserRepository : IBaseRepository<Entities.Models.AboutUserModels.User>
 {
     Task<ICollection<UserDto>> GetAllUsers(UserFilter filter);

@@ -3,6 +3,9 @@ using DocumentFlowServer.Application.Department.Dtos;
 
 namespace DocumentFlowServer.Application.Department;
 
+/// <summary>
+/// Service for working with departments
+/// </summary>
 public interface IDepartmentService
 {
     Task<PagedDepartmentDto> GetDepartmentAsync(DepartmentFilter filter);

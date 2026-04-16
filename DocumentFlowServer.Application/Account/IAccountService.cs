@@ -5,6 +5,9 @@ using DocumentFlowServer.Application.RefreshToken.Dtos;
 
 namespace DocumentFlowServer.Application.Account;
 
+/// <summary>
+/// Service for working with accounts
+/// </summary>
 public interface IAccountService
 {
     Task<LoginResponseDto> LoginAsync(LoginRequestDto requestDto);

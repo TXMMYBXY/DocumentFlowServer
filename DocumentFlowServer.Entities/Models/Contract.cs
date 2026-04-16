@@ -1,9 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DocumentFlowServer.Entities.Enums;
 using DocumentFlowServer.Entities.Models.DocumentTemplatesModels;
 
 namespace DocumentFlowServer.Entities.Models;
 
+/// <summary>
+/// Model of a non-standard contract (created)
+/// </summary>
 public class Contract : EntityBase
 {
     [Required]
@@ -16,10 +20,4 @@ public class Contract : EntityBase
     
     [ForeignKey(nameof(ContractTemplate.Id))]
     public virtual ContractTemplate Template { get; set; }
-}
-public enum DocumentStatus
-{
-    Draft,
-    Signed,
-    Archived
 }

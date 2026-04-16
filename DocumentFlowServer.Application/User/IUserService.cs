@@ -1,8 +1,10 @@
-using System.Threading.Tasks;
 using DocumentFlowServer.Application.User.Dtos;
 
 namespace DocumentFlowServer.Application.User;
 
+/// <summary>
+/// Service for working with users
+/// </summary>
 public interface IUserService
 {
     Task<PagedUserDto> GetUsersAsync(UserFilter filter);
@@ -12,9 +14,9 @@ public interface IUserService
     Task UpdateUserInfoAsync(int userId, UpdateUserInfoDto updateUserInfoDto);
     Task SetUserPasswordAsync(int userId, SetUserPasswordDto setUserPasswordDtoDto);
     Task<bool> ChangeUserStatusAsync(int userId);
-    
-    Task DeleteUserAsync(int userId);
 
+    Task DeleteUserAsync(int userId);
+    
     Task<UserLoginDto> GetUserInfoForLoginAsync(string email);
-    Task<UserLoginDto> GetUserInfoForAccessAsync(int userId);
+    Task<UserLoginDto> GetUserInfoByUserIdAsync(int userId);
 }

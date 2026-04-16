@@ -1,5 +1,7 @@
 using DocumentFlowServer.Api.Authorization.Handler;
+using DocumentFlowServer.Api.Authorization.Policies;
 using DocumentFlowServer.Api.Authorization.Requirements;
+using DocumentFlowServer.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DocumentFlowServer.Api.Authorization;
@@ -10,10 +12,17 @@ public static class AuthorizationExtensions
     {
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("AdminOnly", policy => policy.Requirements.Add(new RoleIdRequirement(1)));
-            options.AddPolicy("AdminAndBoss", policy => policy.Requirements.Add(new RoleIdRequirement(1, 2)));
-            options.AddPolicy("AdminBossAndPurchaser", policy => policy.Requirements.Add(new RoleIdRequirement(1, 2, 3)));
-            options.AddPolicy("All", policy => policy.Requirements.Add(new RoleIdRequirement(1, 2, 3, 4)));
+            options.AddPolicy(Policy.AdminOnly, policy => policy.Requirements.Add(
+                new RoleIdRequirement(Permissions.Admin)));
+            
+            options.AddPolicy(Policy.AdminAndBoss, policy => policy.Requirements.Add(
+                new RoleIdRequirement(Permissions.Admin, Permissions.Boss)));
+            
+            options.AddPolicy(Policy.AdminBossAndPurchasher, policy => policy.Requirements.Add(
+                new RoleIdRequirement(Permissions.Admin, Permissions.Boss, Permissions.Purchaser)));
+            
+            options.AddPolicy(Policy.All, policy => policy.Requirements.Add(
+                new RoleIdRequirement(Permissions.Admin, Permissions.Boss, Permissions.Purchaser, Permissions.Staff)));
         });
         
         services.AddSingleton<IAuthorizationHandler, RoleIdHandler>();

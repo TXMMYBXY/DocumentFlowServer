@@ -3,6 +3,9 @@ using DocumentFlowServer.Application.RefreshToken.Dtos;
 
 namespace DocumentFlowServer.Application.RefreshToken;
 
+/// <summary>
+/// Repository for working with refresh tokens in database
+/// </summary>
 public interface ITokenRepository : IBaseRepository<Entities.Models.AboutUserModels.RefreshToken>
 {
     Task<RefreshTokenDto>? GetRefreshTokenByUserIdAsync(int userId);
