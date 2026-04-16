@@ -1,10 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using DocumentFlowAPI.Enums;
-using TaskStatus = DocumentFlowAPI.Enums.TaskStatus;
+using DocumentFlowServer.Entities.Enums;
+using TaskStatus = DocumentFlowServer.Entities.Enums.TaskStatus;
 
 namespace DocumentFlowServer.Entities.Models;
 
+/// <summary>
+/// Model for a document filling task
+/// </summary>
 public class TaskModel : EntityBase
 {
     [Required]
@@ -27,7 +30,7 @@ public class TaskModel : EntityBase
     public int? UserId { get; set; }
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public TaskPriority Priority{ get; set; } = TaskPriority.Low;
-    // Для повторных попыток
+    // For retries
     public int RetryCount { get; set; } = 0;
     public DateTime? LastAttemptAt { get; set; }
 }

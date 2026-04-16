@@ -1,5 +1,8 @@
-namespace DocumentFlowAPI.Enums;
+namespace DocumentFlowServer.Entities.Enums;
 
+/// <summary>
+/// Enum for permissions
+/// </summary>
 public enum Permissions
 {
     Admin = 1,

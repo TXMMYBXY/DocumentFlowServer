@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DocumentFlowServer.Entities.Models.AboutUserModels;
 
+/// <summary>
+/// User model
+/// </summary>
 public class User : EntityBase
 {
     [Required]

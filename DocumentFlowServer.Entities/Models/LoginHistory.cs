@@ -4,6 +4,9 @@ using DocumentFlowServer.Entities.Models.AboutUserModels;
 
 namespace DocumentFlowServer.Entities.Models;
 
+/// <summary>
+/// Model for tracking user authorizations
+/// </summary>
 public class LoginHistory : EntityBase
 {
     [Required]

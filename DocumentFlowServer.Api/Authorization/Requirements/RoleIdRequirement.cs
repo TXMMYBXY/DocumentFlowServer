@@ -1,13 +1,14 @@
+using DocumentFlowServer.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DocumentFlowServer.Api.Authorization.Requirements;
 
 public class RoleIdRequirement : IAuthorizationRequirement
 {
-    public int[] AllowedRoles;
+    public Permissions[] AllowedRoles;
     
-    public RoleIdRequirement(params int[] roleIds)
+    public RoleIdRequirement(params Permissions[] roles)
     {
-        AllowedRoles = roleIds;
+        AllowedRoles = roles;
     }
 }

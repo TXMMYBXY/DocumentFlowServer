@@ -90,7 +90,7 @@ public class AccountService : IAccountService
     public async Task<AccessTokenDto> GetNewAccessTokenAsync(string refreshToken)
     {
         var userId = await _tokenService.GetRefreshTokenOwnerIdAsync(refreshToken);
-        var userInfo = await _userService.GetUserInfoForAccessAsync(userId);
+        var userInfo = await _userService.GetUserInfoByUserIdAsync(userId);
 
         var userClaims = _mapper.Map<UserClaimsDto>(userInfo);
         
