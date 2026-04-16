@@ -87,7 +87,7 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
         }
 
         var uniqueFileName = $"{Guid.NewGuid()}_{templateDto.FileName}";
-        var month = _ClearName(DateTime.Now.ToString("MMMM", new CultureInfo("ru-RU")));
+        var month = _ClearName(DateTime.Now.ToString("MMMM", new CultureInfo("en-EN")));
         var projectFolder = $"{typeof(T).Name}_{DateTime.Now.Year}_{month}";
 
         var filePath = await _fileStorageService.SaveFileAsync(
@@ -108,8 +108,6 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
         await _templateRepository.SaveChangesAsync();
 
         await _InvalidateTemplatesCacheAsync();
-        
-        _logger.LogDebug("Sending notification");
         
         _logger.LogInformation("Template created successfully with title {Title}", templateDto.Title);
     }
@@ -228,6 +226,14 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
             FilePath = template.Path,
             FileName = template.Title
         };
+    }
+
+    public async Task DeleteManyTemplatesAsync(List<int> templateIds)
+    {
+        await _templateRepository.DeleteManyAsync(templateIds);
+        await _templateRepository.SaveChangesAsync();
+        
+        await _InvalidateTemplatesCacheAsync();
     }
 
     private async Task<string> _GetTemplatesVersionAsync()

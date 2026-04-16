@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DocumentFlowServer.Infrastructure.Template;
 
-public class TemplateRepository<T> : BaseRepository<Entities.Models.DocumentTemplatesModels.Template>, ITemplateRepository<T> where T : Entities.Models.DocumentTemplatesModels.Template
+public class TemplateRepository<T> : BaseRepository<T>, ITemplateRepository<T> where T : Entities.Models.DocumentTemplatesModels.Template
 {
     private readonly ApplicationDbContext _dbContext;
 

@@ -45,7 +45,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     public async Task DeleteManyAsync(ICollection<int> ids)
     {
         await _dbContext.Set<T>()
-            .Where(e => ids.Contains((int)e.GetType().GetProperty("Id").GetValue(e)))
+            .Where(e => ids.Contains(EF.Property<int>(e,"Id")))
             .ExecuteDeleteAsync();
     }
 
@@ -56,7 +56,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
     public async Task<bool> ExistsAsync(int id)
     {
-        return await _dbSet.FirstOrDefaultAsync() != null;
+        return await _dbSet.AnyAsync(e => EF.Property<int>(e, "Id") == id);
     }
 
     public async Task SaveChangesAsync()

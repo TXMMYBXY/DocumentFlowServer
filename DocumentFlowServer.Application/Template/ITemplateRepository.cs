@@ -3,7 +3,7 @@ using DocumentFlowServer.Application.Template.Dtos;
 
 namespace DocumentFlowServer.Application.Template;
 
-public interface ITemplateRepository<T> : IBaseRepository<Entities.Models.DocumentTemplatesModels.Template> where T : Entities.Models.DocumentTemplatesModels.Template
+public interface ITemplateRepository<T> : IBaseRepository<T> where T : Entities.Models.DocumentTemplatesModels.Template
 {
     Task<ICollection<TemplateDto>> GetAllTemplatesAsync(TemplateFilter filter);
     Task<TemplateDto?> GetTemplateByIdAsync(int templateId);

@@ -172,6 +172,21 @@ public class UserService : IUserService
         return userInfoDto;
     }
 
+    public async Task DeleteManyUsersAsync(List<int> requestUserIds)
+    {
+        ArgumentNullException.ThrowIfNull(requestUserIds);
+        
+        var userExists = await _userRepository.ExistsAsync();
+
+        if (!userExists)
+            throw new InvalidOperationException("Users not exists");
+        
+        await _userRepository.DeleteManyAsync(requestUserIds);
+        await _userRepository.SaveChangesAsync();
+
+        await _InvalidateUsersCacheAsync();
+    }
+
     private async Task<string> _GetUsersVersionAsync()
     {
         var version = await _cache.GetStringAsync(UsersVersionKey);

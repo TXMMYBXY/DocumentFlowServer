@@ -16,4 +16,5 @@ public interface ITemplateService<T> where T : Entities.Models.DocumentTemplates
     Task<bool> ChangeTemplateStatusById(int templateId);
     
     Task<DownloadTemplateDto> DownloadTemplateAsync(int templateId);
+    Task DeleteManyTemplatesAsync(List<int> templateIds);
 }

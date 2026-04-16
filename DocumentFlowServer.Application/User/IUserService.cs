@@ -19,4 +19,5 @@ public interface IUserService
     
     Task<UserLoginDto> GetUserInfoForLoginAsync(string email);
     Task<UserLoginDto> GetUserInfoByUserIdAsync(int userId);
+    Task DeleteManyUsersAsync(List<int> requestUserIds);
 }
