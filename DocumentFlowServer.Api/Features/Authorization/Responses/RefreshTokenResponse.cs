@@ -8,5 +8,5 @@ public class RefreshTokenResponse
     public string Token { get; set; }
     
     [JsonPropertyName("expiresAt")]
-    public DateTime ExpiresAt { get; set; }
+    public DateTimeOffset ExpiresAt { get; set; }
 }

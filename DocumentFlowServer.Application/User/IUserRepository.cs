@@ -11,4 +11,5 @@ public interface IUserRepository : IBaseRepository<Entities.Models.AboutUserMode
     Task SetNewPasswordAsync(int userId, string hash);
 
     Task<UserLoginDto?> GetUserForLoginAsync(string email);
+    Task<UserLoginDto?> GetUserForAccessAsync(int userId);
 }

@@ -85,6 +85,16 @@ public class TokenService : ITokenService
         return refreshTokenDto;
     }
 
+    public async Task<int> GetRefreshTokenOwnerIdAsync(string refreshToken)
+    {
+        var ownerId = await _tokenRepository.GetRefreshTokenOwnerIdByValueAsync(_refreshTokenHasher.Hash(refreshToken));
+
+        if (ownerId == 0)
+            throw new InvalidOperationException("Invalid token");
+        
+        return ownerId;
+    }
+
     private static string _GenerateSecretLine()
     {
         var bytes = RandomNumberGenerator.GetBytes(64);

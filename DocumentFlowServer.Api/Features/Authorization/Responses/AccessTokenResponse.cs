@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using DocumentFlowServer.Application.User.Dtos;
 
 namespace DocumentFlowServer.Api.Features.Authorization.Responses;
 
@@ -13,7 +12,4 @@ public class AccessTokenResponse
     
     [JsonPropertyName("tokenType")]
     public string TokenType { get; set; } = "Bearer";
-    
-    [JsonPropertyName("userInfo")]
-    public UserInfoForLoginDto UserInfo { get; set; }
 }

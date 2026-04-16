@@ -45,4 +45,12 @@ public class TokenRepository : BaseRepository<Entities.Models.AboutUserModels.Re
             .Where(t => t.UserId == userId)
             .ExecuteDeleteAsync();
     }
+
+    public async Task<int> GetRefreshTokenOwnerIdByValueAsync(string tokenHash)
+    {
+        return await _dbContext.RefreshTokens
+            .Where(t => t.Token.Equals(tokenHash))
+            .Select(t => t.UserId)
+            .SingleOrDefaultAsync();
+    }
 }

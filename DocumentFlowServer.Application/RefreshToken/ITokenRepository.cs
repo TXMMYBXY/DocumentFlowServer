@@ -9,4 +9,5 @@ public interface ITokenRepository : IBaseRepository<Entities.Models.AboutUserMod
     Task<RefreshTokenDto>? GetRefreshTokenByValueAsync(string token);
 
     Task RevokeRefreshTokenByUserIdAsync(int userId);
+    Task<int> GetRefreshTokenOwnerIdByValueAsync(string tokenHash);
 }
