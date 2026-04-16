@@ -23,7 +23,7 @@ public class JwtService : IJwtService
         _logger = logger;
     }
     
-    public string GenerateAccessToken(UserClaimsDto userClaims)
+    public AccessTokenDto GenerateAccessToken(UserClaimsDto userClaims)
     {
         _logger.LogInformation("Generating access token for user with id {UserId}", userClaims.Id);
 
@@ -52,6 +52,10 @@ public class JwtService : IJwtService
         var token = tokenHandler.CreateToken(jwtDescriptor);
         var tokenString = tokenHandler.WriteToken(token);
         
-        return tokenString;
+        return new AccessTokenDto
+        {
+            AccessToken = tokenString,
+            ExpiresAt = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiresMinutes)
+        };
     }
 }

@@ -95,10 +95,21 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
             {
                 Id = u.Id,
                 Email = u.Email,
-                Role = u.Role.Title,
-                RoleId = u.RoleId,
+                FullName = u.FullName,
+                PasswordHash = u.PasswordHash,
                 IsActive = u.IsActive,
-                PasswordHash = u.PasswordHash
+                Department = new DepartmentCleanDto
+                {
+                    Id = u.DepartmentId,
+                    Title = u.Department.Title,
+                    Description = u.Department.Description
+                },
+                Role = new RoleDto
+                {
+                    Id = u.RoleId,
+                    Title = u.Role.Title,
+                    Description = u.Role.Description
+                }
             })
             .SingleOrDefaultAsync();
     }

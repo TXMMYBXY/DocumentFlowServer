@@ -57,18 +57,11 @@ public class TokenService : ITokenService
         return _mapper.Map<RefreshTokenDto>(refreshToken);
     }
 
-    public async Task RevokeRefreshTokenByUserId(int userId)
-    {
-        _logger.LogInformation("Revoking refresh token for user {UserId}", userId);
-        
-        await _tokenRepository.RevokeRefreshTokenByUserIdAsync(userId);
-    }
-
     public async Task<bool> IsValidRefreshToken(string refreshToken)
     {
         _logger.LogInformation("Validating refresh token {RefreshToken}", refreshToken);
         
-        var token = await _tokenRepository.GetRefreshTokenByValueAsync(refreshToken);
+        var token = await _tokenRepository.GetRefreshTokenByValueAsync(_refreshTokenHasher.Hash(refreshToken));
         
         if (token == null)
             return false;
@@ -80,7 +73,18 @@ public class TokenService : ITokenService
         
         return true;
     }
-    
+
+    public async Task<RefreshTokenDto> GetRefreshToken(string refreshToken)
+    {
+        var refreshTokenDto = await _tokenRepository.GetRefreshTokenByValueAsync(_refreshTokenHasher.Hash(refreshToken));
+        
+        refreshTokenDto.Token = refreshToken;
+        
+        ArgumentNullException.ThrowIfNull(refreshTokenDto, "Refresh token is no valid");
+        
+        return refreshTokenDto;
+    }
+
     private static string _GenerateSecretLine()
     {
         var bytes = RandomNumberGenerator.GetBytes(64);

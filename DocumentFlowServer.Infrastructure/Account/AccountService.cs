@@ -5,7 +5,9 @@ using DocumentFlowServer.Application.Account.ResponseDto;
 using DocumentFlowServer.Application.Common.Services;
 using DocumentFlowServer.Application.Jwt;
 using DocumentFlowServer.Application.Jwt.Dtos;
+using DocumentFlowServer.Application.RefreshToken;
 using DocumentFlowServer.Application.User;
+using DocumentFlowServer.Application.User.Dtos;
 using Microsoft.Extensions.Logging;
 
 namespace DocumentFlowServer.Infrastructure.Account;
@@ -16,27 +18,30 @@ public class AccountService : IAccountService
     private readonly IMapper _mapper;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IJwtService _jwtService;
-    private readonly IUserRepository _userRepository;
+    private readonly IUserService _userService;
+    private readonly ITokenService _tokenService;
 
     public AccountService(
         ILogger<AccountService> logger,
         IMapper mapper,
         IPasswordHasher passwordHasher,
         IJwtService jwtService,
-        IUserRepository userRepository)
+        IUserService userService,
+        ITokenService tokenService)
     {
         _logger = logger;
         _mapper = mapper;
         _passwordHasher = passwordHasher;
         _jwtService = jwtService;
-        _userRepository = userRepository;
+        _userService = userService;
+        _tokenService = tokenService;
     }
     
     public async Task<LoginResponseDto> LoginAsync(LoginRequestDto requestDto)
     {
         _logger.LogInformation("login");
         
-        var userLogin = await _userRepository.GetUserForLoginAsync(requestDto.Email);
+        var userLogin = await _userService.GetUserInfoForLogin(requestDto.Email);
         
         ArgumentNullException.ThrowIfNull(userLogin);
 
@@ -51,12 +56,33 @@ public class AccountService : IAccountService
 
         var userClaims = _mapper.Map<UserClaimsDto>(userLogin);
         
-        var token = _jwtService.GenerateAccessToken(userClaims);
+        var accessToken = _jwtService.GenerateAccessToken(userClaims);
+        var refreshToken = await _tokenService.GenerateRefreshTokenAsync(userLogin.Id);
+        var userInfoDto = _mapper.Map<UserInfoForLoginDto>(userLogin);
         
         return new LoginResponseDto
         {
-            AccessToken = token
+            AccessToken = accessToken,
+            RefreshToken = refreshToken,
+            UserInfo = userInfoDto
         };
-    
+    }
+
+    public async Task<LoginRefreshResponseDto> LoginByRefreshTokenAsync(string refreshToken)
+    {
+        _logger.LogInformation("login by refresh token");
+
+        var isTokenValid = await _tokenService.IsValidRefreshToken(refreshToken);
+
+        if (!isTokenValid)
+            throw new ArgumentNullException(refreshToken, "Refresh token is no valid");
+
+        var refreshTokenDto = await _tokenService.GetRefreshToken(refreshToken);
+
+        return new LoginRefreshResponseDto
+        {
+            IsAllowed = true,
+            RefreshToken = refreshTokenDto
+        };
     }
 }

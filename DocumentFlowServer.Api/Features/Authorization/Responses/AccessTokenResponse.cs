@@ -1,17 +1,18 @@
 using System.Text.Json.Serialization;
-using DocumentFlowServer.Application.Jwt.Dtos;
-using DocumentFlowServer.Application.RefreshToken.Dtos;
 using DocumentFlowServer.Application.User.Dtos;
 
 namespace DocumentFlowServer.Api.Features.Authorization.Responses;
 
-public class LoginResponse
+public class AccessTokenResponse
 {
     [JsonPropertyName("accessToken")]
-    public AccessTokenDto AccessToken { get; set; }
+    public string AccessToken { get; set; }
     
-    [JsonPropertyName("refreshToken")]
-    public RefreshTokenDto RefreshToken { get; set; }
+    [JsonPropertyName("expiresAt")]
+    public string ExpiresAt { get; set; }
+    
+    [JsonPropertyName("tokenType")]
+    public string TokenType { get; set; } = "Bearer";
     
     [JsonPropertyName("userInfo")]
     public UserInfoForLoginDto UserInfo { get; set; }
