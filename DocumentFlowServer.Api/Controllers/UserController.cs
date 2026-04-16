@@ -86,4 +86,20 @@ public class UserController : ControllerBase
 
         return Ok(status);
     }
+
+    [HttpDelete("{userId:int}")]
+    public async Task<ActionResult> DeleteUser([FromRoute] int userId)
+    {
+        await _userService.DeleteUserAsync(userId);
+
+        return Ok();
+    }
+
+    [HttpDelete]
+    public async Task<ActionResult> DeleteManyUsers([FromBody] DeleteManyUsersRequest request)
+    {
+        await _userService.DeleteManyUsersAsync(request.UserIds);
+
+        return Ok();
+    }
 }
