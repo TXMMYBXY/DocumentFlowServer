@@ -9,6 +9,7 @@ using DocumentFlowServer.Application.FieldExtractor;
 using DocumentFlowServer.Application.Issue;
 using DocumentFlowServer.Application.Jwt;
 using DocumentFlowServer.Application.RefreshToken;
+using DocumentFlowServer.Application.Role;
 using DocumentFlowServer.Application.Template;
 using DocumentFlowServer.Application.User;
 using DocumentFlowServer.Infrastructure.Account;
@@ -19,6 +20,7 @@ using DocumentFlowServer.Infrastructure.Department;
 using DocumentFlowServer.Infrastructure.Issue;
 using DocumentFlowServer.Infrastructure.Jwt;
 using DocumentFlowServer.Infrastructure.RefreshToken;
+using DocumentFlowServer.Infrastructure.Role;
 using DocumentFlowServer.Infrastructure.Template;
 using DocumentFlowServer.Infrastructure.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -51,6 +53,7 @@ public static class DependencyInjection
         services.AddScoped<ITokenRepository, TokenRepository>();
         services.AddScoped(typeof(ITemplateRepository<>), typeof(TemplateRepository<>));
         services.AddScoped<IIssueRepository, IssueRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
         
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IDepartmentService, DepartmentService>();
@@ -63,6 +66,7 @@ public static class DependencyInjection
         services.AddScoped<IFieldExtractorService, FieldExtractorService>();
         services.AddScoped(typeof(ITemplateService<>), typeof(TemplateService<>));
         services.AddScoped<IIssueService, IssueService>();
+        services.AddScoped<IRoleService, RoleService>();
 
         services.AddScoped<DataSeeder>();
         
