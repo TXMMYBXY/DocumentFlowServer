@@ -1,6 +1,4 @@
 using DocumentFlowServer.Application.Common.Services;
-using DocumentFlowServer.Entities.Models;
-using DocumentFlowServer.Entities.Models.AboutUserModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace DocumentFlowServer.Infrastructure.Data;
@@ -20,12 +18,12 @@ public class DataSeeder
     {
         if (!await _dbContext.Roles.AnyAsync())
         {
-            var roles = new Role[4]
+            var roles = new Entities.Models.AboutUserModels.Role[4]
             {
-                new Role {Title = "Admin"},
-                new Role {Title = "Boss"},
-                new Role {Title = "Purchaser"},
-                new Role {Title = "Employee"},
+                new Entities.Models.AboutUserModels.Role {Title = "Admin"},
+                new Entities.Models.AboutUserModels.Role {Title = "Boss"},
+                new Entities.Models.AboutUserModels.Role {Title = "Purchaser"},
+                new Entities.Models.AboutUserModels.Role {Title = "Employee"},
             };
 
             await _dbContext.Roles.AddRangeAsync(roles);
