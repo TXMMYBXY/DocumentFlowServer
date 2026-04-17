@@ -38,7 +38,6 @@ public class TokenService : ITokenService
         if (targetToken != null)
             await _tokenRepository.RevokeRefreshTokenByUserIdAsync(userId);
         
-
         var secretKey = _GenerateSecretLine();
         var refreshToken = new Entities.Models.AboutUserModels.RefreshToken
         {
@@ -46,22 +45,27 @@ public class TokenService : ITokenService
             UserId = userId,
             ExpiresAt = DateTime.UtcNow.AddDays(_refreshTokenSettings.ExpiresDays)
         };
-
+        
+        
         await _tokenRepository.AddAsync(refreshToken);
         await _tokenRepository.SaveChangesAsync();
 
-        refreshToken.Token = secretKey;
-
         _logger.LogInformation("Refresh token generated successfully for user with id {UserId}", userId);
         
-        return _mapper.Map<RefreshTokenDto>(refreshToken);
+        return new RefreshTokenDto
+        {
+            RefreshToken = secretKey,
+            ExpiresAt = refreshToken.ExpiresAt,
+        };
     }
 
     public async Task<bool> IsValidRefreshToken(string refreshToken)
     {
         _logger.LogInformation("Validating refresh token {RefreshToken}", refreshToken);
+
+        var hash = _refreshTokenHasher.Hash(refreshToken);
         
-        var token = await _tokenRepository.GetRefreshTokenByValueAsync(_refreshTokenHasher.Hash(refreshToken));
+        var token = await _tokenRepository.GetRefreshTokenByValueAsync(hash);
         
         if (token == null)
             return false;

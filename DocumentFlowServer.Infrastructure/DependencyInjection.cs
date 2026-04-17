@@ -8,6 +8,7 @@ using DocumentFlowServer.Application.Department;
 using DocumentFlowServer.Application.FieldExtractor;
 using DocumentFlowServer.Application.Issue;
 using DocumentFlowServer.Application.Jwt;
+using DocumentFlowServer.Application.Personal;
 using DocumentFlowServer.Application.RefreshToken;
 using DocumentFlowServer.Application.Role;
 using DocumentFlowServer.Application.Template;
@@ -46,6 +47,7 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(RefreshTokenMappingProfile).Assembly);
         services.AddAutoMapper(typeof(RoleMappingProfile).Assembly);
         services.AddAutoMapper(typeof(IssueMappingProfile).Assembly);
+        services.AddAutoMapper(typeof(LoginTimeMappingProfile).Assembly);
 
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
@@ -54,6 +56,7 @@ public static class DependencyInjection
         services.AddScoped(typeof(ITemplateRepository<>), typeof(TemplateRepository<>));
         services.AddScoped<IIssueRepository, IssueRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IAccountRepository, AccountRepository>();
         
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IDepartmentService, DepartmentService>();
@@ -67,6 +70,7 @@ public static class DependencyInjection
         services.AddScoped(typeof(ITemplateService<>), typeof(TemplateService<>));
         services.AddScoped<IIssueService, IssueService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IPersonalAccountService, PersonalAccountService>();
 
         services.AddScoped<DataSeeder>();
         

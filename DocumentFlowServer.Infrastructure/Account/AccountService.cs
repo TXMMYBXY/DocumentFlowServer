@@ -5,6 +5,8 @@ using DocumentFlowServer.Application.Account.ResponseDto;
 using DocumentFlowServer.Application.Common.Services;
 using DocumentFlowServer.Application.Jwt;
 using DocumentFlowServer.Application.Jwt.Dtos;
+using DocumentFlowServer.Application.Personal;
+using DocumentFlowServer.Application.Personal.Dtos;
 using DocumentFlowServer.Application.RefreshToken;
 using DocumentFlowServer.Application.RefreshToken.Dtos;
 using DocumentFlowServer.Application.User;
@@ -21,6 +23,7 @@ public class AccountService : IAccountService
     private readonly IJwtService _jwtService;
     private readonly IUserService _userService;
     private readonly ITokenService _tokenService;
+    private readonly IPersonalAccountService _personalAccountService;
 
     public AccountService(
         ILogger<AccountService> logger,
@@ -28,7 +31,8 @@ public class AccountService : IAccountService
         IPasswordHasher passwordHasher,
         IJwtService jwtService,
         IUserService userService,
-        ITokenService tokenService)
+        ITokenService tokenService,
+        IPersonalAccountService personalAccountService)
     {
         _logger = logger;
         _mapper = mapper;
@@ -36,6 +40,7 @@ public class AccountService : IAccountService
         _jwtService = jwtService;
         _userService = userService;
         _tokenService = tokenService;
+        _personalAccountService = personalAccountService;
     }
     
     public async Task<LoginResponseDto> LoginAsync(LoginRequestDto requestDto)
@@ -58,6 +63,8 @@ public class AccountService : IAccountService
         var accessToken = _jwtService.GenerateAccessToken(userClaims);
         var refreshToken = await _tokenService.GenerateRefreshTokenAsync(userLogin.Id);
         var userInfoDto = _mapper.Map<UserInfoForLoginDto>(userLogin);
+
+        await _personalAccountService.AddNewLoginHistoryAsync(new AuthRecordDto { UserId = userLogin.Id });
         
         return new LoginResponseDto
         {
@@ -80,7 +87,13 @@ public class AccountService : IAccountService
             };
 
         var refreshTokenDto = await _tokenService.GetRefreshToken(refreshToken);
-
+        var newLoginHistory = new AuthRecordDto
+        {
+            UserId = await _tokenService.GetRefreshTokenOwnerIdAsync(refreshToken)
+        };
+        
+        await _personalAccountService.AddNewLoginHistoryAsync(newLoginHistory);
+        
         return new LoginRefreshResponseDto
         {
             IsAllowed = true,
