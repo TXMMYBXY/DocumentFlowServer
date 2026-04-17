@@ -1,4 +1,5 @@
 using DocumentFlowServer.Application.Department.Dtos;
+using DocumentFlowServer.Application.Personal.Dtos;
 using DocumentFlowServer.Application.Role.Dtos;
 using DocumentFlowServer.Application.User;
 using DocumentFlowServer.Application.User.Dtos;
@@ -138,6 +139,24 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
                     Id = u.RoleId,
                     Title = u.Role.Title,
                     Description = u.Role.Description
+                }
+            })
+            .SingleOrDefaultAsync();
+    }
+
+    public async Task<PersonDto?> GetCurrentUserByIdAsync(int userId)
+    {
+        return await _dbContext.Users
+            .Where(u => u.Id == userId)
+            .Select(u => new PersonDto
+            {
+                FullName = u.FullName,
+                Email = u.Email,
+                Department = u.Department.Title,
+                Role = new RoleDto
+                {
+                    Id = u.RoleId,
+                    Title = u.Role.Title,
                 }
             })
             .SingleOrDefaultAsync();

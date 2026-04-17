@@ -1,4 +1,5 @@
 using DocumentFlowServer.Application.Common.Reposiroty;
+using DocumentFlowServer.Application.Personal.Dtos;
 using DocumentFlowServer.Application.User.Dtos;
 
 namespace DocumentFlowServer.Application.User;
@@ -15,4 +16,6 @@ public interface IUserRepository : IBaseRepository<Entities.Models.AboutUserMode
 
     Task<UserLoginDto?> GetUserForLoginAsync(string email);
     Task<UserLoginDto?> GetUserForAccessAsync(int userId);
+    
+    Task<PersonDto?> GetCurrentUserByIdAsync(int userId);
 }
