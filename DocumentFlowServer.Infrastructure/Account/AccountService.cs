@@ -46,8 +46,6 @@ public class AccountService : IAccountService
         
         ArgumentNullException.ThrowIfNull(userLogin);
 
-        Console.WriteLine(_passwordHasher.Hash(requestDto.Password));
-        
         var isPasswordMatching = _passwordHasher.Verify(userLogin.PasswordHash, requestDto.Password);
 
         if (!isPasswordMatching)
@@ -76,7 +74,10 @@ public class AccountService : IAccountService
         var isTokenValid = await _tokenService.IsValidRefreshToken(refreshToken);
 
         if (!isTokenValid)
-            throw new ArgumentNullException("Refresh token is no valid");
+            return new LoginRefreshResponseDto
+            {
+                IsAllowed = false
+            };
 
         var refreshTokenDto = await _tokenService.GetRefreshToken(refreshToken);
 

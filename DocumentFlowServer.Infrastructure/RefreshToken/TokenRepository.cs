@@ -21,7 +21,7 @@ public class TokenRepository : BaseRepository<Entities.Models.AboutUserModels.Re
             .Where(t => t.UserId == userId)
             .Select(t => new RefreshTokenDto
             {
-                Token = t.Token,
+                RefreshToken = t.Token,
                 ExpiresAt = t.ExpiresAt,
             })
             .SingleOrDefaultAsync();
@@ -33,7 +33,7 @@ public class TokenRepository : BaseRepository<Entities.Models.AboutUserModels.Re
             .Where(t => t.Token.Equals(token))
             .Select(t => new RefreshTokenDto
             {
-                Token = t.Token,
+                RefreshToken = t.Token,
                 ExpiresAt = t.ExpiresAt,
             })
             .SingleOrDefaultAsync();

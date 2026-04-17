@@ -14,7 +14,9 @@ public class AuthorizationMappingProfile : Profile
     {
         CreateMap<LoginRequest, LoginRequestDto>();
         
-        CreateMap<LoginResponseDto, LoginResponse>();
+        CreateMap<LoginResponseDto, LoginResponse>()
+            .ForMember(dest => dest.Access, opt => opt.MapFrom(src => src.AccessToken))
+            .ForMember(dest => dest.Refresh, opt => opt.MapFrom(src => src.RefreshToken));
 
         CreateMap<LoginRefreshResponseDto, LoginRefreshResponse>();
 

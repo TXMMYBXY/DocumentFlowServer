@@ -7,11 +7,11 @@ namespace DocumentFlowServer.Api.Features.Authorization.Responses;
 
 public class LoginResponse
 {
-    [JsonPropertyName("accessToken")]
-    public AccessTokenDto AccessToken { get; set; }
+    [JsonPropertyName("access")]
+    public AccessTokenDto Access { get; set; }
     
-    [JsonPropertyName("refreshToken")]
-    public RefreshTokenDto RefreshToken { get; set; }
+    [JsonPropertyName("refresh")]
+    public RefreshTokenDto Refresh { get; set; }
     
     [JsonPropertyName("userInfo")]
     public UserInfoForLoginDto UserInfo { get; set; }
