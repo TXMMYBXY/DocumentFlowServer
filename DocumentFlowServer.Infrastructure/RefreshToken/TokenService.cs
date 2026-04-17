@@ -78,7 +78,7 @@ public class TokenService : ITokenService
     {
         var refreshTokenDto = await _tokenRepository.GetRefreshTokenByValueAsync(_refreshTokenHasher.Hash(refreshToken));
         
-        refreshTokenDto.Token = refreshToken;
+        refreshTokenDto.RefreshToken = refreshToken;
         
         ArgumentNullException.ThrowIfNull(refreshTokenDto, "Refresh token is no valid");
         

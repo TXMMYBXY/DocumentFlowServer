@@ -1,7 +1,12 @@
+using System.Text.Json.Serialization;
+
 namespace DocumentFlowServer.Application.RefreshToken.Dtos;
 
 public class RefreshTokenDto
 {
-    public string Token { get; set; }
+    [JsonPropertyName("refreshToken")]
+    public string RefreshToken { get; set; }
+    
+    [JsonPropertyName("expiresAt")]
     public DateTimeOffset? ExpiresAt { get; set; }
 }

@@ -5,7 +5,7 @@ namespace DocumentFlowServer.Api.Features.Authorization.Responses;
 
 public class LoginRefreshResponse
 {
-    [JsonPropertyName("idAllowed")]
+    [JsonPropertyName("isAllowed")]
     public bool IsAllowed { get; set; }
     
     [JsonPropertyName("refreshToken")]
