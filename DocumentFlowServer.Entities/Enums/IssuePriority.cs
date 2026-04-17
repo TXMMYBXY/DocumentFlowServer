@@ -3,7 +3,7 @@ namespace DocumentFlowServer.Entities.Enums;
 /// <summary>
 /// Enum of priority for filling tasks
 /// </summary>
-public enum TaskPriority
+public enum IssuePriority
 {
     Low,
     Normal,

@@ -76,7 +76,7 @@ public class AccountService : IAccountService
         var isTokenValid = await _tokenService.IsValidRefreshToken(refreshToken);
 
         if (!isTokenValid)
-            throw new ArgumentNullException(refreshToken, "Refresh token is no valid");
+            throw new ArgumentNullException("Refresh token is no valid");
 
         var refreshTokenDto = await _tokenService.GetRefreshToken(refreshToken);
 

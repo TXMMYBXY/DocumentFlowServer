@@ -1,14 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using DocumentFlowServer.Entities.Enums;
-using TaskStatus = DocumentFlowServer.Entities.Enums.TaskStatus;
 
 namespace DocumentFlowServer.Entities.Models;
 
 /// <summary>
 /// Model for a document filling task
 /// </summary>
-public class TaskModel : EntityBase
+public class IssueModel : EntityBase
 {
     [Required]
     public Guid TaskId { get; set; } = Guid.NewGuid();
@@ -19,7 +18,7 @@ public class TaskModel : EntityBase
     [Required]
     public string TemplateData { get; set; } = "{}";
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public TaskStatus Status { get; set; } = TaskStatus.Pending;
+    public IssueStatus Status { get; set; } = IssueStatus.Pending;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? StartedAt { get; set; }
@@ -29,7 +28,7 @@ public class TaskModel : EntityBase
     public string? ErrorMessage { get; set; }
     public int? UserId { get; set; }
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public TaskPriority Priority{ get; set; } = TaskPriority.Low;
+    public IssuePriority Priority{ get; set; } = IssuePriority.Low;
     // For retries
     public int RetryCount { get; set; } = 0;
     public DateTime? LastAttemptAt { get; set; }

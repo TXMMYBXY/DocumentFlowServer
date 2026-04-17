@@ -6,6 +6,7 @@ using DocumentFlowServer.Application.Common.Reposiroty;
 using DocumentFlowServer.Application.Common.Services;
 using DocumentFlowServer.Application.Department;
 using DocumentFlowServer.Application.FieldExtractor;
+using DocumentFlowServer.Application.Issue;
 using DocumentFlowServer.Application.Jwt;
 using DocumentFlowServer.Application.RefreshToken;
 using DocumentFlowServer.Application.Template;
@@ -15,6 +16,7 @@ using DocumentFlowServer.Infrastructure.Common.Repository;
 using DocumentFlowServer.Infrastructure.Common.Services;
 using DocumentFlowServer.Infrastructure.Data;
 using DocumentFlowServer.Infrastructure.Department;
+using DocumentFlowServer.Infrastructure.Issue;
 using DocumentFlowServer.Infrastructure.Jwt;
 using DocumentFlowServer.Infrastructure.RefreshToken;
 using DocumentFlowServer.Infrastructure.Template;
@@ -41,12 +43,14 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(DepartmentMappingProfile).Assembly);
         services.AddAutoMapper(typeof(RefreshTokenMappingProfile).Assembly);
         services.AddAutoMapper(typeof(RoleMappingProfile).Assembly);
+        services.AddAutoMapper(typeof(IssueMappingProfile).Assembly);
 
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<ITokenRepository, TokenRepository>();
         services.AddScoped(typeof(ITemplateRepository<>), typeof(TemplateRepository<>));
+        services.AddScoped<IIssueRepository, IssueRepository>();
         
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IDepartmentService, DepartmentService>();
@@ -58,6 +62,7 @@ public static class DependencyInjection
         services.AddScoped<IFileStorageService, FileStorageService>();
         services.AddScoped<IFieldExtractorService, FieldExtractorService>();
         services.AddScoped(typeof(ITemplateService<>), typeof(TemplateService<>));
+        services.AddScoped<IIssueService, IssueService>();
 
         services.AddScoped<DataSeeder>();
         
