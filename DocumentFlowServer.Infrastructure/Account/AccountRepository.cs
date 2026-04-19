@@ -24,6 +24,8 @@ public class AccountRepository : BaseRepository<LoginHistory>, IAccountRepositor
             {
                 LoginTime = l.LoginDate
             })
+            .OrderByDescending(l => l.LoginTime)
+            .Take(10)
             .ToListAsync();
     }
 

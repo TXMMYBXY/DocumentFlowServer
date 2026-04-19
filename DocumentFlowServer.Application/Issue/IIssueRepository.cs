@@ -5,5 +5,6 @@ namespace DocumentFlowServer.Application.Issue;
 
 public interface IIssueRepository : IBaseRepository<IssueModel>
 {
-    
+    Task<IssueModel?> GetIssueByIdAsync(Guid taskId);
+    Task<IssueModel?> GetIssueByStatusPendingAsync();
 }

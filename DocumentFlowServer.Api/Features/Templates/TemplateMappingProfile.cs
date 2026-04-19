@@ -1,6 +1,7 @@
 using AutoMapper;
 using DocumentFlowServer.Api.Features.Templates.Requests;
 using DocumentFlowServer.Api.Features.Templates.Responses;
+using DocumentFlowServer.Application.FieldExtractor.Dtos;
 using DocumentFlowServer.Application.Template;
 using DocumentFlowServer.Application.Template.Dtos;
 
@@ -28,5 +29,6 @@ public class TemplateMappingProfile : Profile
             .ForMember(dest => dest.FileLength, opt => opt.MapFrom(src => src.File.Length))
             .ForMember(dest => dest.FileStream, opt => opt.MapFrom(src => src.File.OpenReadStream()));
 
+        CreateMap<TemplateFieldInfoDto, TemplateFieldInfoResponse>();
     }
 }

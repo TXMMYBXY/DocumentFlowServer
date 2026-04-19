@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Text.Json;
 using AutoMapper;
@@ -100,7 +101,7 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
             Title = templateDto.Title,
             Path = filePath,
             CreatedBy = templateDto.CreatedBy,
-            CreatedAt = templateDto.CreatedAt,
+            CreatedAt = DateTime.UtcNow,
             IsActive = templateDto.IsActive
         };
 
