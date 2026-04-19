@@ -121,5 +121,8 @@ public class TemplateRepository<T> : BaseRepository<T>, ITemplateRepository<T> w
             await query.ExecuteUpdateAsync(s => s
                 .SetProperty(t => t.Path, path));
         }
+
+        await query.ExecuteUpdateAsync(s => s
+            .SetProperty(t => t.CreatedAt, DateTime.UtcNow));
     }
 }
