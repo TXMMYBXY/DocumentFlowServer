@@ -112,13 +112,4 @@ public class AccountService : IAccountService
 
         return accessTokenDto;
     }
-
-    public async Task<RefreshTokenDto> GetNewRefreshTokenAsync(string refreshToken)
-    {
-        var userId = await _tokenService.GetRefreshTokenOwnerIdAsync(refreshToken);
-
-        var refreshTokenDto = await _tokenService.GenerateRefreshTokenAsync(userId);
-
-        return refreshTokenDto;
-    }
 }

@@ -63,16 +63,4 @@ public class AuthorizationController : ControllerBase
 
         return Ok(response);
     }
-    
-    [HttpPost("refresh")]
-    public async Task<ActionResult<RefreshTokenResponse>> RefreshToken([FromBody] RefreshTokenRequest request)
-    {
-        _logger.LogInformation("request for new refresh token");
-
-        var responseDto = await _accountService.GetNewRefreshTokenAsync(request.RefreshToken);
-
-        var response = _mapper.Map<RefreshTokenResponse>(responseDto);
-
-        return Ok(response);
-    }
 }
