@@ -14,4 +14,7 @@ public class TemplateFieldInfoDto
     public bool Required { get; set; }
     [JsonPropertyName("options")]
     public List<string>? Options { get; set; }
+    
+    [JsonPropertyName("location")]
+    public FieldLocationDto? Location { get; set; }
 }

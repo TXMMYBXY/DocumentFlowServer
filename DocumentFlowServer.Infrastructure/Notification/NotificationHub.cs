@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
@@ -20,6 +23,8 @@ public class NotificationHub : Hub
         _logger.LogInformation($"Подключился: {connectionId}");
         
         await Groups.AddToGroupAsync(connectionId, roleId);
+        
+        _logger.LogInformation("Added to group: {RoleId}", roleId);
         
         await base.OnConnectedAsync();
     }

@@ -1,9 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using DocumentFlowServer.Application.Account;
 using DocumentFlowServer.Application.Common.Services;
 using DocumentFlowServer.Application.Personal;
 using DocumentFlowServer.Application.Personal.Dtos;
 using DocumentFlowServer.Application.User;
+using DocumentFlowServer.Entities.Enums;
 using DocumentFlowServer.Entities.Models;
 using Microsoft.Extensions.Logging;
 
@@ -14,6 +18,7 @@ public class PersonalAccountService : IPersonalAccountService
     private readonly ILogger<PersonalAccountService> _logger;
     private readonly IMapper _mapper;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly INotificationService _notificationService;
 
     private readonly IAccountRepository _accountRepository;
     private readonly IUserRepository _userRepository;
@@ -22,12 +27,14 @@ public class PersonalAccountService : IPersonalAccountService
         ILogger<PersonalAccountService> logger,
         IMapper mapper,
         IPasswordHasher passwordHasher,
+        INotificationService notificationService,
         IAccountRepository accountRepository,
         IUserRepository userRepository)
     {
         _logger = logger;
         _mapper = mapper;
         _passwordHasher = passwordHasher;
+        _notificationService = notificationService;
         _accountRepository = accountRepository;
         _userRepository = userRepository;
     }
@@ -46,18 +53,40 @@ public class PersonalAccountService : IPersonalAccountService
         var person = await _userRepository.GetByIdAsync(personId);
 
         var currentPasswordStatus = _passwordHasher.Verify(person.PasswordHash, changePasswordDto.CurrentPassword);
-        
-        if(!currentPasswordStatus)
+
+        if (!currentPasswordStatus)
+        {
+            await _notificationService.SendNotificationToUserAsync(personId, new Entities.Models.Notification(
+                NotificationKind.System,
+                NotificationSeverity.Error,
+                "Пароль не верный",
+                "Изменение пароля"));
+            
             throw new InvalidOperationException("Current password doesn't match");
+        }
         
         var passwordsMatching = changePasswordDto.NewPassword.Equals(changePasswordDto.NewPassword);
-        
-        if(!passwordsMatching)
+
+        if (!passwordsMatching)
+        {
+            await _notificationService.SendNotificationToUserAsync(personId, new Entities.Models.Notification(
+                NotificationKind.System,
+                NotificationSeverity.Error,
+                "Пароли не совпадают",
+                "Изменение пароля"));
+            
             throw new InvalidOperationException("Passwords do not match");
+        }
 
         person.PasswordHash = _passwordHasher.Hash(changePasswordDto.NewPassword);
 
         await _userRepository.SaveChangesAsync();
+
+        await _notificationService.SendNotificationToUserAsync(personId, new Entities.Models.Notification(
+            NotificationKind.System,
+            NotificationSeverity.Success,
+            "Пароль успешно изменен",
+            "Изменение пароля"));
 
         _logger.LogInformation("Password changed successfully for user with ID {PersonId}", personId);
     }

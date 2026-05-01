@@ -8,7 +8,7 @@ public class AccessTokenResponse
     public string AccessToken { get; set; }
     
     [JsonPropertyName("expiresAt")]
-    public string ExpiresAt { get; set; }
+    public DateTimeOffset ExpiresAt { get; set; }
     
     [JsonPropertyName("tokenType")]
     public string TokenType { get; set; } = "Bearer";

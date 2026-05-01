@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using DocumentFlowServer.Application.FieldExtractor;
 using DocumentFlowServer.Application.FieldExtractor.Dtos;
 using DocumentFormat.OpenXml.Office2010.Word;

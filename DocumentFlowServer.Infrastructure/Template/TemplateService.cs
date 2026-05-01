@@ -1,13 +1,16 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.InteropServices.JavaScript;
+using System.IO;
 using System.Text;
 using System.Text.Json;
-using AutoMapper;
+using System.Threading.Tasks;
 using DocumentFlowServer.Application.Common.Services;
 using DocumentFlowServer.Application.FieldExtractor;
 using DocumentFlowServer.Application.FieldExtractor.Dtos;
 using DocumentFlowServer.Application.Template;
 using DocumentFlowServer.Application.Template.Dtos;
+using DocumentFlowServer.Entities.Enums;
 using DocumentFlowServer.Entities.Models.DocumentTemplatesModels;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -25,6 +28,7 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
     private readonly IDistributedCache _cache;
     private readonly IFileStorageService _fileStorageService;
     private readonly IFieldExtractorService _fieldExtractor;
+    private readonly INotificationService _notificationService;
     
     private readonly ITemplateRepository<T> _templateRepository;
 
@@ -33,12 +37,14 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
         IDistributedCache cache,
         IFileStorageService fileStorageService,
         IFieldExtractorService fieldExtractor,
+        INotificationService notificationService,
         ITemplateRepository<T> templateRepository)
     {
         _logger = logger;
         _cache = cache;
         _fileStorageService = fileStorageService;
         _fieldExtractor = fieldExtractor;
+        _notificationService = notificationService;
         _templateRepository = templateRepository;
     }
     
@@ -107,7 +113,15 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
 
         await _templateRepository.AddAsync(templateModel);
         await _templateRepository.SaveChangesAsync();
-
+        
+        await _notificationService.SendNotificationToRoleAsync(typeof(T).Assembly == typeof(ContractTemplate).Assembly?
+            [1, 2, 3] : [1, 2, 3, 4], new Entities.Models.Notification(
+            NotificationKind.TemplateAdded,
+            NotificationSeverity.Info,
+            "Шаблон добавлен",
+            $"Добавлен новый шаблон {templateModel.Title}"
+        ));
+        
         await _InvalidateTemplatesCacheAsync();
         
         _logger.LogInformation("Template created successfully with title {Title}", templateDto.Title);
@@ -180,7 +194,15 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
         
         await _templateRepository.UpdateTemplatePartialAsync(templateId, templateDto.Title, filePath);
         await _templateRepository.SaveChangesAsync();
-
+        
+        await _notificationService.SendNotificationToRoleAsync(typeof(T).Assembly == typeof(ContractTemplate).Assembly?
+            [1, 2, 3] : [1, 2, 3, 4], new Entities.Models.Notification(
+            NotificationKind.TemplateAdded,
+            NotificationSeverity.Info,
+            "Шаблон обновлен",
+            $"Добавлен новый шаблон {templateDto.Title}"
+        ));
+        
         await _InvalidateTemplatesCacheAsync();
         
         _logger.LogInformation("Template updated successfully with id {TemplateId}", templateId);
@@ -194,7 +216,15 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
         await _templateRepository.SaveChangesAsync();
 
         await _InvalidateTemplatesCacheAsync();
-
+        
+        await _notificationService.SendNotificationToRoleAsync(typeof(T).Assembly == typeof(ContractTemplate).Assembly?
+            [1, 2, 3] : [1, 2, 3, 4], new Entities.Models.Notification(
+            NotificationKind.TemplateDeleted,
+            NotificationSeverity.Info,
+            "Шаблон обновлен",
+            $"Удален шаблон под номером {templateId}"
+        ));
+        
         _logger.LogInformation("Template deleted successfully with id {TemplateId}", templateId);
     }
 

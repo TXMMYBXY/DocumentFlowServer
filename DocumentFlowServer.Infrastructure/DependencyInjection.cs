@@ -20,6 +20,7 @@ using DocumentFlowServer.Infrastructure.Data;
 using DocumentFlowServer.Infrastructure.Department;
 using DocumentFlowServer.Infrastructure.Issue;
 using DocumentFlowServer.Infrastructure.Jwt;
+using DocumentFlowServer.Infrastructure.Notification;
 using DocumentFlowServer.Infrastructure.RefreshToken;
 using DocumentFlowServer.Infrastructure.Role;
 using DocumentFlowServer.Infrastructure.Template;
@@ -71,6 +72,7 @@ public static class DependencyInjection
         services.AddScoped<IIssueService, IssueService>();
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IPersonalAccountService, PersonalAccountService>();
+        services.AddScoped<INotificationService, NotificationService>();
 
         services.AddScoped<DataSeeder>();
         

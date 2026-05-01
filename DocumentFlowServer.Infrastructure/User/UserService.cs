@@ -1,8 +1,12 @@
+using System;
+using System.Collections.Generic;
 using System.Text.Json;
+using System.Threading.Tasks;
 using AutoMapper;
 using DocumentFlowServer.Application.Common.Services;
 using DocumentFlowServer.Application.User;
 using DocumentFlowServer.Application.User.Dtos;
+using DocumentFlowServer.Entities.Enums;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 
@@ -16,6 +20,7 @@ public class UserService : IUserService
     private readonly IMapper _mapper;
     private readonly IDistributedCache _cache;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly INotificationService _notificationService;
     
     private readonly IUserRepository _userRepository;
 
@@ -24,12 +29,14 @@ public class UserService : IUserService
         IMapper mapper,
         IDistributedCache cache,
         IPasswordHasher passwordHasher,
+        INotificationService notificationService,
         IUserRepository userRepository)
     {
         _logger = logger;
         _mapper = mapper;
         _cache = cache;
         _passwordHasher = passwordHasher;
+        _notificationService = notificationService;
         _userRepository = userRepository;
     }
     
@@ -77,6 +84,13 @@ public class UserService : IUserService
         await _userRepository.SaveChangesAsync();
         
         _logger.LogInformation("User successfully created");
+
+        await _notificationService.SendNotificationToRoleAsync(new []{1}, new Entities.Models.Notification(
+            NotificationKind.UserAdded,
+            NotificationSeverity.Info,
+            "Новый пользователь",
+            $"Новый пользователь с почтой {createUserDto.Email} зарегистрирован"
+        ));
         
         await _InvalidateUsersCacheAsync();
     }
@@ -94,6 +108,13 @@ public class UserService : IUserService
         await _userRepository.SaveChangesAsync();
         
         _logger.LogInformation("user with id {UserId} successfully updated", userId);
+        
+        await _notificationService.SendNotificationToRoleAsync([1], new Entities.Models.Notification(
+            NotificationKind.UserUpdated,
+            NotificationSeverity.Info,
+            "Пользователь изменен",
+            $"Обновлена информация о пользователе {updateUserInfoDto.Email}"
+        ));
         
         await _InvalidateUsersCacheAsync();
     }
@@ -150,6 +171,14 @@ public class UserService : IUserService
         await _userRepository.SaveChangesAsync();        
         
         _logger.LogInformation("User with id {UserId} was deleted", userId);
+
+        await _notificationService.SendNotificationToRoleAsync([1], new Entities.Models.Notification
+            (
+                NotificationKind.UserDeleted,
+                NotificationSeverity.Info,
+                "Пользователь удален", 
+            $"Удален пользователь под номером {userId}"
+        ));
         
         await _InvalidateUsersCacheAsync();
     }

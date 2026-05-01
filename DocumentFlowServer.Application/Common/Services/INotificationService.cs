@@ -5,6 +5,6 @@ namespace DocumentFlowServer.Application.Common.Services;
 public interface INotificationService
 {
     Task SendNotificationToAllAsync(Notification notification);
-    Task SendNotificationToUserAsync(string userId, Notification notification);
-    Task SendNotificationToRoleAsync(string[] roleIds, Notification notification);
+    Task SendNotificationToUserAsync(int userId, Notification notification);
+    Task SendNotificationToRoleAsync(int[] roleIds, Notification notification);
 }
