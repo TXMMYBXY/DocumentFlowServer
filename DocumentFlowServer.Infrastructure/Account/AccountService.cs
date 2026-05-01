@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using DocumentFlowServer.Application.Account;
 using DocumentFlowServer.Application.Account.RequestDto;
@@ -87,16 +89,20 @@ public class AccountService : IAccountService
             };
 
         var refreshTokenDto = await _tokenService.GetRefreshToken(refreshToken);
+        
         var newLoginHistory = new AuthRecordDto
         {
             UserId = await _tokenService.GetRefreshTokenOwnerIdAsync(refreshToken)
         };
+
+        var userLoginDto = await _userService.GetUserInfoByUserIdAsync(newLoginHistory.UserId);
         
         await _personalAccountService.AddNewLoginHistoryAsync(newLoginHistory);
         
         return new LoginRefreshResponseDto
         {
             IsAllowed = true,
+            AccessToken = _jwtService.GenerateAccessToken(_mapper.Map<UserClaimsDto>(userLoginDto)),
             RefreshToken = refreshTokenDto
         };
     }

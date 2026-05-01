@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using DocumentFlowServer.Application.Common.Services;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -23,21 +24,21 @@ public class NotificationService : INotificationService
         await _notificationHub.Clients.All.SendAsync("Notification", notification);
     }
 
-    public async Task SendNotificationToRoleAsync(string[] roleIds, Entities.Models.Notification notification)
+    public async Task SendNotificationToRoleAsync(int[] roleIds, Entities.Models.Notification notification)
     {
         _logger.LogDebug("Notification {Kind} {Severity} {Title} {Message}",
             notification.Kind, notification.Severity, notification.Title, notification.Message);
         foreach (var roleId in roleIds)
         {
-            await _notificationHub.Clients.Group(roleId).SendAsync("Notification", notification);
+            await _notificationHub.Clients.Group(roleId.ToString()).SendAsync("Notification", notification);
         }
     }
 
-    public async Task SendNotificationToUserAsync(string userId, Entities.Models.Notification notification)
+    public async Task SendNotificationToUserAsync(int userId, Entities.Models.Notification notification)
     {
         _logger.LogDebug("Notification {Kind} {Severity} {Title} {Message}",
             notification.Kind, notification.Severity, notification.Title, notification.Message);
         
-        await _notificationHub.Clients.User(userId).SendAsync("Notification", notification);
+        await _notificationHub.Clients.User(userId.ToString()).SendAsync("Notification", notification);
     }
 }

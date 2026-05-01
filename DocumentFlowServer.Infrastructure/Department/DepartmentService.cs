@@ -1,7 +1,11 @@
+using System;
 using System.Text.Json;
+using System.Threading.Tasks;
 using AutoMapper;
+using DocumentFlowServer.Application.Common.Services;
 using DocumentFlowServer.Application.Department;
 using DocumentFlowServer.Application.Department.Dtos;
+using DocumentFlowServer.Entities.Enums;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 
@@ -14,6 +18,7 @@ public class DepartmentService : IDepartmentService
     private ILogger<DepartmentService> _logger;
     private IMapper  _mapper;
     private readonly IDistributedCache _cache;
+    private readonly INotificationService _notificationService;
     
     private readonly IDepartmentRepository _departmentRepository;
 
@@ -21,11 +26,13 @@ public class DepartmentService : IDepartmentService
         ILogger<DepartmentService> logger,
         IMapper mapper,
         IDistributedCache cache,
+        INotificationService notificationService,
         IDepartmentRepository departmentRepository)
     {
         _logger = logger;
         _mapper = mapper;
         _cache = cache;
+        _notificationService = notificationService;
         _departmentRepository = departmentRepository;
     }
     
@@ -79,6 +86,13 @@ public class DepartmentService : IDepartmentService
         
         await _departmentRepository.AddAsync(department);
         await _departmentRepository.SaveChangesAsync();
+
+        await _notificationService.SendNotificationToRoleAsync([1],
+            new Entities.Models.Notification(
+                NotificationKind.DepartmentAdded,
+                NotificationSeverity.Success,
+                "Отдел",
+                $"Добавлен новый отдел {dto.Title}"));
         
         _logger.LogInformation("Department created successfully");
         
@@ -95,29 +109,43 @@ public class DepartmentService : IDepartmentService
 
         await _departmentRepository.SaveChangesAsync();
         
+        await _notificationService.SendNotificationToRoleAsync([1],
+            new Entities.Models.Notification(
+                NotificationKind.DepartmentUpdated,
+                NotificationSeverity.Success,
+                "Отдел",
+                $"Изменен отдел {department.Title}"));
+        
         _logger.LogInformation("Department updated successfully");
         
         await _InvalidateDepartmentsCacheAsync();
     }
 
-    public async Task DeleteDepartmentAsync(int id)
+    public async Task DeleteDepartmentAsync(int departmentId)
     {
-        var departmentExists = await _departmentRepository.ExistsAsync(id);
+        var departmentExists = await _departmentRepository.ExistsAsync(departmentId);
         
         if (!departmentExists)
         {
             throw  new NullReferenceException("Department does not exist");
         }
         
-        var departmentExistsEmployees = await _departmentRepository.ExistsEmployees(id);
+        var departmentExistsEmployees = await _departmentRepository.ExistsEmployees(departmentId);
 
         if (departmentExistsEmployees)
         {
             throw new NullReferenceException("Department has employees");
         }
         
-        await _departmentRepository.DeleteAsync(id);
+        await _departmentRepository.DeleteAsync(departmentId);
         await _departmentRepository.SaveChangesAsync();
+        
+        await _notificationService.SendNotificationToRoleAsync([1],
+            new Entities.Models.Notification(
+                NotificationKind.DepartmentDeleted,
+                NotificationSeverity.Success,
+                "Отдел",
+                $"Добавлен новый отдел под номером {departmentId}"));
         
         _logger.LogInformation("Department deleted successfully");
         
