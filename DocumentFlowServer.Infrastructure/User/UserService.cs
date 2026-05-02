@@ -85,7 +85,7 @@ public class UserService : IUserService
         
         _logger.LogInformation("User successfully created");
 
-        await _notificationService.SendNotificationToRoleAsync(new []{1}, new Entities.Models.Notification(
+        await _notificationService.SendNotificationToRoleAsync([1], new Entities.Models.Notification(
             NotificationKind.UserAdded,
             NotificationSeverity.Info,
             "Новый пользователь",
@@ -96,7 +96,7 @@ public class UserService : IUserService
     }
 
     public async Task UpdateUserInfoAsync(int userId, UpdateUserInfoDto updateUserInfoDto)
-    {
+    {    
         _logger.LogInformation("Updating user with id {UserId}", userId);
         
         var user = await _userRepository.GetByIdAsync(userId);

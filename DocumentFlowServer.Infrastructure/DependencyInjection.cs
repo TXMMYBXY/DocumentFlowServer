@@ -5,6 +5,7 @@ using DocumentFlowServer.Application.Common.MappingProfiles;
 using DocumentFlowServer.Application.Common.Reposiroty;
 using DocumentFlowServer.Application.Common.Services;
 using DocumentFlowServer.Application.Department;
+using DocumentFlowServer.Application.Document;
 using DocumentFlowServer.Application.FieldExtractor;
 using DocumentFlowServer.Application.Issue;
 using DocumentFlowServer.Application.Jwt;
@@ -18,6 +19,7 @@ using DocumentFlowServer.Infrastructure.Common.Repository;
 using DocumentFlowServer.Infrastructure.Common.Services;
 using DocumentFlowServer.Infrastructure.Data;
 using DocumentFlowServer.Infrastructure.Department;
+using DocumentFlowServer.Infrastructure.Document;
 using DocumentFlowServer.Infrastructure.Issue;
 using DocumentFlowServer.Infrastructure.Jwt;
 using DocumentFlowServer.Infrastructure.Notification;
@@ -58,6 +60,7 @@ public static class DependencyInjection
         services.AddScoped<IIssueRepository, IssueRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<IDocumentRepository, DocumentRepository>();
         
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IDepartmentService, DepartmentService>();
@@ -73,6 +76,7 @@ public static class DependencyInjection
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IPersonalAccountService, PersonalAccountService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IDocumentService, DocumentService>();
 
         services.AddScoped<DataSeeder>();
         

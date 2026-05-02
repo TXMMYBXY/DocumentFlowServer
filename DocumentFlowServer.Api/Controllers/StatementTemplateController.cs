@@ -66,7 +66,7 @@ public class StatementTemplateController : ControllerBase
 
         var stream = new FileStream(templateViewModel.FilePath, FileMode.Open, FileAccess.Read);
 
-        return File(stream, "application/octet-stream", templateViewModel.FileName);
+        return File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", templateViewModel.FileName);
     }
     
     [Authorize(Policy = Policy.AdminAndBoss)]

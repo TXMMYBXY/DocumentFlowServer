@@ -1,3 +1,4 @@
+using System.Diagnostics.Contracts;
 using DocumentFlowServer.Entities.Models;
 using DocumentFlowServer.Entities.Models.AboutUserModels;
 using DocumentFlowServer.Entities.Models.DocumentTemplatesModels;
@@ -11,7 +12,7 @@ public class ApplicationDbContext : DbContext
     {
 
     }
-    public DbSet<Contract> Contracts { get; set; }
+    public DbSet<Entities.Models.Document> Documents { get; set; }
     public DbSet<Entities.Models.AboutUserModels.User> Users { get; set; }
     public DbSet<Entities.Models.AboutUserModels.Role> Roles { get; set; }
     public DbSet<ContractTemplate> ContractTemplates { get; set; }
