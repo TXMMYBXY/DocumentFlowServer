@@ -2,9 +2,10 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using DocumentFlowServer.Application.Common.Configuration;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace DocumentFlowServer.Api.Middleware;
+namespace DocumentFlowServer.Infrastructure.Common.Handlers;
 
 public class WorkerAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
@@ -25,13 +26,19 @@ public class WorkerAuthenticationHandler : AuthenticationHandler<AuthenticationS
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
+        Logger.LogInformation("Worker auth triggered");
+
         if (!Request.Headers.TryGetValue(WorkerHeader, out var apiKey))
         {
+            Logger.LogWarning("Worker header missing");
             return Task.FromResult(AuthenticateResult.Fail("Missing API key"));
         }
 
+        Logger.LogInformation("Worker header received: {Key}", apiKey.ToString());
+
         if (apiKey != _workerSettings.ApiKey)
         {
+            Logger.LogWarning("Worker key invalid");
             return Task.FromResult(AuthenticateResult.Fail("Invalid API key"));
         }
 

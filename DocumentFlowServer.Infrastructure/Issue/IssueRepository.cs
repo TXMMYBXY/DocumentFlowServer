@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DocumentFlowServer.Application.Issue;
+using DocumentFlowServer.Entities.Enums;
 using DocumentFlowServer.Entities.Models;
 using DocumentFlowServer.Infrastructure.Common.Repository;
 using DocumentFlowServer.Infrastructure.Data;
@@ -27,6 +28,8 @@ public class IssueRepository : BaseRepository<IssueModel>, IIssueRepository
 
     public async Task<IssueModel?> GetIssueByStatusPendingAsync()
     {
-        throw new NotImplementedException();
+        return await _dbContext.Tasks
+            .Where(t => t.Status == IssueStatus.Pending)
+            .FirstOrDefaultAsync();
     }
 }

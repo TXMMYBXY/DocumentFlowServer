@@ -32,5 +32,7 @@ public class TemplateMappingProfile : Profile
         CreateMap<TemplateFieldInfoDto, TemplateFieldInfoResponse>();
         
         CreateMap<DownloadTemplateDto, DownloadTemplateResponse>();
+
+        CreateMap<GetTemplateForWorkerDto, GetTemplateForWorkerResponse>();
     }
 }

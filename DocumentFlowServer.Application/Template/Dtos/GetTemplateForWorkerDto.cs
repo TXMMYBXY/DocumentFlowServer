@@ -7,7 +7,7 @@ public class GetTemplateForWorkerDto
     [JsonPropertyName("id")]
     public int Id { get; set; }
     [JsonPropertyName("title")]
-    public string Name { get; set; } = string.Empty;
+    public string Title { get; set; }
     [JsonPropertyName("path")]
-    public string FilePath { get; set; } = string.Empty;
+    public string Path { get; set; }
 }

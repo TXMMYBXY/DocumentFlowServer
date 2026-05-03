@@ -2,7 +2,6 @@ using AutoMapper;
 using DocumentFlowServer.Api.Authorization.Policies;
 using DocumentFlowServer.Api.Features.Document.Requests;
 using DocumentFlowServer.Api.Features.Document.Responses;
-using DocumentFlowServer.Api.Features.Templates;
 using DocumentFlowServer.Application.Document;
 using DocumentFlowServer.Application.Document.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -43,9 +42,9 @@ public class DocumentController : ControllerBase
         return File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", response.FileName);
     }
     
-    // [WorkerAuthorize]
     [HttpPost("upload")]
     [Consumes("multipart/form-data")]
+    // [WorkerAuthorize]
     public async Task<ActionResult> UploadDocument([FromForm] UploadDocumentRequest request)
     {
         _logger.LogInformation("request for uploading document");

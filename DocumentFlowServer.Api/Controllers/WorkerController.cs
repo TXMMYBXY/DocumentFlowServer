@@ -16,16 +16,16 @@ public class WorkerController : ControllerBase
 {
     public readonly IMapper _mapper;
     public readonly IWorkerTaskService _workerTaskService;
-    public readonly ITemplateService<Template> _templateService;
+    public readonly ITemplateService<StatementTemplate> _statementTemplateService;
 
     public WorkerController(
         IMapper mapper,
         IWorkerTaskService workerTaskService,
-        ITemplateService<Template> templateService)
+        ITemplateService<StatementTemplate> statementTemplateService)
     {
         _mapper = mapper;
         _workerTaskService = workerTaskService;
-        _templateService = templateService;
+        _statementTemplateService = statementTemplateService;
     }
 
     /// <summary>
@@ -88,12 +88,12 @@ public class WorkerController : ControllerBase
     [HttpGet("{templateId}/statement-template")]
     public async Task<IActionResult> GetStatementTemplateById([FromRoute] int templateId)
     {
-        var templateDto = await _templateService.GetTemplateForWorkerByIdAsync<StatementTemplate>(templateId);
+        var templateDto = await _statementTemplateService.GetTemplateForWorkerByIdAsync<StatementTemplate>(templateId);
 
         var templateViewModel = _mapper.Map<GetTemplateForWorkerResponse>(templateDto);
 
-        var stream = new FileStream(templateViewModel.FilePath, FileMode.Open, FileAccess.Read);
+        var stream = new FileStream(templateViewModel.Path, FileMode.Open, FileAccess.Read);
 
-        return File(stream, "application/octet-stream", templateViewModel.Name);
+        return File(stream, "application/octet-stream", templateViewModel.Title);
     }
 }
