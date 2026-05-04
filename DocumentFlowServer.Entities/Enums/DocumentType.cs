@@ -3,9 +3,8 @@ namespace DocumentFlowServer.Entities.Enums;
 /// <summary>
 /// Enum with document status
 /// </summary>
-public enum DocumentStatus
+public enum DocumentType
 {
-    Draft,
-    Signed,
-    Archived
+    Statement,
+    Contract
 }

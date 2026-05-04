@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using DocumentFlowServer.Application.Common.Services;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;

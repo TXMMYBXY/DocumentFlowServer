@@ -1,4 +1,5 @@
 using DocumentFlowServer.Api.Authorization;
+using DocumentFlowServer.Application.Common.Configuration;
 using Microsoft.OpenApi.Models;
 
 namespace DocumentFlowServer.Api;
@@ -7,6 +8,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<WorkerSettings>(configuration.GetSection(nameof(WorkerSettings)));
+        
         services.AddCors(options =>
         {
             options.AddPolicy("AllowAll", policy =>

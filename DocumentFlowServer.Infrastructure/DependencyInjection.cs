@@ -5,6 +5,7 @@ using DocumentFlowServer.Application.Common.MappingProfiles;
 using DocumentFlowServer.Application.Common.Reposiroty;
 using DocumentFlowServer.Application.Common.Services;
 using DocumentFlowServer.Application.Department;
+using DocumentFlowServer.Application.Document;
 using DocumentFlowServer.Application.FieldExtractor;
 using DocumentFlowServer.Application.Issue;
 using DocumentFlowServer.Application.Jwt;
@@ -13,11 +14,14 @@ using DocumentFlowServer.Application.RefreshToken;
 using DocumentFlowServer.Application.Role;
 using DocumentFlowServer.Application.Template;
 using DocumentFlowServer.Application.User;
+using DocumentFlowServer.Application.Worker;
 using DocumentFlowServer.Infrastructure.Account;
+using DocumentFlowServer.Infrastructure.Common.Handlers;
 using DocumentFlowServer.Infrastructure.Common.Repository;
 using DocumentFlowServer.Infrastructure.Common.Services;
 using DocumentFlowServer.Infrastructure.Data;
 using DocumentFlowServer.Infrastructure.Department;
+using DocumentFlowServer.Infrastructure.Document;
 using DocumentFlowServer.Infrastructure.Issue;
 using DocumentFlowServer.Infrastructure.Jwt;
 using DocumentFlowServer.Infrastructure.Notification;
@@ -25,6 +29,7 @@ using DocumentFlowServer.Infrastructure.RefreshToken;
 using DocumentFlowServer.Infrastructure.Role;
 using DocumentFlowServer.Infrastructure.Template;
 using DocumentFlowServer.Infrastructure.User;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -49,6 +54,7 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(RoleMappingProfile).Assembly);
         services.AddAutoMapper(typeof(IssueMappingProfile).Assembly);
         services.AddAutoMapper(typeof(LoginTimeMappingProfile).Assembly);
+        services.AddAutoMapper(typeof(TemplateMappingProfile).Assembly);
 
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
@@ -58,6 +64,7 @@ public static class DependencyInjection
         services.AddScoped<IIssueRepository, IssueRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<IDocumentRepository, DocumentRepository>();
         
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IDepartmentService, DepartmentService>();
@@ -73,6 +80,8 @@ public static class DependencyInjection
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IPersonalAccountService, PersonalAccountService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IDocumentService, DocumentService>();
+        services.AddScoped<IWorkerTaskService, WorkerTaskService>();
 
         services.AddScoped<DataSeeder>();
         
@@ -133,7 +142,10 @@ public static class DependencyInjection
                     return Task.CompletedTask;
                 }
             };
-        });
+        })
+        .AddScheme<AuthenticationSchemeOptions, WorkerAuthenticationHandler>(
+            WorkerAuthenticationHandler.SchemeName,
+            options => { });
         
         return services;
     }

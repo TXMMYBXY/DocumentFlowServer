@@ -1,12 +1,13 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentFlowServer.Api.Features.Templates.Requests;
 
 public class UpdateTemplateRequest
 {
-    [JsonPropertyName("title")]
+    [FromForm(Name="File")]
     public string? Title { get; set; }
 
-    [JsonPropertyName("file")]
+    [FromForm(Name="File")]
     public IFormFile? File { get; set; }
 }

@@ -30,5 +30,9 @@ public class TemplateMappingProfile : Profile
             .ForMember(dest => dest.FileStream, opt => opt.MapFrom(src => src.File.OpenReadStream()));
 
         CreateMap<TemplateFieldInfoDto, TemplateFieldInfoResponse>();
+        
+        CreateMap<DownloadTemplateDto, DownloadTemplateResponse>();
+
+        CreateMap<GetTemplateForWorkerDto, GetTemplateForWorkerResponse>();
     }
 }
