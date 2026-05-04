@@ -9,6 +9,5 @@ public class DocumentDto
     public string FilePath { get; set; }
     public UserCleanDto User { get; set; }
     public DateTime CreatedAt { get; set; }
-    public DocumentType Type { get; set; }
-    public int TemplateId { get; set; }
+    public TemplateType Type { get; set; }
 }

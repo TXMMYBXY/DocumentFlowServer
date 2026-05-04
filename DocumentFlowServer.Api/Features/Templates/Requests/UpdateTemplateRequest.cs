@@ -5,7 +5,7 @@ namespace DocumentFlowServer.Api.Features.Templates.Requests;
 
 public class UpdateTemplateRequest
 {
-    [FromForm(Name="File")]
+    [FromForm(Name="Title")]
     public string? Title { get; set; }
 
     [FromForm(Name="File")]

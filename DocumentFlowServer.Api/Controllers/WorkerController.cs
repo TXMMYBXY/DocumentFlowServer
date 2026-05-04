@@ -4,7 +4,6 @@ using DocumentFlowServer.Api.Features.Templates.Responses;
 using DocumentFlowServer.Application.Template;
 using DocumentFlowServer.Application.Worker;
 using DocumentFlowServer.Application.Worker.Dtos;
-using DocumentFlowServer.Entities.Models.DocumentTemplatesModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentFlowServer.Api.Controllers;
@@ -16,12 +15,12 @@ public class WorkerController : ControllerBase
 {
     public readonly IMapper _mapper;
     public readonly IWorkerTaskService _workerTaskService;
-    public readonly ITemplateService<StatementTemplate> _statementTemplateService;
+    public readonly ITemplateService _statementTemplateService;
 
     public WorkerController(
         IMapper mapper,
         IWorkerTaskService workerTaskService,
-        ITemplateService<StatementTemplate> statementTemplateService)
+        ITemplateService statementTemplateService)
     {
         _mapper = mapper;
         _workerTaskService = workerTaskService;
@@ -85,10 +84,10 @@ public class WorkerController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("{templateId}/statement-template")]
-    public async Task<IActionResult> GetStatementTemplateById([FromRoute] int templateId)
+    [HttpGet("{templateId}/template")]
+    public async Task<IActionResult> GetTemplateById([FromRoute] int templateId)
     {
-        var templateDto = await _statementTemplateService.GetTemplateForWorkerByIdAsync<StatementTemplate>(templateId);
+        var templateDto = await _statementTemplateService.GetTemplateForWorkerByIdAsync(templateId);
 
         var templateViewModel = _mapper.Map<GetTemplateForWorkerResponse>(templateDto);
 

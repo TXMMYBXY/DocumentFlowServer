@@ -1,7 +1,11 @@
+using DocumentFlowServer.Entities.Enums;
+
 namespace DocumentFlowServer.Application.Template;
 
 public class TemplateFilter
 {
+    public TemplateType Type { get; set; }
+    
     public string? Title { get; set; }
     public int? CreatedBy { get; set; } 
     public DateTime? CreatedAtEarlier { get; set; }

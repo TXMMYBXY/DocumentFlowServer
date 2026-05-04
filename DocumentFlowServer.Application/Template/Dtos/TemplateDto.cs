@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using DocumentFlowServer.Application.User.Dtos;
+using DocumentFlowServer.Entities.Enums;
 
 namespace DocumentFlowServer.Application.Template.Dtos;
 
@@ -21,4 +22,7 @@ public class TemplateDto
     
     [JsonPropertyName("isActive")]
     public bool IsActive { get; set; }
+    
+    [JsonPropertyName("type")]
+    public TemplateType Type { get; set; }
 }

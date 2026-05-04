@@ -60,7 +60,7 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<ITokenRepository, TokenRepository>();
-        services.AddScoped(typeof(ITemplateRepository<>), typeof(TemplateRepository<>));
+        services.AddScoped<ITemplateRepository, TemplateRepository>();
         services.AddScoped<IIssueRepository, IssueRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IAccountRepository, AccountRepository>();
@@ -75,7 +75,7 @@ public static class DependencyInjection
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IFileStorageService, FileStorageService>();
         services.AddScoped<IFieldExtractorService, FieldExtractorService>();
-        services.AddScoped(typeof(ITemplateService<>), typeof(TemplateService<>));
+        services.AddScoped<ITemplateService, TemplateService>();
         services.AddScoped<IIssueService, IssueService>();
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IPersonalAccountService, PersonalAccountService>();

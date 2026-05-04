@@ -12,7 +12,6 @@ using DocumentFlowServer.Application.FieldExtractor.Dtos;
 using DocumentFlowServer.Application.Template;
 using DocumentFlowServer.Application.Template.Dtos;
 using DocumentFlowServer.Entities.Enums;
-using DocumentFlowServer.Entities.Models.DocumentTemplatesModels;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Extensions.Caching.Distributed;
@@ -20,28 +19,28 @@ using Microsoft.Extensions.Logging;
 
 namespace DocumentFlowServer.Infrastructure.Template;
 
-public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.DocumentTemplatesModels.Template, new()
+public class TemplateService : ITemplateService
 {
-    private readonly string _templatesVersionKey = $"{typeof(T).Name}_version";
+    private readonly string _templatesVersionKey = $"template_version";
     private const string FieldsVersionKey = "fields_version";
     
-    private readonly ILogger<TemplateService<T>> _logger;
+    private readonly ILogger<TemplateService> _logger;
     private readonly IMapper _mapper;
     private readonly IDistributedCache _cache;
     private readonly IFileStorageService _fileStorageService;
     private readonly IFieldExtractorService _fieldExtractor;
     private readonly INotificationService _notificationService;
     
-    private readonly ITemplateRepository<T> _templateRepository;
+    private readonly ITemplateRepository _templateRepository;
 
     public TemplateService(
-        ILogger<TemplateService<T>> logger,
+        ILogger<TemplateService> logger,
         IMapper mapper,
         IDistributedCache cache,
         IFileStorageService fileStorageService,
         IFieldExtractorService fieldExtractor,
         INotificationService notificationService,
-        ITemplateRepository<T> templateRepository)
+        ITemplateRepository templateRepository)
     {
         _logger = logger;
         _mapper = mapper;
@@ -65,14 +64,13 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
             return JsonSerializer.Deserialize<PagedTemplateDto>(cached);
         }
         
-        var templates = await _templateRepository.GetAllTemplatesAsync(filter);
-        var totalCount = await _templateRepository.GetCountAsync();
+        var templatesTuple = await _templateRepository.GetAllTemplatesAsync(filter);
 
         var pagedTemplateDto = new PagedTemplateDto
         {
-            Templates = templates,
-            TotalCount = totalCount,
-            PageSize = filter.PageSize ?? totalCount,
+            Templates = templatesTuple.Item1,
+            TotalCount = templatesTuple.Item2,
+            PageSize = filter.PageSize ?? templatesTuple.Item2,
             CurrentPage = filter.PageNumber ?? 1
         };
         
@@ -99,26 +97,27 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
 
         var uniqueFileName = $"{Guid.NewGuid()}_{templateDto.FileName}";
         var month = _ClearName(DateTime.Now.ToString("MMMM", new CultureInfo("en-EN")));
-        var projectFolder = $"{typeof(T).Name}_{DateTime.Now.Year}_{month}";
+        var projectFolder = $"{templateDto.Type.ToString()}_{DateTime.Now.Year}_{month}";
 
         var filePath = await _fileStorageService.SaveFileAsync(
             templateDto.FileStream,
             uniqueFileName,
             projectFolder);
 
-        var templateModel = new T
+        var templateModel = new Entities.Models.Template
         {
             Title = templateDto.Title,
             Path = filePath,
             CreatedBy = templateDto.CreatedBy,
             CreatedAt = DateTime.UtcNow,
-            IsActive = templateDto.IsActive
+            IsActive = templateDto.IsActive,
+            Type = templateDto.Type
         };
 
         await _templateRepository.AddAsync(templateModel);
         await _templateRepository.SaveChangesAsync();
         
-        await _notificationService.SendNotificationToRoleAsync(typeof(T).Assembly == typeof(ContractTemplate).Assembly?
+        await _notificationService.SendNotificationToRoleAsync(templateDto.Type == TemplateType.Contract?
             [1, 2, 3] : [1, 2, 3, 4], new Entities.Models.Notification(
             NotificationKind.TemplateAdded,
             NotificationSeverity.Info,
@@ -150,7 +149,7 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
         
         ArgumentNullException.ThrowIfNull(template);
 
-        if (typeof(T) == typeof(ContractTemplate))
+        if (template.Type == TemplateType.Contract)
         {
             var contractText = _ReadDocx(template.Path);
 
@@ -178,13 +177,15 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
     {
         _logger.LogInformation("Updating template with id {TemplateId}", templateId);
         
+        var type = await _templateRepository.GetTypeByTemplateIdAsync(templateId);
+        
         string filePath = null;
         
         if (templateDto.FileStream != null && templateDto.FileLength != 0)
         {
             var uniqueFileName = $"{Guid.NewGuid()}_{templateDto.FileName}";
             var month = _ClearName(DateTime.Now.ToString("MMMM", new CultureInfo("ru-RU")));
-            var projectFolder = $"{typeof(T).Name}_{DateTime.Now.Year}_{month}";
+            var projectFolder = $"{type}_{DateTime.Now.Year}_{month}";
         
             var oldFilePath = await _templateRepository.GetFilePathAsync(templateId);
         
@@ -199,7 +200,7 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
         await _templateRepository.UpdateTemplatePartialAsync(templateId, templateDto.Title, filePath);
         await _templateRepository.SaveChangesAsync();
         
-        await _notificationService.SendNotificationToRoleAsync(typeof(T).Assembly == typeof(ContractTemplate).Assembly?
+        await _notificationService.SendNotificationToRoleAsync(type == TemplateType.Contract?
             [1, 2, 3] : [1, 2, 3, 4], new Entities.Models.Notification(
             NotificationKind.TemplateAdded,
             NotificationSeverity.Info,
@@ -215,13 +216,15 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
     public async Task DeleteTemplateAsync(int templateId)
     {
         _logger.LogInformation("Deleting template with id {TemplateId}", templateId);
-
+        
+        var type = await _templateRepository.GetTypeByTemplateIdAsync(templateId);
+        
         await _templateRepository.DeleteAsync(templateId);
         await _templateRepository.SaveChangesAsync();
 
         await _InvalidateTemplatesCacheAsync();
         
-        await _notificationService.SendNotificationToRoleAsync(typeof(T).Assembly == typeof(ContractTemplate).Assembly?
+        await _notificationService.SendNotificationToRoleAsync(type == TemplateType.Contract?
             [1, 2, 3] : [1, 2, 3, 4], new Entities.Models.Notification(
             NotificationKind.TemplateDeleted,
             NotificationSeverity.Info,
@@ -252,7 +255,7 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
 
     public async Task<DownloadTemplateDto> DownloadTemplateAsync(int templateId)
     {
-        var template = await _templateRepository.GetTemplateByIdAsync(templateId);
+        var template = await _templateRepository.GetTemplateForDownloadingByIdAsync(templateId);
 
         ArgumentNullException.ThrowIfNull(template, "template is not exist");
 
@@ -271,7 +274,7 @@ public class TemplateService<T> : ITemplateService<T> where T : Entities.Models.
         await _InvalidateTemplatesCacheAsync();
     }
 
-    public async Task<GetTemplateForWorkerDto> GetTemplateForWorkerByIdAsync<T1>(int templateId) where T1 : Entities.Models.DocumentTemplatesModels.Template
+    public async Task<GetTemplateForWorkerDto> GetTemplateForWorkerByIdAsync(int templateId)
     {
         var template = await _templateRepository.GetByIdAsync(templateId);
 

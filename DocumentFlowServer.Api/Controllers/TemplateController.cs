@@ -5,25 +5,24 @@ using DocumentFlowServer.Api.Features.Templates.Requests;
 using DocumentFlowServer.Api.Features.Templates.Responses;
 using DocumentFlowServer.Application.Template;
 using DocumentFlowServer.Application.Template.Dtos;
-using DocumentFlowServer.Entities.Models.DocumentTemplatesModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentFlowServer.Api.Controllers;
 
 [ApiController]
-[Route("api/statement-template")]
+[Route("api/template")]
 [Authorize(Policy = Policy.All)]
-public class StatementTemplateController : ControllerBase
+public class TemplateController : ControllerBase
 {
-    private readonly ILogger<StatementTemplateController> _logger;
+    private readonly ILogger<TemplateController> _logger;
     private readonly IMapper _mapper;
-    private readonly ITemplateService<StatementTemplate> _templateService;
+    private readonly ITemplateService _templateService;
 
-    public StatementTemplateController(
-        ILogger<StatementTemplateController> logger,
+    public TemplateController(
+        ILogger<TemplateController> logger,
         IMapper mapper,
-        ITemplateService<StatementTemplate> templateService)
+        ITemplateService templateService)
     {
         _logger = logger;
         _mapper = mapper;

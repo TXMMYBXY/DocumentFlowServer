@@ -35,9 +35,10 @@ public class DocumentRepository : BaseRepository<Entities.Models.Document>, IDoc
                     {
                         Id = d.User.RoleId,
                         Title = d.User.Role.Title
-                    }
+                    },
                 },
-                CreatedAt = d.CreatedAt
+                CreatedAt = d.CreatedAt,
+                Type = d.Template.Type
             })
             .FirstAsync();
     }
