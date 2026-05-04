@@ -2,13 +2,14 @@ using DocumentFlowServer.Application.Role.Dtos;
 using DocumentFlowServer.Application.Template;
 using DocumentFlowServer.Application.Template.Dtos;
 using DocumentFlowServer.Application.User.Dtos;
+using DocumentFlowServer.Entities.Enums;
 using DocumentFlowServer.Infrastructure.Common.Repository;
 using DocumentFlowServer.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace DocumentFlowServer.Infrastructure.Template;
 
-public class TemplateRepository<T> : BaseRepository<T>, ITemplateRepository<T> where T : Entities.Models.DocumentTemplatesModels.Template
+public class TemplateRepository : BaseRepository<Entities.Models.Template>, ITemplateRepository
 {
     private readonly ApplicationDbContext _dbContext;
 
@@ -17,14 +18,14 @@ public class TemplateRepository<T> : BaseRepository<T>, ITemplateRepository<T> w
         _dbContext = dbContext;
     }
 
-    public async Task<ICollection<TemplateDto>> GetAllTemplatesAsync(TemplateFilter filter)
+    public async Task<(ICollection<TemplateDto>, int)> GetAllTemplatesAsync(TemplateFilter filter)
     {
-        var query = _dbContext.Set<T>()
-            .AsNoTracking()
-            .AsQueryable();
+        var query = _dbContext.Templates
+            .Where(t => t.Type == filter.Type)
+            .AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(filter.Title))
-            query = query.Where(u => u.Title.Contains(filter.Title));
+            query = query.Where(u => u.Title.Contains(filter.Title.ToLower()));
 
         if (filter.CreatedBy.HasValue) 
             query = query.Where(t => t.CreatedBy == filter.CreatedBy.Value);
@@ -34,8 +35,11 @@ public class TemplateRepository<T> : BaseRepository<T>, ITemplateRepository<T> w
         
         if (filter.CreatedAtLater != null) 
             query = query.Where(t => t.CreatedAt >= filter.CreatedAtLater.Value);
-
+        
+        var totalCount = await query.CountAsync();
+        
         var resultQuery = query
+            .OrderByDescending(t => t.CreatedAt)
             .Select(t => new TemplateDto
             {
                 Id = t.Id,
@@ -63,12 +67,12 @@ public class TemplateRepository<T> : BaseRepository<T>, ITemplateRepository<T> w
                 .Take(filter.PageSize.Value);
         }
 
-        return await resultQuery.ToListAsync();
+        return (await resultQuery.ToListAsync(), totalCount);
     }
 
-    public async Task<TemplateDto?> GetTemplateByIdAsync(int templateId)
+    public async Task<TemplateDto?> GetTemplateForDownloadingByIdAsync(int templateId)
     {
-        return await _dbContext.Set<T>()
+        return await _dbContext.Templates
             .Where(t => t.Id == templateId)
             .Select(t => new TemplateDto
             {
@@ -80,13 +84,13 @@ public class TemplateRepository<T> : BaseRepository<T>, ITemplateRepository<T> w
 
     public async Task<bool> UpdateTemplateStatusAsync(int templateId)
     {
-        await _dbContext.Set<T>()
+        await _dbContext.Templates
             .Where(t => t.Id == templateId)
             .ExecuteUpdateAsync(
                 setter => setter.SetProperty(x => x.IsActive, x => !x.IsActive)
             );
 
-        return await _dbContext.Set<T>()
+        return await _dbContext.Templates
             .Where(t => t.Id == templateId)
             .Select(t => t.IsActive)
             .SingleOrDefaultAsync();
@@ -94,7 +98,7 @@ public class TemplateRepository<T> : BaseRepository<T>, ITemplateRepository<T> w
 
     public async Task<string?> GetFilePathAsync(int templateId)
     {
-        return await _dbContext.Set<T>()
+        return await _dbContext.Templates
             .Where(t => t.Id == templateId)
             .Select(t => t.Path)
             .SingleOrDefaultAsync();
@@ -102,7 +106,7 @@ public class TemplateRepository<T> : BaseRepository<T>, ITemplateRepository<T> w
 
     public async Task UpdateTemplatePartialAsync(int templateId, string? title, string? path)
     {
-        var query = _dbContext.Set<T>()
+        var query = _dbContext.Templates
             .Where(t => t.Id == templateId);
 
         if (title != null && path != null)
@@ -124,5 +128,13 @@ public class TemplateRepository<T> : BaseRepository<T>, ITemplateRepository<T> w
 
         await query.ExecuteUpdateAsync(s => s
             .SetProperty(t => t.CreatedAt, DateTime.UtcNow));
+    }
+
+    public async Task<TemplateType> GetTypeByTemplateIdAsync(int templateId)
+    {
+        return await _dbContext.Templates
+            .Where(t => t.Id == templateId)
+            .Select(t => t.Type)
+            .SingleAsync();
     }
 }

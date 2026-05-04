@@ -6,5 +6,5 @@ namespace DocumentFlowServer.Entities.Enums;
 public enum DocumentType
 {
     Statement,
-    Contract
+    Contract,
 }

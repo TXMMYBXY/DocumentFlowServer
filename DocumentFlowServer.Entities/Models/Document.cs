@@ -25,8 +25,8 @@ public class Document : EntityBase
     
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public DocumentType Type { get; set; }
-    
     public int TemplateId { get; set; }
+    
+    [ForeignKey(nameof(TemplateId))]
+    public virtual Template Template { get; set; }
 }

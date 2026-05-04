@@ -3,7 +3,7 @@ using DocumentFlowServer.Application.Template.Dtos;
 
 namespace DocumentFlowServer.Application.Template;
 
-public interface ITemplateService<T> where T : Entities.Models.DocumentTemplatesModels.Template
+public interface ITemplateService
 {
     Task<PagedTemplateDto> GetAllTemplatesAsync(TemplateFilter filter);
     Task CreateTemplateAsync(CreateTemplateDto templateDto);
@@ -17,5 +17,5 @@ public interface ITemplateService<T> where T : Entities.Models.DocumentTemplates
     
     Task<DownloadTemplateDto> DownloadTemplateAsync(int templateId);
     Task DeleteManyTemplatesAsync(List<int> templateIds);
-    Task<GetTemplateForWorkerDto> GetTemplateForWorkerByIdAsync<T1>(int templateId) where T1 : Entities.Models.DocumentTemplatesModels.Template;
+    Task<GetTemplateForWorkerDto> GetTemplateForWorkerByIdAsync(int templateId);
 }

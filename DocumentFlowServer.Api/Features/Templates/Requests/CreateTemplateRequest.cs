@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using DocumentFlowServer.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentFlowServer.Api.Features.Templates.Requests;
@@ -12,6 +13,10 @@ public class CreateTemplateRequest
 
     [FromForm(Name="IsActive")]
     public bool IsActive { get; set; }
+    
+    [Required]
+    [FromForm(Name="Type")]
+    public TemplateType Type { get; set; }
     
     [Required]
     [FromForm(Name="File")]
