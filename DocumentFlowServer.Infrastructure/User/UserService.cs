@@ -53,7 +53,7 @@ public class UserService : IUserService
             return JsonSerializer.Deserialize<PagedUserDto>(cached);
         }
 
-        var users = await _userRepository.GetAllUsers(filter);
+        var users = await _userRepository.GetAllUsersAsync(filter);
         var totalCount = await _userRepository.GetCountAsync();
         
         var pagedUserDto = new PagedUserDto

@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using DocumentFlowServer.Entities.Enums;
 using DocumentFlowServer.Entities.Models.AboutUserModels;
 
@@ -29,4 +28,6 @@ public class Document : EntityBase
     
     [ForeignKey(nameof(TemplateId))]
     public virtual Template Template { get; set; }
+    
+    public TemplateType Type { get; set; }
 }

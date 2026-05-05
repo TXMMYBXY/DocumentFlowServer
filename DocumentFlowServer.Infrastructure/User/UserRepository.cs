@@ -18,11 +18,32 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
         _dbContext = dbContext;
     }
 
-    public async Task<ICollection<UserDto>> GetAllUsers(UserFilter filter)
+    public async Task<ICollection<UserDto>> GetAllUsersAsync(UserFilter filter)
     {
         var query = _dbContext.Users
             .AsNoTracking()
             .AsQueryable();
+
+        switch (filter.SortField)
+        {
+            case "FullName":
+                if (filter.Descending)
+                    query = query.OrderBy(u => u.FullName);
+                else 
+                    query = query.OrderByDescending(u => u.FullName);
+                break;
+            
+            case "Email":
+                if (filter.Descending)
+                    query = query.OrderBy(u => u.Email);
+                else
+                    query = query.OrderByDescending(u => u.Email);
+                break;
+                
+                default:
+                    query = query.OrderBy(u => u.RoleId);
+                    break;
+        }
 
         if (!string.IsNullOrWhiteSpace(filter.Email))
             query = query.Where(u => u.Email.Contains(filter.Email));

@@ -10,12 +10,13 @@ public interface ITemplateService
     Task<List<TemplateFieldInfoDto>> ExtractFieldsFromTemplateAsync(int templateId);
 
     Task UpdateTemplatePartialAsync(int templateId, UpdateTemplateDto templateDto);
-    
+
     Task DeleteTemplateAsync(int templateId);
 
     Task<bool> ChangeTemplateStatusById(int templateId);
-    
+
     Task<DownloadTemplateDto> DownloadTemplateAsync(int templateId);
     Task DeleteManyTemplatesAsync(List<int> templateIds);
     Task<GetTemplateForWorkerDto> GetTemplateForWorkerByIdAsync(int templateId);
+    Task<List<GetTemplateDto>> GetTemplatesAsync(int roleId);
 }
