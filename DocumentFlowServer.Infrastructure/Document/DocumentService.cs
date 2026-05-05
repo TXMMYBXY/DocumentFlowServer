@@ -82,6 +82,8 @@ public class DocumentService : IDocumentService
         
         await _documentHub.Clients.User(documentDto.CreatedBy.ToString())
             .SendAsync("downloadDocument", documentModel.Id);
+
+        await _InvalidateDocumentsCacheAsync();
         
         _logger.LogInformation("Document created successfully with title {Title}", documentDto.Title);
     }
@@ -100,7 +102,7 @@ public class DocumentService : IDocumentService
         }
 
         var documents = await _documentRepository.GetAllDocumentsAsync(userId, filter);
-        var totalCount = await _documentRepository.GetCountAsync();
+        var totalCount = await _documentRepository.GetCountByUserIdAsync(userId);
         
         var pagedDocumentDto = new PagedDocumentDto
         {
@@ -117,8 +119,6 @@ public class DocumentService : IDocumentService
             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30)
         });
 
-        await _InvalidateDocumentsCacheAsync();
-            
         return pagedDocumentDto;
     }
 

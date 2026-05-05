@@ -53,40 +53,35 @@ public class DocumentRepository : BaseRepository<Entities.Models.Document>, IDoc
         var query = _dbContext.Documents
             .AsNoTracking()
             .Where(d => d.CreatedBy == ownerId);
-        
-        switch (filter.SortByField)
+
+        if(filter.SortBy.HasValue)
         {
-            case "Title":
-                if (filter.Descending)
-                    query = query.OrderBy(t => t.Title);
-                else
-                    query = query.OrderByDescending(t => t.Title);
-                break;
-            
-            case "CreatedBy":
-                if (filter.Descending)
-                    query = query.OrderBy(t => t.CreatedBy);
-                else
-                    query = query.OrderByDescending(t => t.CreatedBy);
-                break;
-            
-            case "TemplateId":
-                if (filter.Descending)
-                    query = query.OrderBy(t => t.TemplateId);
-                else
-                    query = query.OrderByDescending(t => t.TemplateId);
-                break;
-            
-            case "CreatedAt":
-                if (filter.Descending)
-                    query = query.OrderBy(t => t.CreatedAt);
-                else
-                    query = query.OrderByDescending(t => t.CreatedAt);
-                break;
-            
-                default:
-                    query = query.OrderByDescending(t => t.CreatedAt);
-                    break;
+            query = filter.SortBy.Value switch
+            {
+                DocumentSortField.Title =>
+                    filter.Descending
+                        ? query.OrderByDescending(d => d.Title)
+                        : query.OrderBy(d => d.Title),
+
+                DocumentSortField.CreatedAt =>
+                    filter.Descending
+                        ? query.OrderByDescending(d => d.CreatedAt)
+                        : query.OrderBy(d => d.CreatedAt),
+
+                DocumentSortField.TemplateId =>
+                    filter.Descending
+                        ? query.OrderByDescending(d => d.TemplateId)
+                        : query.OrderBy(d => d.TemplateId),
+                
+                DocumentSortField.Type =>
+                    filter.Descending
+                        ? query.OrderByDescending(d => d.Type)
+                        : query.OrderBy(d => d.Type),
+                _ =>
+                    filter.Descending
+                        ? query.OrderByDescending(d => d.CreatedAt)
+                        : query.OrderBy(d => d.CreatedAt)
+            };
         }
         
         if (!string.IsNullOrWhiteSpace(filter.Title))
@@ -136,5 +131,12 @@ public class DocumentRepository : BaseRepository<Entities.Models.Document>, IDoc
         }
 
         return await resultQuery.ToListAsync();
+    }
+
+    public async Task<int> GetCountByUserIdAsync(int userId)
+    {
+        return await _dbContext.Documents
+            .Where(d => d.User.Id == userId)
+            .CountAsync();
     }
 }

@@ -2,7 +2,7 @@ namespace DocumentFlowServer.Application.Document;
 
 public class DocumentFilter
 {
-    public string SortByField { get; set; }
+    public DocumentSortField? SortBy { get; set; }
     public bool Descending { get; set; }
     
     public string? Title { get; set; }

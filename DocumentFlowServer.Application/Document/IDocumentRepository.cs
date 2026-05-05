@@ -7,4 +7,5 @@ public interface IDocumentRepository : IBaseRepository<Entities.Models.Document>
 {
     Task<DocumentDto> GetFilledDocumentByIdAsync(int documentId);
     Task<ICollection<DocumentDto>> GetAllDocumentsAsync(int ownerId, DocumentFilter filter);
+    Task<int> GetCountByUserIdAsync(int userId);
 }
