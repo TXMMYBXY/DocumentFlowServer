@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using DocumentFlowServer.Application.Role.Dtos;
 using DocumentFlowServer.Application.Template;
 using DocumentFlowServer.Application.Template.Dtos;
@@ -136,5 +140,28 @@ public class TemplateRepository : BaseRepository<Entities.Models.Template>, ITem
             .Where(t => t.Id == templateId)
             .Select(t => t.Type)
             .SingleAsync();
+    }
+
+    public async Task<List<GetTemplateDto>> GetTemplatesWithoutContractsAsync()
+    {
+        return await _dbContext.Templates
+            .Where(t => t.Type != TemplateType.Contract)
+            .Select(t => new GetTemplateDto
+            {
+                Id = t.Id,
+                Title = t.Title
+            })
+            .ToListAsync();
+    }
+
+    public async Task<List<GetTemplateDto>> GetTemplatesAsync()
+    {
+        return await _dbContext.Templates
+            .Select(t => new GetTemplateDto
+            {
+                Id = t.Id,
+                Title = t.Title
+            })
+            .ToListAsync();
     }
 }

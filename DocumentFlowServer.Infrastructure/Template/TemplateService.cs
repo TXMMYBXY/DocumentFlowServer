@@ -281,6 +281,13 @@ public class TemplateService : ITemplateService
         return _mapper.Map<GetTemplateForWorkerDto>(template);
     }
 
+    public async Task<List<GetTemplateDto>> GetTemplatesAsync(int roleId)
+    {
+        return roleId != 4
+            ? await _templateRepository.GetTemplatesAsync()
+            : await _templateRepository.GetTemplatesWithoutContractsAsync();
+    }
+
     private async Task<string> _GetTemplatesVersionAsync()
     {
         var version = await _cache.GetStringAsync(_templatesVersionKey);

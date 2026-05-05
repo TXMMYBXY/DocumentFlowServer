@@ -32,6 +32,8 @@ public class IssueController : ControllerBase
     [HttpPost("generate")]
     public async Task<ActionResult> CreateIssue([FromBody] CreateIssueRequest request)
     {
+        _logger.LogInformation("Generating issue");
+        
         var taskDtoRequest = _mapper.Map<CreateIssueRequestDto>(request);
         
         taskDtoRequest.UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);

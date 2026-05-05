@@ -9,7 +9,7 @@ namespace DocumentFlowServer.Application.User;
 /// </summary>
 public interface IUserRepository : IBaseRepository<Entities.Models.AboutUserModels.User>
 {
-    Task<ICollection<UserDto>> GetAllUsers(UserFilter filter);
+    Task<ICollection<UserDto>> GetAllUsersAsync(UserFilter filter);
     
     Task<bool> ChangeUserStatusAsync(int userId);
     Task SetNewPasswordAsync(int userId, string hash);

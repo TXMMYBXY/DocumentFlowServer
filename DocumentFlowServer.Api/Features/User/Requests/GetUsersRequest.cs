@@ -2,6 +2,9 @@ namespace DocumentFlowServer.Api.Features.User.Requests;
 
 public class GetUsersRequest
 {
+    public string? SortField { get; set; }
+    public bool Descending { get; set; }
+    
     public string? FullName { get; set; }
     public string? Email { get; set; }
     public int? DepartmentId { get; set; }

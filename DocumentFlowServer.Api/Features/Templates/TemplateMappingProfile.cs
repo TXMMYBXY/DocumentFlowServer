@@ -34,5 +34,7 @@ public class TemplateMappingProfile : Profile
         CreateMap<DownloadTemplateDto, DownloadTemplateResponse>();
 
         CreateMap<GetTemplateForWorkerDto, GetTemplateForWorkerResponse>();
+
+        CreateMap<GetTemplateDto, TemplateResponse>();
     }
 }

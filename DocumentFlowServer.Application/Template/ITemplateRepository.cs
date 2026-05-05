@@ -12,4 +12,6 @@ public interface ITemplateRepository : IBaseRepository<Entities.Models.Template>
     Task<string?> GetFilePathAsync(int templateId);
     Task UpdateTemplatePartialAsync(int templateId, string? templateDtoTitle, string? filePath);
     Task<TemplateType> GetTypeByTemplateIdAsync(int templateId);
+    Task<List<GetTemplateDto>> GetTemplatesWithoutContractsAsync();
+    Task<List<GetTemplateDto>> GetTemplatesAsync();
 }

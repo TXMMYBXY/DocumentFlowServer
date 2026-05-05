@@ -129,4 +129,17 @@ public class TemplateController : ControllerBase
         return Ok();
     }
     
+    [Authorize(Policy = Policy.All)]
+    [HttpGet("unique")]
+    public async Task<ActionResult<List<TemplateResponse>>> GetTemplates()
+    {
+        var roleId = int.Parse(User.FindFirst("RoleId").Value);
+
+        var templatesDto = await _templateService.GetTemplatesAsync(roleId);
+
+        var response = _mapper.Map<List<TemplateResponse>>(templatesDto);
+
+        return Ok(response);
+    }
+    
 }
