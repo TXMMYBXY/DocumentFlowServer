@@ -10,7 +10,7 @@ namespace DocumentFlowServer.Api.Controllers;
 
 [ApiController]
 [Route("api/user")]
-// [Authorize(Policy = "AdminOnly")]
+[Authorize(Policy = "AdminOnly")]
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;

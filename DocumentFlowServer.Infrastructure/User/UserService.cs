@@ -84,6 +84,8 @@ public class UserService : IUserService
         
         var user = _mapper.Map<Entities.Models.AboutUserModels.User>(createUserDto);
         
+        user.PasswordHash = _passwordHasher.Hash(createUserDto.Password);
+        
         await _userRepository.AddAsync(user);
         await _userRepository.SaveChangesAsync();
         
@@ -104,7 +106,7 @@ public class UserService : IUserService
         _logger.LogInformation("Updating user with id {UserId}", userId);
         
         var user = await _userRepository.GetByIdAsync(userId);
-        Console.WriteLine(user.DepartmentId);
+        
         ArgumentNullException.ThrowIfNull(user, "User not exists");
         
         if (updateUserInfoDto.FullName != null)
@@ -118,7 +120,7 @@ public class UserService : IUserService
 
         if (updateUserInfoDto.DepartmentId.HasValue)
         {
-            var exists = await _departmentService.ExistsDepartmentAsync(userId);
+            var exists = await _departmentService.ExistsDepartmentAsync(updateUserInfoDto.DepartmentId.Value);
 
             if (!exists)
                 throw new Exception("Department not found");
