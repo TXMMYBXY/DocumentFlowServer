@@ -24,6 +24,7 @@ public class Document : EntityBase
     
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     
+    [Required]
     public int TemplateId { get; set; }
     
     [ForeignKey(nameof(TemplateId))]

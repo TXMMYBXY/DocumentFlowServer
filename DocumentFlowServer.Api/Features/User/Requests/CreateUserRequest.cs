@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using DocumentFlowServer.Entities.Enums;
 
 namespace DocumentFlowServer.Api.Features.User.Requests;
 
@@ -22,6 +23,6 @@ public class CreateUserRequest
     public int DepartmentId { get; set; }
     
     [Required]
-    [JsonPropertyName("roleId")]
-    public int RoleId { get; set; }
+    [JsonPropertyName("role")]
+    public Role Role { get; set; }
 }

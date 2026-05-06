@@ -1,6 +1,4 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
@@ -18,13 +16,13 @@ public class NotificationHub : Hub
     public override async Task OnConnectedAsync()
     {
         var connectionId = Context.ConnectionId;
-        var roleId = Context.User.FindFirst("RoleId").Value;
+        var role = Context.User.FindFirst(ClaimTypes.Role).Value;
         
         _logger.LogInformation($"Подключился: {connectionId}");
         
-        await Groups.AddToGroupAsync(connectionId, roleId);
+        await Groups.AddToGroupAsync(connectionId, role);
         
-        _logger.LogInformation("Added to group: {RoleId}", roleId);
+        _logger.LogInformation("Added to group: {Role}", role);
         
         await base.OnConnectedAsync();
     }

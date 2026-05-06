@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using DocumentFlowServer.Application.Document;
 using DocumentFlowServer.Application.Document.Dtos;
-using DocumentFlowServer.Application.Role.Dtos;
 using DocumentFlowServer.Application.Template.Dtos;
 using DocumentFlowServer.Application.User.Dtos;
 using DocumentFlowServer.Entities.Enums;
@@ -36,11 +35,7 @@ public class DocumentRepository : BaseRepository<Entities.Models.Document>, IDoc
                     Email = d.User.Email,
                     FullName = d.User.FullName,
                     IsActive = d.User.IsActive,
-                    Role = new RoleDto
-                    {
-                        Id = d.User.RoleId,
-                        Title = d.User.Role.Title
-                    },
+                    Role = d.User.Role,
                 },
                 CreatedAt = d.CreatedAt,
                 Type = d.Template.Type
@@ -115,11 +110,7 @@ public class DocumentRepository : BaseRepository<Entities.Models.Document>, IDoc
                     Email = d.User.Email,
                     FullName = d.User.FullName,
                     IsActive = d.User.IsActive,
-                    Role = new RoleDto
-                    {
-                        Id = d.User.RoleId,
-                        Title = d.User.Role.Title
-                    }
+                    Role = d.User.Role
                 }
             });
             

@@ -151,7 +151,12 @@ public class DepartmentService : IDepartmentService
         
         await _InvalidateDepartmentsCacheAsync();
     }
-    
+
+    public async Task<bool> ExistsDepartmentAsync(int departmentId)
+    {
+        return await _departmentRepository.ExistsAsync(departmentId);
+    }
+
     private async Task<string> _GetDepartmentsVersionAsync()
     {
         var version = await _cache.GetStringAsync(UsersVersionKey);

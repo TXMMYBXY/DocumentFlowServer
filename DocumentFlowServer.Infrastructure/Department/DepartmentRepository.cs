@@ -1,6 +1,5 @@
 using DocumentFlowServer.Application.Department;
 using DocumentFlowServer.Application.Department.Dtos;
-using DocumentFlowServer.Application.Role.Dtos;
 using DocumentFlowServer.Application.User.Dtos;
 using DocumentFlowServer.Infrastructure.Common.Repository;
 using DocumentFlowServer.Infrastructure.Data;
@@ -43,12 +42,7 @@ public class DepartmentRepository : BaseRepository<Entities.Models.Department>, 
                     Email = u.Email,
                     FullName = u.FullName,
                     IsActive = u.IsActive,
-                    Role = new RoleDto
-                    {
-                        Id = u.Role.Id,
-                        Title = u.Role.Title,
-                        Description = u.Role.Description
-                    }
+                    Role = u.Role
                 }).ToList()
             })
             .ToListAsync();

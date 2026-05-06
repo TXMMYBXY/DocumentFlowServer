@@ -11,7 +11,6 @@ using DocumentFlowServer.Application.Issue;
 using DocumentFlowServer.Application.Jwt;
 using DocumentFlowServer.Application.Personal;
 using DocumentFlowServer.Application.RefreshToken;
-using DocumentFlowServer.Application.Role;
 using DocumentFlowServer.Application.Template;
 using DocumentFlowServer.Application.User;
 using DocumentFlowServer.Application.Worker;
@@ -26,7 +25,6 @@ using DocumentFlowServer.Infrastructure.Issue;
 using DocumentFlowServer.Infrastructure.Jwt;
 using DocumentFlowServer.Infrastructure.Notification;
 using DocumentFlowServer.Infrastructure.RefreshToken;
-using DocumentFlowServer.Infrastructure.Role;
 using DocumentFlowServer.Infrastructure.Template;
 using DocumentFlowServer.Infrastructure.User;
 using Microsoft.AspNetCore.Authentication;
@@ -51,7 +49,6 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(AccountMappingProfile).Assembly);
         services.AddAutoMapper(typeof(DepartmentMappingProfile).Assembly);
         services.AddAutoMapper(typeof(RefreshTokenMappingProfile).Assembly);
-        services.AddAutoMapper(typeof(RoleMappingProfile).Assembly);
         services.AddAutoMapper(typeof(IssueMappingProfile).Assembly);
         services.AddAutoMapper(typeof(LoginTimeMappingProfile).Assembly);
         services.AddAutoMapper(typeof(TemplateMappingProfile).Assembly);
@@ -62,7 +59,6 @@ public static class DependencyInjection
         services.AddScoped<ITokenRepository, TokenRepository>();
         services.AddScoped<ITemplateRepository, TemplateRepository>();
         services.AddScoped<IIssueRepository, IssueRepository>();
-        services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<IDocumentRepository, DocumentRepository>();
         
@@ -77,7 +73,6 @@ public static class DependencyInjection
         services.AddScoped<IFieldExtractorService, FieldExtractorService>();
         services.AddScoped<ITemplateService, TemplateService>();
         services.AddScoped<IIssueService, IssueService>();
-        services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IPersonalAccountService, PersonalAccountService>();
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IDocumentService, DocumentService>();

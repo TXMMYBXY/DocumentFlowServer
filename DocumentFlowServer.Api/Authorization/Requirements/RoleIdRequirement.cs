@@ -5,9 +5,9 @@ namespace DocumentFlowServer.Api.Authorization.Requirements;
 
 public class RoleIdRequirement : IAuthorizationRequirement
 {
-    public Permissions[] AllowedRoles;
+    public Role[] AllowedRoles;
     
-    public RoleIdRequirement(params Permissions[] roles)
+    public RoleIdRequirement(params Role[] roles)
     {
         AllowedRoles = roles;
     }

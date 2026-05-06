@@ -13,7 +13,8 @@ public class UserMappingProfile : Profile
         
         //PartialUpdateUserInfo
         CreateMap<UpdateUserInfoDto, Entities.Models.AboutUserModels.User>()
-            .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+            .ForAllMembers(opt =>
+                opt.Condition((src, dest, srcMember) => srcMember != null));
         
         //CreateNewUser
         CreateMap<CreateUserDto, Entities.Models.AboutUserModels.User>()

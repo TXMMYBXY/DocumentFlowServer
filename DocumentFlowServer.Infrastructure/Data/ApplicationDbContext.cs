@@ -11,7 +11,6 @@ public class ApplicationDbContext : DbContext
     }
     public DbSet<Entities.Models.Document> Documents { get; set; }
     public DbSet<Entities.Models.AboutUserModels.User> Users { get; set; }
-    public DbSet<Entities.Models.AboutUserModels.Role> Roles { get; set; }
     public DbSet<Entities.Models.Template> Templates { get; set; }
     public DbSet<Entities.Models.AboutUserModels.RefreshToken> RefreshTokens { get; set; }
     public DbSet<IssueModel> Tasks { get; set; }

@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using DocumentFlowServer.Application.Role.Dtos;
+using DocumentFlowServer.Entities.Enums;
 
 namespace DocumentFlowServer.Application.User.Dtos;
 
@@ -18,5 +18,5 @@ public class UserInfoForLoginDto
     public string Department { get; set; }
     
     [JsonPropertyName("role")]
-    public RoleDto Role { get; set; }
+    public Role Role { get; set; }
 }

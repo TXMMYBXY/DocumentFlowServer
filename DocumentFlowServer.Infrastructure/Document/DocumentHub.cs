@@ -15,7 +15,6 @@ public class DocumentHub : Hub
     public override async Task OnConnectedAsync()
     {
         var connectionId = Context.ConnectionId;
-        var roleId = Context.User.FindFirst("RoleId").Value;
         
         _logger.LogInformation($"Подключился: {connectionId}");
         

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using DocumentFlowServer.Application.Department.Dtos;
 using DocumentFlowServer.Application.Personal.Dtos;
-using DocumentFlowServer.Application.Role.Dtos;
 using DocumentFlowServer.Application.User;
 using DocumentFlowServer.Application.User.Dtos;
 using DocumentFlowServer.Infrastructure.Common.Repository;
@@ -44,7 +43,7 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
                 break;
                 
                 default:
-                    query = query.OrderBy(u => u.RoleId);
+                    query = query.OrderBy(u => u.Role);
                     break;
         }
 
@@ -57,8 +56,8 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
         if (filter.DepartmentId.HasValue)
             query = query.Where(u => u.DepartmentId == filter.DepartmentId);
 
-        if (filter.RoleId.HasValue)
-            query = query.Where(u => u.RoleId == filter.RoleId);
+        if (filter.Role.HasValue)
+            query = query.Where(u => u.Role == filter.Role);
 
         var reusltQuery = query
             .Select(u => new UserDto
@@ -73,12 +72,7 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
                     Description = u.Department.Description
                 },
                 IsActive = u.IsActive,
-                Role = new RoleDto
-                {
-                    Id = u.RoleId,
-                    Title = u.Role.Title,
-                    Description = u.Role.Description
-                }
+                Role = u.Role
             });
 
         if (filter.PageSize.HasValue && filter.PageNumber.HasValue)
@@ -131,12 +125,7 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
                     Title = u.Department.Title,
                     Description = u.Department.Description
                 },
-                Role = new RoleDto
-                {
-                    Id = u.RoleId,
-                    Title = u.Role.Title,
-                    Description = u.Role.Description
-                }
+                Role = u.Role
             })
             .SingleOrDefaultAsync();
     }
@@ -158,12 +147,7 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
                     Title = u.Department.Title,
                     Description = u.Department.Description
                 },
-                Role = new RoleDto
-                {
-                    Id = u.RoleId,
-                    Title = u.Role.Title,
-                    Description = u.Role.Description
-                }
+                Role = u.Role
             })
             .SingleOrDefaultAsync();
     }
@@ -177,11 +161,7 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
                 FullName = u.FullName,
                 Email = u.Email,
                 Department = u.Department.Title,
-                Role = new RoleDto
-                {
-                    Id = u.RoleId,
-                    Title = u.Role.Title,
-                }
+                Role = u.Role
             })
             .SingleOrDefaultAsync();
     }
