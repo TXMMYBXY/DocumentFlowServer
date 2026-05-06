@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using DocumentFlowServer.Application.Common.Services;
+using DocumentFlowServer.Application.Department;
 using DocumentFlowServer.Application.User;
 using DocumentFlowServer.Application.User.Dtos;
 using DocumentFlowServer.Entities.Enums;
@@ -21,6 +22,7 @@ public class UserService : IUserService
     private readonly IDistributedCache _cache;
     private readonly IPasswordHasher _passwordHasher;
     private readonly INotificationService _notificationService;
+    private readonly IDepartmentService _departmentService;
     
     private readonly IUserRepository _userRepository;
 
@@ -30,6 +32,7 @@ public class UserService : IUserService
         IDistributedCache cache,
         IPasswordHasher passwordHasher,
         INotificationService notificationService,
+        IDepartmentService departmentService,
         IUserRepository userRepository)
     {
         _logger = logger;
@@ -37,6 +40,7 @@ public class UserService : IUserService
         _cache = cache;
         _passwordHasher = passwordHasher;
         _notificationService = notificationService;
+        _departmentService = departmentService;
         _userRepository = userRepository;
     }
     
@@ -100,10 +104,27 @@ public class UserService : IUserService
         _logger.LogInformation("Updating user with id {UserId}", userId);
         
         var user = await _userRepository.GetByIdAsync(userId);
-        
+        Console.WriteLine(user.DepartmentId);
         ArgumentNullException.ThrowIfNull(user, "User not exists");
         
-        _mapper.Map(updateUserInfoDto, user);
+        if (updateUserInfoDto.FullName != null)
+            user.FullName = updateUserInfoDto.FullName;
+
+        if (updateUserInfoDto.Email != null)
+            user.Email = updateUserInfoDto.Email;
+
+        if (updateUserInfoDto.Role.HasValue)
+            user.Role = updateUserInfoDto.Role.Value;
+
+        if (updateUserInfoDto.DepartmentId.HasValue)
+        {
+            var exists = await _departmentService.ExistsDepartmentAsync(userId);
+
+            if (!exists)
+                throw new Exception("Department not found");
+
+            user.DepartmentId = updateUserInfoDto.DepartmentId.Value;
+        }
         
         await _userRepository.SaveChangesAsync();
         

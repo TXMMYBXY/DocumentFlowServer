@@ -13,16 +13,16 @@ public static class AuthorizationExtensions
         services.AddAuthorization(options =>
         {
             options.AddPolicy(Policy.AdminOnly, policy => policy.Requirements.Add(
-                new RoleIdRequirement(Permissions.Admin)));
+                new RoleIdRequirement(Role.Administrator)));
             
             options.AddPolicy(Policy.AdminAndBoss, policy => policy.Requirements.Add(
-                new RoleIdRequirement(Permissions.Admin, Permissions.Boss)));
+                new RoleIdRequirement(Role.Administrator, Role.Boss)));
             
             options.AddPolicy(Policy.AdminBossAndPurchasher, policy => policy.Requirements.Add(
-                new RoleIdRequirement(Permissions.Admin, Permissions.Boss, Permissions.Purchaser)));
+                new RoleIdRequirement(Role.Administrator, Role.Boss, Role.Purchaser)));
             
             options.AddPolicy(Policy.All, policy => policy.Requirements.Add(
-                new RoleIdRequirement(Permissions.Admin, Permissions.Boss, Permissions.Purchaser, Permissions.Staff)));
+                new RoleIdRequirement(Role.Administrator, Role.Boss, Role.Purchaser, Role.Employee)));
         });
         
         services.AddSingleton<IAuthorizationHandler, RoleIdHandler>();

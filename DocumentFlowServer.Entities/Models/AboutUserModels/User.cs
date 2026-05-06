@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DocumentFlowServer.Entities.Enums;
 
 namespace DocumentFlowServer.Entities.Models.AboutUserModels;
 
@@ -27,8 +28,6 @@ public class User : EntityBase
     public virtual Department Department { get; set; }
     
     [Required]
-    public int RoleId { get; set; }
-    
-    [ForeignKey(nameof(RoleId))]
-    public virtual Role Role { get; set; }
+    public Role Role { get; set; }
+
 }

@@ -34,8 +34,7 @@ public class JwtService : IJwtService
         {
             new (ClaimTypes.NameIdentifier, userClaims.Id.ToString()),
             new (ClaimTypes.Email, userClaims.Email),
-            new (ClaimTypes.Role, userClaims.Role),
-            new ("RoleId", userClaims.RoleId),
+            new (ClaimTypes.Role, ((int)userClaims.Role).ToString()),
             new ("IsActive", userClaims.IsActive)
         };
 

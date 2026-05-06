@@ -12,4 +12,5 @@ public interface IDepartmentService
     Task CreateDepartment(CreateDepartmentDto dto);
     Task UpdateDepartment(int departmentId, UpdateDepartmentDto dto);
     Task DeleteDepartmentAsync(int departmentId);
+    Task<bool> ExistsDepartmentAsync(int departmentId);
 }

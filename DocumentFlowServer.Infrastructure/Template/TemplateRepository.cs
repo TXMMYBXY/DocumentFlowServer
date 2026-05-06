@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DocumentFlowServer.Application.Role.Dtos;
 using DocumentFlowServer.Application.Template;
 using DocumentFlowServer.Application.Template.Dtos;
 using DocumentFlowServer.Application.User.Dtos;
@@ -56,11 +55,7 @@ public class TemplateRepository : BaseRepository<Entities.Models.Template>, ITem
                     Id = t.User.Id,
                     Email = t.User.Email,
                     FullName = t.User.FullName,
-                    Role = new RoleDto
-                    {
-                        Id = t.User.Role.Id,
-                        Title = t.User.Role.Title,
-                    }
+                    Role = t.User.Role
                 }
             });
 

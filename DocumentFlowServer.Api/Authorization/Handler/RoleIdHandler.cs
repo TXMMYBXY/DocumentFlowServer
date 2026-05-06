@@ -15,7 +15,7 @@ public class RoleIdHandler : AuthorizationHandler<RoleIdRequirement>
         if(!bool.TryParse(isActiveClaim, out var isActive))
             return Task.CompletedTask;
 
-        if (!Enum.TryParse<Permissions>(roleId, out var role))
+        if (!Enum.TryParse<Role>(roleId, out var role))
             return Task.CompletedTask;
         
         if (isActive &&

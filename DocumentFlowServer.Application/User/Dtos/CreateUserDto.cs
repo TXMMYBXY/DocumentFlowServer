@@ -1,3 +1,5 @@
+using DocumentFlowServer.Entities.Enums;
+
 namespace DocumentFlowServer.Application.User.Dtos;
 
 public class CreateUserDto
@@ -6,5 +8,5 @@ public class CreateUserDto
     public string Email { get; set; }
     public string Password { get; set; }
     public int DepartmentId { get; set; }
-    public int RoleId { get; set; }
+    public Role Role { get; set; }
 }
