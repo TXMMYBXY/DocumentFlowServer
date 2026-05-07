@@ -1,4 +1,5 @@
 using DocumentFlowServer.Application.User.Dtos;
+using DocumentFlowServer.Entities.Models;
 
 namespace DocumentFlowServer.Application.User;
 

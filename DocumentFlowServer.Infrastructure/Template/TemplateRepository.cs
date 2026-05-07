@@ -27,6 +27,37 @@ public class TemplateRepository : BaseRepository<Entities.Models.Template>, ITem
             .Where(t => t.Type == filter.Type)
             .AsNoTracking();
 
+        if (filter.SortBy.HasValue)
+        {
+            query = filter.SortBy switch
+            {
+                TemplateSortField.Title => 
+                    filter.Descending
+                    ? query.OrderBy(t => t.Title)
+                    : query.OrderByDescending(t => t.Title),
+                
+                TemplateSortField.CreatedBy =>
+                    filter.Descending
+                    ? query.OrderBy(t => t.CreatedBy)
+                    : query.OrderByDescending(t => t.CreatedBy),
+                
+                TemplateSortField.CreatedAt =>
+                    filter.Descending
+                    ? query.OrderBy(t => t.CreatedAt)
+                    : query.OrderByDescending(t => t.CreatedAt),
+                    
+                TemplateSortField.IsActive =>
+                    filter.Descending
+                    ? query.OrderBy(t => t.IsActive)
+                    : query.OrderByDescending(t => t.IsActive),
+                    
+                _ => 
+                    filter.Descending
+                    ? query.OrderBy(t => t.CreatedAt)
+                    : query.OrderByDescending(t => t.CreatedAt)
+            };
+        }
+
         if (!string.IsNullOrWhiteSpace(filter.Title))
             query = query.Where(u => u.Title.Contains(filter.Title.ToLower()));
 

@@ -25,26 +25,41 @@ public class UserRepository : BaseRepository<Entities.Models.AboutUserModels.Use
         var query = _dbContext.Users
             .AsNoTracking()
             .AsQueryable();
-
-        switch (filter.SortField)
+        
+        if(filter.SortBy.HasValue)
         {
-            case "FullName":
-                if (filter.Descending)
-                    query = query.OrderBy(u => u.FullName);
-                else 
-                    query = query.OrderByDescending(u => u.FullName);
-                break;
-            
-            case "Email":
-                if (filter.Descending)
-                    query = query.OrderBy(u => u.Email);
-                else
-                    query = query.OrderByDescending(u => u.Email);
-                break;
-                
-                default:
-                    query = query.OrderBy(u => u.Role);
-                    break;
+            query = filter.SortBy.Value switch
+            {
+                UserSortField.Email =>
+                    filter.Descending
+                        ? query.OrderBy(u => u.Email)
+                        : query.OrderByDescending(u => u.Email),
+
+                UserSortField.FullName =>
+                    filter.Descending
+                        ? query.OrderBy(u => u.FullName)
+                        : query.OrderByDescending(u => u.FullName),
+
+                UserSortField.Role =>
+                    filter.Descending
+                        ? query.OrderBy(u => u.Role)
+                        : query.OrderByDescending(u => u.Role),
+
+                UserSortField.Department =>
+                    filter.Descending
+                        ? query.OrderBy(u => u.Department)
+                        : query.OrderByDescending(u => u.Department),
+
+                UserSortField.IsActive =>
+                    filter.Descending
+                        ? query.OrderBy(u => u.IsActive)
+                        : query.OrderByDescending(u => u.IsActive),
+
+                _ =>
+                    filter.Descending
+                        ? query.OrderBy(u => u.Role)
+                        : query.OrderByDescending(u => u.Role)
+            };
         }
 
         if (!string.IsNullOrWhiteSpace(filter.Email))
