@@ -4,6 +4,9 @@ namespace DocumentFlowServer.Application.Template;
 
 public class TemplateFilter
 {
+    public TemplateSortField? SortBy { get; set; }
+    public bool Descending { get; set; }
+    
     public TemplateType Type { get; set; }
     
     public string? Title { get; set; }

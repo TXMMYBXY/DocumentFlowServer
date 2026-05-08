@@ -22,6 +22,27 @@ public class DepartmentRepository : BaseRepository<Entities.Models.Department>, 
             .AsNoTracking()
             .AsQueryable();
 
+        if (filter.SortBy.HasValue)
+        {
+            query = filter.SortBy switch
+            {
+                DepartmentSortField.Title => 
+                    filter.Descending
+                    ? query.OrderBy(d => d.Title)
+                    : query.OrderByDescending(d => d.Title),
+                
+                DepartmentSortField.EmployeesCount =>
+                    filter.Descending
+                    ? query.OrderBy(d => d.Employees.Count)
+                    : query.OrderByDescending(d => d.Employees.Count),
+                    
+                _ =>
+                    filter.Descending
+                    ? query.OrderBy(d => d.Id)
+                    : query.OrderByDescending(d => d.Id)
+            };
+        }
+        
         if (!string.IsNullOrEmpty(filter.Title)) query = query.Where(d => d.Title.Contains(filter.Title));
         if (filter.PageSize.HasValue && filter.PageNumber.HasValue)
         {

@@ -1,8 +1,10 @@
+using DocumentFlowServer.Application.User;
+
 namespace DocumentFlowServer.Api.Features.User.Requests;
 
 public class GetUsersRequest
 {
-    public string? SortField { get; set; }
+    public UserSortField? SortBy { get; set; }
     public bool Descending { get; set; }
     
     public string? FullName { get; set; }
