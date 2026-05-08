@@ -73,7 +73,6 @@ public class TemplateRepository : BaseRepository<Entities.Models.Template>, ITem
         var totalCount = await query.CountAsync();
         
         var resultQuery = query
-            .OrderByDescending(t => t.CreatedAt)
             .Select(t => new TemplateDto
             {
                 Id = t.Id,

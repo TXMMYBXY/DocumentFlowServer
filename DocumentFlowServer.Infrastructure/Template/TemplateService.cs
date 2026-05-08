@@ -61,6 +61,8 @@ public class TemplateService : ITemplateService
 
         if (cached != null)
         {
+            _logger.LogInformation("returns templates from cache");
+            
             return JsonSerializer.Deserialize<PagedTemplateDto>(cached);
         }
         
