@@ -6,4 +6,5 @@
   <Project Path="DocumentFlowServer.Application/DocumentFlowServer.Application.csproj" />
   <Project Path="DocumentFlowServer.Entities/DocumentFlowServer.Entities.csproj" />
   <Project Path="DocumentFlowServer.Infrastructure/DocumentFlowServer.Infrastructure.csproj" />
+  <Project Path="DocumentFlowServer.Worker/DocumentFlowServer.Worker.csproj" />
 </Solution>

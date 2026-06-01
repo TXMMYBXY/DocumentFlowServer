@@ -9,3 +9,5 @@ riderModule.iml
 *.user
 DocumentFlowServer.sln.DotSettings.user
 *.user
+/.vs
+/.idea

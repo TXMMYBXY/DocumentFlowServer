@@ -4,6 +4,9 @@ using DocumentFlowServer.Infrastructure;
 using DocumentFlowServer.Infrastructure.Data;
 using DocumentFlowServer.Infrastructure.Document;
 using DocumentFlowServer.Infrastructure.Notification;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,5 +36,7 @@ app.MapScalarApiReference();
 app.MapControllers();
 app.MapHub<NotificationHub>("/notifications");
 app.MapHub<DocumentHub>("/documents");
+
+app.MapGet("/ping", () => "pong");
 
 app.Run();

@@ -1,0 +1,13 @@
+{
+    "files.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        ".gitignore": true,
+        ".gitattributes": true,
+        "**/Properties": true,
+        "**/.vs": true,
+        "**/.idea": true,
+        "**/*.csproj": true,
+        "**/*.sln": true,
+    }
+}
