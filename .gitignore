@@ -11,3 +11,4 @@ DocumentFlowServer.sln.DotSettings.user
 *.user
 /.vs
 /.idea
+.env
