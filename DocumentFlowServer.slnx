@@ -1,9 +1,12 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path=".env" />
+    <File Path=".env.example" />
     <File Path="compose.yaml" />
   </Folder>
   <Project Path="DocumentFlowServer.Api/DocumentFlowServer.Api.csproj" />
   <Project Path="DocumentFlowServer.Application/DocumentFlowServer.Application.csproj" />
   <Project Path="DocumentFlowServer.Entities/DocumentFlowServer.Entities.csproj" />
   <Project Path="DocumentFlowServer.Infrastructure/DocumentFlowServer.Infrastructure.csproj" />
+  <Project Path="DocumentFlowServer.Worker/DocumentFlowServer.Worker.csproj" />
 </Solution>
