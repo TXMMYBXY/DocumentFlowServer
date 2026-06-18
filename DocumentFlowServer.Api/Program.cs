@@ -16,13 +16,13 @@ var envConn = builder.Configuration["DEFAULT_CONNECTION"] ?? Environment.GetEnvi
 
 if (string.IsNullOrWhiteSpace(envConn))
 {
-    var host = Environment.GetEnvironmentVariable("MYSQL_HOST") ?? Environment.GetEnvironmentVariable("MYSQL_SERVER") ?? "db";
+    var host = Environment.GetEnvironmentVariable("MYSQL_HOST") ?? Environment.GetEnvironmentVariable("MYSQL_SERVER") ?? "localhost";
     var port = Environment.GetEnvironmentVariable("MYSQL_PORT") ?? "3307";
     var db = Environment.GetEnvironmentVariable("MYSQL_DATABASE") ?? "DocumentFlowDB";
     var user = Environment.GetEnvironmentVariable("MYSQL_USER") ?? "root";
     var password = Environment.GetEnvironmentVariable("MYSQL_PASSWORD") ?? "RootSecure123!";
 
-    envConn = $"Server={host};Port=3306;Database={db};User={user};Password={password};SslMode=None;AllowPublicKeyRetrieval=True;";
+    envConn = $"Server={host};Port={port};Database={db};User={user};Password={password};SslMode=None;AllowPublicKeyRetrieval=True;";
 }
 
 

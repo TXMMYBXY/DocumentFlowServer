@@ -61,7 +61,7 @@ public class DocumentController : ControllerBase
         return Ok(response);
     }
 
-    [HttpDelete("{documentIdL:int}")]
+    [HttpDelete("{documentId:int}")]
     [Authorize(Policy = Policy.All)]
     public async Task<ActionResult> DeleteDocument([FromRoute] int documentId)
     {
