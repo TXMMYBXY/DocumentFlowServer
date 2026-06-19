@@ -4,6 +4,7 @@ using System.Linq;
 using NPetrovich;
 using DocumentFlowServer.Worker.Interface;
 using TemplateEngine.Docx;
+using System.Globalization;
 
 namespace DocumentFlowServer.Worker.Service;
 
@@ -58,6 +59,15 @@ public class DocumentTemplateService : IDocumentTemplateService
             "loc"  // локатив (реже)
         };
 
+        var supportedDateFormats = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["date"] = "dd.MM.yyyy",
+            ["date_short"] = "dd.MM.yy",
+            ["date_iso"] = "yyyy-MM-dd",
+            ["date_ru"] = "d MMMM yyyy",
+            ["date_ru_full"] = "«dd» MMMM yyyy г."
+        };
+
         foreach (var kv in fields)
         {
             var key = kv.Key ?? string.Empty;
@@ -68,15 +78,36 @@ public class DocumentTemplateService : IDocumentTemplateService
             string finalValue = value;
 
             var idx = key.IndexOf(':');
+
             if (idx >= 0 && idx < key.Length - 1)
             {
                 var suffix = key[(idx + 1)..].Trim();
+
+                // Падежи
                 if (supportedCases.Contains(suffix))
                 {
-                    // Попытка просклонять ФИО; если не удалось, оставляем исходное значение
                     try
                     {
                         finalValue = TryDeclineFullName(value, suffix) ?? value;
+                    }
+                    catch
+                    {
+                        finalValue = value;
+                    }
+                }
+                // Даты
+                else if (supportedDateFormats.TryGetValue(
+                    suffix,
+                    out var format))
+                {
+                    try
+                    {
+                        if (DateTime.TryParse(value, out var date))
+                        {
+                            finalValue = date.ToString(
+                                format,
+                                new CultureInfo("ru-RU"));
+                        }
                     }
                     catch
                     {
