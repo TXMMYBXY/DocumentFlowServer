@@ -3,5 +3,7 @@ namespace DocumentFlowServer.Worker.Models;
 public enum TemplateType
 {
     Statement,
-    Contract
+    Contract,
+    Report,
+    Approval
 }

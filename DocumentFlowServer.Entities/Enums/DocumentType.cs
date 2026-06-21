@@ -7,4 +7,6 @@ public enum DocumentType
 {
     Statement,
     Contract,
+    Report,
+    Approval
 }

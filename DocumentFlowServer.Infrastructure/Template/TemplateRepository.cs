@@ -86,7 +86,8 @@ public class TemplateRepository : BaseRepository<Entities.Models.Template>, ITem
                     Email = t.User.Email,
                     FullName = t.User.FullName,
                     Role = t.User.Role
-                }
+                },
+                Type =  t.Type
             });
 
         if (filter.PageSize.HasValue && filter.PageNumber.HasValue)
