@@ -290,6 +290,57 @@ public class TemplateService : ITemplateService
             : await _templateRepository.GetTemplatesWithoutContractsAsync();
     }
 
+    public async Task CreateManyTemplateAsync(List<CreateTemplateDto> templateDto)
+    {
+        _logger.LogInformation("Creating many templates");
+
+        ArgumentNullException.ThrowIfNull(templateDto, "Files is not exists");
+
+        var arrTemplates = new List<Entities.Models.Template>();
+        
+        foreach (var template in templateDto)
+        {
+            if (template.FileLength == 0)
+            {
+                continue;
+            }
+
+            var uniqueFileName = $"{Guid.NewGuid()}_{template.FileName}";
+            var month = _ClearName(DateTime.Now.ToString("MMMM", new CultureInfo("en-EN")));
+            var projectFolder = $"{template.Type.ToString()}_{DateTime.Now.Year}_{month}";
+
+            var filePath = await _fileStorageService.SaveFileAsync(
+                template.FileStream,
+                uniqueFileName,
+                projectFolder);
+            
+            arrTemplates.Add(new Entities.Models.Template
+            {
+                Title = template.Title,
+                Path = filePath,
+                CreatedBy = template.CreatedBy,
+                CreatedAt = DateTime.UtcNow,
+                IsActive = template.IsActive,
+                Type = template.Type
+            });
+        }
+
+        await _templateRepository.AddManyTemplatesAsync(arrTemplates);
+        await _templateRepository.SaveChangesAsync();
+        
+        await _notificationService.SendNotificationToRoleAsync(templateDto.First().Type == TemplateType.Contract?
+            [1, 2, 3] : [1, 2, 3, 4], new Entities.Models.Notification(
+            NotificationKind.TemplateAdded,
+            NotificationSeverity.Info,
+            "Шаблон добавлен",
+            $"Добавлены шаблоны"
+        ));
+        
+        await _InvalidateTemplatesCacheAsync();
+        
+        _logger.LogInformation("Templates created successfully");
+    }
+
     private async Task<string> _GetTemplatesVersionAsync()
     {
         var version = await _cache.GetStringAsync(_templatesVersionKey);

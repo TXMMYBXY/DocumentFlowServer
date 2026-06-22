@@ -14,4 +14,5 @@ public interface ITemplateRepository : IBaseRepository<Entities.Models.Template>
     Task<TemplateType> GetTypeByTemplateIdAsync(int templateId);
     Task<List<GetTemplateDto>> GetTemplatesWithoutContractsAsync();
     Task<List<GetTemplateDto>> GetTemplatesAsync();
+    Task AddManyTemplatesAsync(IEnumerable<Entities.Models.Template> templates);
 }

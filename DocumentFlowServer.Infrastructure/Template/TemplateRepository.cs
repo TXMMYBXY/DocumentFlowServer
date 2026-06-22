@@ -190,4 +190,9 @@ public class TemplateRepository : BaseRepository<Entities.Models.Template>, ITem
             })
             .ToListAsync();
     }
+
+    public async Task AddManyTemplatesAsync(IEnumerable<Entities.Models.Template> templates)
+    {
+        await _dbContext.AddRangeAsync(templates);
+    }
 }

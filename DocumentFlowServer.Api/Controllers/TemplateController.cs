@@ -141,5 +141,20 @@ public class TemplateController : ControllerBase
 
         return Ok(response);
     }
+
+    [Authorize(Policy = Policy.AdminAndBoss)]
+    [HttpPost("many")]
+    public async Task<ActionResult> CreateManyTemplates([FromForm] CreateManyTemplatesRequest templateViewModel)
+    {
+        _logger.LogInformation("request for creating template");
+        
+        var templateDto = _mapper.Map<List<CreateTemplateDto>>(templateViewModel);
+
+        templateDto.ForEach(t => t.CreatedBy = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value));
+        
+        await _templateService.CreateManyTemplateAsync(templateDto);
+
+        return Ok();
+    }
     
 }
