@@ -61,7 +61,7 @@ public class DocumentController : ControllerBase
         return Ok(response);
     }
 
-    [HttpDelete("{documentIdL:int}")]
+    [HttpDelete("{documentId:int}")]
     [Authorize(Policy = Policy.All)]
     public async Task<ActionResult> DeleteDocument([FromRoute] int documentId)
     {
@@ -78,7 +78,7 @@ public class DocumentController : ControllerBase
     public async Task<ActionResult> UploadDocument([FromForm] UploadDocumentRequest request)
     {
         _logger.LogInformation("request for uploading document");
-
+        Console.WriteLine($"API: Type{request.DocumentType}");
         var documentDto = _mapper.Map<UploadDocumentDto>(request);
         
         await _documentService.UploadDocumentAsync(documentDto);

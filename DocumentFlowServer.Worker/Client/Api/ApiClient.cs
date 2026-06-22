@@ -20,11 +20,6 @@ public class ApiClient : GeneralClient, IApiClient
         _domain = options.Value.ApiBaseUrl;
     }
 
-    public async Task<TemplateInfo?> GetContractTemplateAsync(int templateId, CancellationToken ct)
-    {
-        return await DownloadTemplateAsync($"{_BaseUrl}/{templateId}/template", ct);
-    }
-
     public async Task<DocumentGenerationTask> GetNextTaskAsync(CancellationToken ct)
     {
         return await PostResponseAsync<object, DocumentGenerationTask>(null, $"{_BaseUrl}/next", ct);
@@ -76,7 +71,8 @@ public class ApiClient : GeneralClient, IApiClient
         form.Add(new StringContent(dto.Title), "Title");
         form.Add(new StringContent(dto.CreatedBy.ToString()), "CreatedBy");
         form.Add(new StringContent(dto.TemplateId.ToString()), "TemplateId");
-
+        form.Add(new StringContent(((int)dto.DocumentType).ToString()), "DocumentType");
+        Console.WriteLine($"Worker: {dto.DocumentType}");
         var fileContent = new ByteArrayContent(dto.Content);
         fileContent.Headers.ContentType =
             new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.wordprocessingml.document");

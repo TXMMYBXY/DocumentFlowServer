@@ -28,8 +28,4 @@
       <ProjectReference Include="..\DocumentFlowServer.Infrastructure\DocumentFlowServer.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Configuration\" />
-    </ItemGroup>
-
 </Project>

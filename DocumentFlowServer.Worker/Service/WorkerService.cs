@@ -85,14 +85,7 @@ public class WorkerService : BackgroundService
         TemplateInfo? template = null;
         try
         {
-            if (task.TemplateType == TemplateType.Statement)
-            {
-                template = await _apiClient.GetTemplateAsync(task.TemplateId, ct);
-            }
-            else if (task.TemplateType == TemplateType.Contract)
-            {
-                template = await _apiClient.GetContractTemplateAsync(task.TemplateId, ct);
-            }
+            template = await _apiClient.GetTemplateAsync(task.TemplateId, ct);
 
             if (template != null)
             {
@@ -122,6 +115,7 @@ public class WorkerService : BackgroundService
                 Title = outputFileName,
                 CreatedBy = task.UserId,
                 TemplateId = task.TemplateId,
+                DocumentType = task.TemplateType,
                 FileName = outputFileName,
                 Content = filledBytes
             }, ct);

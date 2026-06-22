@@ -3,6 +3,8 @@
     <File Path=".env" />
     <File Path=".env.example" />
     <File Path="compose.yaml" />
+    <File Path="deploy.sh" />
+    <File Path="README.md" />
   </Folder>
   <Project Path="DocumentFlowServer.Api/DocumentFlowServer.Api.csproj" />
   <Project Path="DocumentFlowServer.Application/DocumentFlowServer.Application.csproj" />

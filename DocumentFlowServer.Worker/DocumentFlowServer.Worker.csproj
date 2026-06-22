@@ -14,5 +14,6 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
     <PackageReference Include="TemplateEngine.Docx" Version="1.1.5" />
+      <PackageReference Include="NPetrovich" Version="2.0.1" />
   </ItemGroup>
 </Project>

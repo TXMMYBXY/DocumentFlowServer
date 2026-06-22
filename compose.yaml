@@ -66,6 +66,8 @@
       Redis__InstanceName: "DocumentFlow:"
     ports:
       - "${WEB_API_PORT}:${CONTAINER_API_PORT}"
+    volumes:
+      - api_files:/app/storage
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:80/ping || exit 1"]
       interval: 5s

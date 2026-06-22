@@ -7,7 +7,6 @@ public class CreateIssueRequest
 {
     public int TemplateId { get; set; }
 
-    [EnumDataType(typeof(TemplateType))]
     public TemplateType TemplateType { get; set; }
     public Dictionary<string, object> Data { get; set; } = new();
 

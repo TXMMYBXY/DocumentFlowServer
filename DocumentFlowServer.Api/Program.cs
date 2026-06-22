@@ -16,13 +16,13 @@ var envConn = builder.Configuration["DEFAULT_CONNECTION"] ?? Environment.GetEnvi
 
 if (string.IsNullOrWhiteSpace(envConn))
 {
-    var host = Environment.GetEnvironmentVariable("MYSQL_HOST") ?? Environment.GetEnvironmentVariable("MYSQL_SERVER") ?? "db";
-    var port = Environment.GetEnvironmentVariable("MYSQL_PORT") ?? "3307";
+    var host = Environment.GetEnvironmentVariable("MYSQL_HOST") ?? Environment.GetEnvironmentVariable("MYSQL_SERVER") ?? "localhost";
+    var port = Environment.GetEnvironmentVariable("MYSQL_PORT") ?? "3306";
     var db = Environment.GetEnvironmentVariable("MYSQL_DATABASE") ?? "DocumentFlowDB";
     var user = Environment.GetEnvironmentVariable("MYSQL_USER") ?? "root";
     var password = Environment.GetEnvironmentVariable("MYSQL_PASSWORD") ?? "RootSecure123!";
 
-    envConn = $"Server={host};Port=3306;Database={db};User={user};Password={password};SslMode=None;AllowPublicKeyRetrieval=True;";
+    envConn = $"Server={host};Port={port};Database={db};User={user};Password={password};SslMode=None;AllowPublicKeyRetrieval=True;";
 }
 
 
@@ -32,37 +32,37 @@ builder.Services.AddApi(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-
-    try
-    {
-        logger.LogInformation("Applying EF migrations...");
-
-        await context.Database.MigrateAsync();
-
-        logger.LogInformation("Migrations applied successfully.");
-    }
-    catch (Exception ex)
-    {
-        logger.LogCritical(ex, "Failed to apply migrations. Application cannot start.");
-        throw;
-    }
-
-    try
-    {
-        var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-        await seeder.SeedAsync();
-        logger.LogInformation("Seeding completed.");
-    }
-    catch (Exception ex)
-    {
-        logger.LogCritical(ex, "Failed to seed database. Application cannot start.");
-        throw;
-    }
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+//
+//     try
+//     {
+//         logger.LogInformation("Applying EF migrations...");
+//
+//         await context.Database.MigrateAsync();
+//
+//         logger.LogInformation("Migrations applied successfully.");
+//     }
+//     catch (Exception ex)
+//     {
+//         logger.LogCritical(ex, "Failed to apply migrations. Application cannot start.");
+//         throw;
+//     }
+//
+//     try
+//     {
+//         var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+//         await seeder.SeedAsync();
+//         logger.LogInformation("Seeding completed.");
+//     }
+//     catch (Exception ex)
+//     {
+//         logger.LogCritical(ex, "Failed to seed database. Application cannot start.");
+//         throw;
+//     }
+// }
 
 app.UseHttpsRedirection();
 app.UseErrorHandling();

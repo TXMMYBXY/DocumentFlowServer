@@ -19,4 +19,5 @@ public interface ITemplateService
     Task DeleteManyTemplatesAsync(List<int> templateIds);
     Task<GetTemplateForWorkerDto> GetTemplateForWorkerByIdAsync(int templateId);
     Task<List<GetTemplateDto>> GetTemplatesAsync(int roleId);
+    Task CreateManyTemplateAsync(List<CreateTemplateDto> templateDto);
 }

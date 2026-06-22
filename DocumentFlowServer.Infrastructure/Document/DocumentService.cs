@@ -75,6 +75,7 @@ public class DocumentService : IDocumentService
             CreatedBy = documentDto.CreatedBy,
             TemplateId = documentDto.TemplateId,
             CreatedAt = documentDto.CreatedAt ?? DateTime.UtcNow,
+            Type = documentDto.DocumentType
         };
 
         await _documentRepository.AddAsync(documentModel);
