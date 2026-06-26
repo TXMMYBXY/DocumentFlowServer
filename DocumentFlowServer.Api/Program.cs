@@ -32,37 +32,37 @@ builder.Services.AddApi(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
-// using (var scope = app.Services.CreateScope())
-// {
-//     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-//     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-//
-//     try
-//     {
-//         logger.LogInformation("Applying EF migrations...");
-//
-//         await context.Database.MigrateAsync();
-//
-//         logger.LogInformation("Migrations applied successfully.");
-//     }
-//     catch (Exception ex)
-//     {
-//         logger.LogCritical(ex, "Failed to apply migrations. Application cannot start.");
-//         throw;
-//     }
-//
-//     try
-//     {
-//         var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-//         await seeder.SeedAsync();
-//         logger.LogInformation("Seeding completed.");
-//     }
-//     catch (Exception ex)
-//     {
-//         logger.LogCritical(ex, "Failed to seed database. Application cannot start.");
-//         throw;
-//     }
-// }
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+    try
+    {
+        logger.LogInformation("Applying EF migrations...");
+
+        await context.Database.MigrateAsync();
+
+        logger.LogInformation("Migrations applied successfully.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogCritical(ex, "Failed to apply migrations. Application cannot start.");
+        throw;
+    }
+
+    try
+    {
+        var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+        await seeder.SeedAsync();
+        logger.LogInformation("Seeding completed.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogCritical(ex, "Failed to seed database. Application cannot start.");
+        throw;
+    }
+}
 
 app.UseHttpsRedirection();
 app.UseErrorHandling();
