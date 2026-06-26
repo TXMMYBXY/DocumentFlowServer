@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path=".env" />
     <File Path=".env.example" />
+    <File Path=".gitignore" />
     <File Path="compose.yaml" />
     <File Path="deploy.sh" />
     <File Path="README.md" />
